@@ -1,0 +1,101 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{datetime}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\thesisTitle}{Mesoscale~Discrete~Element~Model for~Concrete and~Its~Combination~with~FEM}
+\newcommand{\authorName}{Jan Stránský}
+\newcommand{\authorDegree}{Ing.}
+\newcommand{\thesisType}{doctoral thesis}
+\newcommand{\university}{Czech~Technical University in~Prague}
+\newcommand{\faculty}{Faculty of~Civil Engineering}
+\newcommand{\department}{Department of Mechanics}
+\newcommand{\address}{Thákurova 7, 166 29 Praha 6}
+\newcommand{\PhDProgramme}{Civil Engineering}
+\newcommand{\branchOfStudy}{Physical and Material Engineering}
+\newcommand{\supervisor}{prof. Ing. Milan Jirásek, DrSc.}
+\newcommand{\submissionPlace}{Prague}
+\newcommand{\submissionYear}{2018}
+\newcommand{\submissionMonth}{1}
+\newcommand{\submissionDay}{31}
+\newcommand{\submissionDate}{\ordinaldate{\submissionDay} \monthname[\submissionMonth] \submissionYear}
+\newcommand{\periodOfDoctoralStudy}{1.2.2011 -- 31.1.2018}
+\newcommand{\keywords}{Discrete Element Method, Finite Element Method, multimethod coupling, Python, concrete, mesoscale}
+\newcommand{\keywordsCS}{Metoda diskrétních prvků, metoda konečných prvků, kombinování metod, Python, beton, mezoúroveň}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\abstract}{
+
+The presented thesis deals with various aspects of the discrete element method (DEM) with application to modeling of concrete failure and combination of DEM with the finite element method (FEM).
+
+% macromicro
+Basic properties (e.g., isotropy) of random densely packed particle assemblies (as a~usual initial DEM packing configuration) are analyzed for various numbers of particles.
+Elastic properties of such packings are investigated both analytically and numerically.
+The analytical formulas are derived based on the microplane theory.
+The numerical results are obtained by DEM and FEM simulations.
+A very good agreement between analytical and numerical results is found for interaction ratios greater than $1{.}25$.
+For lower values of the interaction ratio, the analytically derived full stiffness tensor corresponds to the numerical results very well, however, the values of Young's modulus and Poisson's ratio estimated based on the assumption of uniform distribution of link directions exhibit a certain discrepancy from the numerical results.
+
+% discrete stress
+The discrete nature is an essential feature of DEM.
+However, in some cases it is desirable to transform such discrete information (contact forces for instance) into its continuum counterpart (e.g., stress tensor).
+The evaluation of the stress tensor and couple stress tensor from discrete forces based on the principle of virtual work is reviewed.
+New formulas for the couple stress tensor, yielding a unique value of the couple stress tensor independent on the choice of the coordinate reference point, are presented and discussed.
+
+% concurrent coupling
+Both DEM and FEM have their fields of application, however, in certain cases they can be combined and used together.
+In the concurrent coupling approach, both DEM and FEM simulations are run at the same time.
+Coupling of FEM code \OOFEM\ and DEM code \YADE\ is described.
+Several classes of coupling approaches (namely surface, direct volume, multiscale and contact) are addressed and illustrated on simple examples.
+
+% sequential coupling
+A DEM to FEM sequential coupling (in which case the DEM simulation is run first and the resulting state is converted into an initial state of the FEM simulation) of damaged concrete material is presented for the case of uniaxial compression.
+The method is proven to be able to capture the transition from DEM to FEM relatively well for several different loading scenarios -- mapping at different stages (elastic range, peak load, softening regime, with or without unloading etc.).
+The most divergent results are obtained for the stages of loading where the DEM and FEM material models themselves differ the most.
+
+% mcpm
+In practical civil engineering, concrete is usually idealized as a homogeneous isotropic material.
+However, certain applications require description of concrete on a lower scale and heterogeneity has to be taken into account.
+The development and results of a new mesoscale discrete element model for concrete is described.
+The model takes into account the heterogeneous mesoscale structure of concrete (i.e., aggregates and interfacial transition zone between aggregates and matrix).
+The validation against experimental data from literature shows the ability of the model to realistically capture trends of various material properties (elastic modulus, tensile and compressive strength, fracture energy) with respect to the actual mesoscale structure of the material.
+}
+
+
+
+\newcommand{\abstractCS}{
+
+Dizertační práce se zabývá různými aspekty metody diskrétních prvků (DEM) a její aplikací pro modelování porušování betonu
+a také kombinací DEM s metodou konečných prvků (FEM).
+
+% macromicro
+Základní vlastnosti náhodných hustých částicových shluků (jelikož tyto jsou obvyklé počáteční nastavení DEM simulací) jsou analyzovány pro různý počet částic.
+Pružné vlastnosti takovýchto shluků jsou zkoumány analyticky i numericky.
+Numerické výrazy jsou odvozeny na základě mikroploškové teorie.
+Numerické výsledky jsou získány pomocí DEM a FEM simulací.
+Velmi dobré shody mezi analytickými a numerickými výcledky je dosaženo pro interakční poměr větší než 1{.}25.
+Analyticky odvozený plný tenzor pružné tuhosti se velmi dobře shoduje s numerickými výsledky i pro nižší hodnoty interakčního poměru, avšak hodnoty Youngova modulu pružnosti a Poissonova součinitele odvozené za předpokladu rovnoměrného rozdělení směrů vazeb vykazuje jistou odchylku od numerických výsledků.
+
+% discrete stress
+Nespojitost je základní vlastností DEM.
+V některých situacích je však žádoucí převěst nespojité veličiny (např. síly) na odpovídajíci spojitou veličinu (např. tenzor napětí).
+Je představeno vyhodnocení tenzoru napětí a couple stress tenzoru z nespojitých sil.
+Metoda je založena na principu virtuálních prací.
+Jsou představeny nové výrazy pro couple stress tenzor, jejíchž výsledek je jedinečný a nezávislý na volbě pořátku souřadnicového systému.
+
+% concurrent coupling
+DEM i FEM mají své oblasti použití, někdy mohou ale spolu mohou být vhodně zkombinovány.
+V souběžných kombinačních přístupech běží DEM i FEM simulace současně.
+Je představena kombinace FEM programu \OOFEM\ a DEM programu \YADE.
+Je popsáno několik různých přístupů (jmenovitě povrchové, objemové, víceúrovňové a kontektní), každý z nich ilustrovaný na jednoduchém případě.
+
+% sequential coupling
+Sériová DEM--FEM kombinace (kdy DEM simulace probíhá první a její výsledek je převeden jako počáteční stav FEM simulace) poškozujícího se betonového materiálu je představena na příkladu jednoosého tlaku.
+Metoda prokázala schopnost poměrně dobře vystihnout přechod z DEM do FEM pro různé módy zatížení -- mapování v různých stádiích (průžná oblast, vrchol pevnosti, změkkčení atd.).
+Výsledky se nejvíse liší v těch oblastech zatížení, kde se samotné DEM a FEM materiálové modely liší nejvíce.
+
+% mcpm
+Ve stavební praxi je beton obvykle idealizován jako homogenní izotropní materiál.
+Některé aplikace však vyžadují popis betonu na nižší úrovni a musí se uvažovat nestejnorodosti.
+Je představen vývoj a výsledky nového mezoúrovňového modelu pro beton.
+Model uvažuje nestejnorodou mezoúroveň betonu (t.j. zrna kameniva a zónu rozhraní mezi kamenivem a matricí).
+Validace vzhledem k experimentálním výsledkům přebraným z literatury prokázala schopnost modelu realisticky vystihnout trendy různých materiálových vlastností (modulu pružnosti, tahové a tlakové pevnosti, lomové energie) vzhledem k mezo\-úrovňové struktuře materiálu.
+}

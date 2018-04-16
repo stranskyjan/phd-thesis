@@ -1,0 +1,33 @@
+\chapter{Conclusions}
+The following research objectives were accomplished in the present thesis:
+
+\begin{itemize}
+
+\item
+The relation between micro- and macroscopic elastic parameters was investigated both analytically and numerically.
+The analytical formulas were derived based on the microplane theory.
+The numerical results were obtained by DEM and FEM simulations.
+Very good correspondence of the numerical and analytical results is found for packings with interaction ratio greater than $1{.}25$.
+For lower values of the interaction ratio, the analytical estimation of Young's modulus and Poisson's ratio based on the assumption of uniform distribution of directions of links differs from the numerical results.
+However, the analytical formula for the full stiffness tensor corresponds to the numerical results very well for all tested values of the interaction ratio.
+
+\item
+The derivation of the stress tensor and couple stress tensor based on the virtual work principle was reviewed and new formulas for the couple stress tensor were proposed and discussed.
+For the defined volume, the new formulas yield a unique value of the couple stress tensor independent of the choice of the coordinate reference point, which (according to the author's knowledge) has not yet been published in the literature.
+	
+\item
+Various classes of FEM--DEM concurrent coupling strategies (namely the surface, direct volume, multiscale and contact coupling) were described.
+Existing software packages \OOFEM\ and \YADE\ (both providing Python user interface) were chosen for the coupling.
+Each strategy was illustrated on a simple example.
+The examples together with the unifying framework form a new open source code project.
+
+\item
+A mapping of the final state of a DEM simulation onto the initial state of the FEM simulation (also referred to as a sequential coupling) was illustrated on uniaxial compression of a concrete material.
+The method was proven to be able to capture the transition from DEM to FEM relatively well for several different loading scenarios -- mapping at different stages (elastic range, peak load, softening regime, with or without unloading etc.).
+The most divergent results were obtained for the stages of loading where the DEM and FEM material models themselves differed the most.
+
+\item
+A new discrete element model for concrete taking into account the heterogeneous mesoscale structure of concrete (i.e., aggregates and ITZ between aggregates and matrix) was proposed and tested.
+The validation against experimental data from the literature shows the ability of the model to realistically capture trends of various material properties (elastic modulus, tensile and compressive strength, fracture energy) with respect to the actual mesoscale structure of the material.
+
+\end{itemize}

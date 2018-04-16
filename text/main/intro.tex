@@ -1,0 +1,116 @@
+\chapter{Introduction}
+
+% concrete
+Concrete is a composite material composed of inclusions (gravel and sand aggregates) embedded in a cement (or similar binder) matrix and is the most widely used building material.
+Therefore it has been in various contexts subjected to extensive research.
+From material modeling point of view, the objective is to describe the behavior of concrete under different circumstances and help to predict its behavior in specific situations, e.g., predict deflections of a concrete bridge during its lifetime.
+The range of methods and approaches to describe concrete behavior is wide -- models on different scales (from atomistic to structural level), applicability to specific load cases (from statics to explosive impact dynamics, uniaxial vs. multiaxial loadings \dots), application in the context of different numerical methods, etc.
+The right approach depends on purpose, resources (on computational simulation time for instance), available input data and so on.
+
+In practical civil engineering, concrete is usually idealized as a homogeneous isotropic material.
+Indeed, considering heterogeneities (aggregates) in analyses of building-sized structures would be very impractical or even impossible.
+However, certain applications require description of concrete on lower than structural scales and heterogeneity (e.g, presence of aggregates) has to be taken into account.
+
+The basic behavior and structural response of concrete structures may be described analytically (for example a beam structure in the elastic range).
+Introducing more and more enhancements and features of the models leads to analytical unsolvability and numerical methods, usually with the help of computers, have to be introduced.
+
+
+% coupling
+Numerical simulations are an indispensable part of the current engineering and science development.
+For different engineering areas there are different numerical methods used.
+In solid phase mechanics, the leading methods are the finite element method (FEM) and the discrete (distinct) element method (DEM).
+FEM is rigorously derived from the continuum theory and is being used for the description of deformable continuous bodies, while DEM describes particulate materials, usually modeled by perfectly rigid particles and their interactions determined from fictitious overlaps of these rigid particles.
+
+Often, an engineering problem can be modeled using only one of the aforementioned methods.
+A steel beam would be simulated by FEM, a small assembly of gravel particles by DEM.
+But what if we wanted to simulate an impact of the steel bar on the gravel?
+One possible approach would be to split the problem into two domains (the steel part modeled by FEM and the gravel part modeled by DEM) and appropriately \emph{couple} them.
+
+Usually, the solution is performed by a computer program, which is focused on a narrower or wider class of problems (such as solid mechanics, fluid dynamics, heat analysis, DEM etc.).
+If a combination of two classes of problems is required (coupling of mechanical and heat analysis for instance), it is often possible to find a code allowing such approach.
+However, in some cases, there exists no program that can solve the desired combination of problems.
+For instance, it is possible to couple mechanical and heat analysis within the chosen code, but we would like to use a special material model for mechanical analysis, which is not implemented.
+
+One possible approach to deal with such situation would be to write a new or extend an existing program implementing the requested features.
+Another possible approach would be to use existing independently developed codes, each one focused on a specific class of problems, and \quotes{glue} them together.
+
+There are countless software programs for both FEM and DEM.
+Some of them are commercial (usually) without possibility to change the code and adjust the behavior to our requirements (combination with another software for instance).
+However, there exist programs with open source code, which the user can modify, possibly for coupling with other programs.
+In this thesis, coupling of FEM code \OOFEM\ and DEM code \YADE\ is described and illustrated.
+
+
+% rest
+The presented research was partially supported by an industrial partner.
+Some results are not presented due to confidentiality reasons.
+
+The \LaTeX\ source code of the thesis and errata together with the source code of all presented simulations and results will be available on the author's \github\ sites.
+
+
+
+\section{Research objectives}
+The principal research objectives of this thesis are:
+\begin{enumerate}
+
+\item
+To investigate basic properties of particle models, namely the relation between micro- and macroscopic elastic properties of random dense packings in terms of analytical formulas and results of numerical simulations.
+Preparation and properties of random dense packings should be investigated beforehand.
+
+\item
+To develop open source tools for combination of the discrete element method and the finite element method.
+Several classes of combination approaches together with simple examples should be addressed.
+
+\item
+To develop a mesoscale discrete element model for concrete.
+The model should take into account the effect of aggregates and the interfacial transition zone (ITZ) between aggregates and the matrix.
+The model should be validated against experimental data from available literature.
+
+\end{enumerate}
+
+
+
+
+
+\vfill
+
+
+
+\section{Thesis outline}
+The thesis is organized into several main parts.
+\begin{itemize}
+
+\item
+The first part deals with the discrete element method in general.
+%
+A general introduction to DEM is the topic of chapter \ref{chapDem}.
+It also contains a brief description of the cohesive particle model for concrete (CPM) which is used at several places in the thesis.
+%
+Chapter \ref{chapMacroproperties} investigates the relation of micro- and macroscopic properties of particle models.
+Analytical formulas are described in detail and are compared to the results of DEM and FEM numerical simulations.
+%
+The last chapter of the first part gives an review of the evaluation of the stress tensor and couple stress tensor from discrete forces.
+New formulas for the couple stress tensor are presented and discussed.
+
+\item
+The topic of the second part is the combination of the finite element method and the discrete element method.
+Concurrent coupling methods (in which case both FEM and DEM simulations are run at the same time) are described in chapter \ref{chapCouplingConcurent}.
+Sequential DEM--FEM coupling (in which case the DEM simulation is run first and the resulting state is converted into an initial state of the FEM simulation) with the application to uniaxial compression of concrete is described in chapter \ref{chapCouplingSequential}.
+
+\item
+The third part describes the development and results of the new mesoscale discrete element model for concrete.
+The literature overview is given in chapter \ref{chapMCPMStateOfTheArt}.
+The new model itself is presented in chapter \ref{chapMCPMNewModel}.
+
+\item
+Appendix \ref{chapMath} summarizes
+mathematical and physical
+notation,
+terminology,
+conventions
+and
+\quotes{generally known} theory
+used throughout the thesis.
+
+\item
+Publications of the author are listed in appendix \ref{chapPublications}.
+\end{itemize}

@@ -1,0 +1,25 @@
+{}
+comment
+NonLinearStatic nsteps {} controlmode 1 stiffMode 1 rtolv 1e-3 ninitmodules 1 initialGuess 1
+gpinitmodule 1 initfile {}
+domain 3d
+OutputManager tstep_all dofman_all element_all
+ndofman 4 nelem 1 ncrosssect 1 nmat 1 nbc 2 nic 0 nltf 2
+node 1 coords 3 0 0 0 bc 3 1 1 1
+node 2 coords 3 1 0 0 bc 3 0 1 1
+node 3 coords 3 0 1 0 bc 3 1 0 1
+node 4 coords 3 0 0 1 bc 3 1 1 2
+ltrspace 1 nodes 4 1 2 3 4 mat 1 crosssect 1
+SimpleCS 1
+concretedpm 1 d 0. e 33e9 n 0.2 talpha 0. fc 40e6 ft 1e6 gf 1e2 href 2 helem 2 asoft 6
+BoundaryCondition 1 loadTimeFunction 1 prescribedvalue 0
+BoundaryCondition 2 loadTimeFunction 2 prescribedvalue 1
+ConstantFunction 1 f(t) 1.0
+piecewiselinfunction 2 npoints 2 t 2 0 200 f(t) 2 0 -7e-3
+
+#%BEGIN_CHECK%
+#ELEMENT number 1 gp 1 keyword strains component 3
+#ELEMENT number 1 gp 1 keyword stresses component 3
+#ELEMENT number 1 gp 1 keyword stresses component 1
+#ELEMENT number 1 gp 1 keyword stresses component 2
+#%END_CHECK%

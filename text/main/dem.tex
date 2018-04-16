@@ -1,0 +1,534 @@
+\chapter{Discrete element method}\label{chapDem}
+
+The discrete (or distinct) element method (DEM) is a widely used numerical tool of solid mechanics,
+mostly for dynamic problems, yet most widely for short-time events.
+DEM represents the material as a set of perfectly rigid units (referred to as discrete elements, particles, bodies etc.).
+The name \emph{particle(s)} will be used in this thesis for individual discrete element(s).
+Particles interact with each other according to defined constitutive law(s).
+
+DEM solves numerically equations of motion of individual particles $\particle$.
+\begin{align}
+	\forceVector &= \mass \accelerationVector
+	&
+	\coupleVector &= \inertiaTensor \cdot \angularAccelerationVector
+\end{align}
+$\forceVector$, $\mass$, $\accelerationVector$, $\coupleVector$, $\inertiaTensor$ and $\angularAccelerationVector$
+denotes
+force vector, mass, acceleration vector, force moment (also referred as couple) vector, inertia tensor and angular acceleration vector, respectively.
+Forces and moments occurring in the equations of motion can be of prescribed nature (e.g., gravity, drag force or imposed boundary conditions) or are the result of inter-particle interactions.
+According to the specific use, these interactions are also denoted as links, bonds etc.
+The name \emph{link(s)} will be used in this thesis for individual inter-particle interactions.
+
+In its basic version, DEM is naturally applicable for modeling of granular materials (as in its very first application \cite{CundallStrack1979a}).
+Using different particle shapes and different contact laws, DEM can take various forms.
+See, e.g., \cite{yade2015} or the next classification section for more information.
+
+From computational point of view, detection of new contacts is an important part of the numerical solution.
+A naive approach (testing each particle with all particles) has $\complexity{n^2}$ complexity and therefore more sophisticated approaches must be applied for larger scale problems.
+Nowadays standard collision detection algorithms work with $\complexity{n\log n}$ complexity \cite{yade2015}.
+For special cases, contact detection algorithms even with linear complexity $\complexity{n}$ were invented.
+The topic of contact detection is not addressed in this thesis in detail,
+interested readers are referred to \cite{yade2015,MunjizaAndrews1998a}.
+
+The equations of motion can be solved numerically using an implicit or explicit scheme.
+The collisions (and therefore the stiffness matrix of the system) are not known in advance.
+A~\quotes{small} change of positions of particles can cause a sudden (\quotes{big}) change of the stiffness of the system.
+For this reason, implicit integration schemes are in general not suitable for numerical solution
+and an explicit time integration scheme is usually applied to solve equations of motion (considering only the current configuration of the system to evaluate the configuration in the next time step).
+Using an explicit integration scheme implies using a sufficiently short time step to keep the simulation stable.
+
+
+\section{Brief classification}
+In general, DEM can be classified and its variants differ by many aspects.
+Some of them are listed in this section.
+
+\paragraph{Spatial dimensions}
+The solution can be formulated in 2D or 3D.
+In all cases below, the 3D case is considered, although the corresponding 2D alternative is possible.
+For instance, 2 translations and 1 rotation in 2D instead of 3 translations and 3 rotations in 3D or ellipse 2D analogy to 3D ellipsoid.
+
+\paragraph{Shapes}
+Particles can be of various shapes.
+The simplest case is spherical shape.
+Other shapes may be
+ellipsoids,
+polyhedrons,
+Minkowski sums (\quotes{rounded polyhedrons}),
+surfaces defined by harmonic functions
+etc.
+
+\paragraph{Discretization}
+DEM particles can either represent real particles (e.g., sand or gravel grains, masonry stones or bricks etc.) or may be just artificial discretization units (as shown, e.g., in part \ref{partMeso}).
+
+\paragraph{Degrees of freedom}
+Particles can possess 3 degrees of freedom (translation) or 6 degrees of freedom (translation and rotation).
+
+
+\paragraph{Constitutive laws and contact kinematics}
+Interaction constitutive laws define the interaction force (force to be applied on both interacting particles with opposite direction) based on mutual configuration of interacting particles.
+Simple models (including those described in this thesis) evaluate force based on the mutual displacement and/or rotation of interacting particles.
+Other options (not considered further in the thesis, see \cite{yade2015} for more details) may be force dependent on the overlapping volume (used in YADE for polyhedral particles) or potential particles approach.
+
+The basic mutual displacement-rotation-based modes are normal displacement, shear displacement, bending mode and twisting mode.
+The considered mutual displacement-rotation modes are strongly related to the considered constitutive law.
+For instance, if the constitutive law is defined only in terms of the normal and shear force, evaluation of the bending and twisting modes is omitted to save computational time.
+In the case of normal and shear displacement and normal and shear forces, the basic constitutive quantities are normal and shear stiffness $\linkStiffnessNormal$ and $\linkStiffnessShear$.
+The physical dimension of such stiffness is [N/m] as it relates force [N] and displacement [m].
+
+DEM works with discrete forces and displacements.
+However, it is usual that constitutive models are formulated in terms of stresses and strains.
+The link is then considered as a~fictitious bar with fictitious length $\linkLength$, cross section area $\linkCrossSectionArea$ and material stiffness $\linkMaterialStiffnessNormal$ and $\linkMaterialStiffnessShear$.
+Strain can be defined as displacement divided by the fictitious length,
+stress as force divided by the fictitious cross section area.
+The basic constitutive quantities are then normal modulus $\linkMaterialStiffnessNormal$ and shear modulus $\linkMaterialStiffnessShear$ of the fictitious material.
+The physical dimension of such stiffness is [N/m$^2$] as it relates stress [N/m$^2$] and strain [-].
+The relation of the stiffnesses is given as
+\begin{equation}
+	\linkStiffnessNormal = \linkMaterialStiffnessNormal\frac{\linkCrossSectionArea}{\linkLength}
+	.
+\end{equation}
+
+For instance, the length may be considered as the sum of radii of interacting particles and cross section proportional to the average radius of interacting particles (e.g., $\linkCrossSectionArea=\radius^2$ or $\linkCrossSectionArea=\pi\radius^2$).
+
+\paragraph{Cohesive links}
+Links between particles may be non-cohesive
+-- they are deleted if there is no overlap of the interacting particles --
+or cohesive
+-- force is transmitted even if the interacting particles are \quotes{farther away} from each other.
+Usually the cohesive approach models an initially continuous material with the possible generation of discontinuities.
+If a DEM model contains cohesive links (bonds), it is sometimes referred to as Bonded Particle Model (BPM).
+
+
+
+\section{\YADE}
+\YADE\ (Yet Another Dynamic Engine) \cite{yade2015} is an open source software for DEM analysis.
+Its core is written in C++ (providing efficient execution of time consuming routines),
+user interface is written in Python
+(modern dynamic object oriented scripting language, providing easy to use scripting while preserving the C++ efficiency).
+Extensible object oriented architecture allows independent implementation of new features - new material model or new particle shapes for instance.
+
+All DEM results presented in this thesis were computed using YADE software.
+
+
+
+
+\section{DEM extensions}\label{secDemDemExtensions}
+
+\paragraph{Clumps - rigid compounds}
+Several particles can be clumped together to form a multi-particle rigid body.
+This approach can be applied to increase the mass of \quotes{macro-particles} and thus increase the critical time step
+or
+to approximate a complex shape with a set of simple shapes (to approximate a polyhedron with spheres for instance).
+In the latter case, the mass and inertia of the resulting compound are defined independently of its constituents.
+
+Clumps are one option how to model stiffer and stronger grains, e.g., concrete aggregates within mortar matrix.
+
+\paragraph{Periodic boundary conditions}
+Periodic boundary conditions (or more precisely periodic contact detection and interaction evaluation) is a technique to avoid boundary effects or to decrease the domain size of problems with uniform strain or a theoretically infinite domain.
+
+Periodic contact detection takes into account also interaction of particles with periodic images of other particles.
+See figure \ref{figDemPeriodicPackingIllustration} for illustration.
+The periodic interaction evaluation (between particles $\particleA\particleB$ for instance) is then performed as if particle $\particleB$ was placed at position $\particleB'$ instead of its real position.
+
+The periodicity is defined by the size of the periodic cell and its transformation (the deformation gradient $\deformationGradient$). Change of the transformation $\deformationGradient$ influences the position of periodic images of real particles and therefore inter-particle forces (see figure \ref{figDemPeriodicPackingIllustration}).
+The change of $\deformationGradient$ can thus be used to impose macroscopic deformation.
+
+See \cite{yade2015,Smilauer2010a} for more technical details (description of periodic contact detection algorithms for instance).
+As discussed in \cite{StranskyParticles2011}, this kind of periodic boundary conditions is not suitable for modeling problems that involve strain localization.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=6cm]{raphaelpy/peri_packing_2d_illustration_0}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{6cm}
+		\put(-0.615384615385,0.384615384615){\makebox(0,-.01)[lt]{$\particleA$}}
+		\put(-0.230769230769,0.769230769231){\makebox(0,0)[l]{$\particleA'$}}
+		\put(-0.394230769231,0.605769230769){\makebox(0,-.02)[lt]{$\particleB$}}
+		\put(-0.778846153846,0.221153846154){\makebox(0,-.02)[t]{$\particleB'$}}
+	\end{picture}
+	\includegraphics[width=6cm]{raphaelpy/peri_packing_2d_illustration_1}
+	\caption[2D illustration of a periodic packing]{2D illustration of a periodic packing with initial (left) and deformed (right) periodic cell}
+	\label{figDemPeriodicPackingIllustration}
+\end{figure}
+
+
+\section{Initial packing}\label{secDEMInitialPacking}
+The initial particle packing is an important part of DEM simulations (similarly to FEM mesh generation).
+Regular packings are easy and quick to generate, but are often not suitable for realistic simulations (exhibiting predefined directions of defects, having given anisotropy etc.).
+Therefore the initial sample is usually a random packing of particles.
+Although being random, it must at the same time satisfy certain criteria and properties (%
+porosity,
+particle size distribution,
+coordination number,
+packing fraction
+etc.).
+
+Two main classes of approaches exist for the initial packing preparation: geometric (see, e.g., \cite{JerierRichefeuImbaultDonze2010a}) and dynamic (see, e.g., \cite{yade2015}).
+The geometric approaches generate positions and sizes of particles purely based on geometry (once again similarly to mesh generation),
+while dynamic approaches run actually an auxiliary DEM simulation (to prepare initial data for the desired DEM simulation).
+
+Dynamic approaches usually start with random loose packing (which is easy to generate) and continue with compaction.
+The compaction stage may be, e.g., gravity deposition or triaxial compression.
+In the case of the triaxial compression, the sample is first compressed up to a certain level of hydrostatic stress and then unloaded to a defined residual stress level.
+
+A problem of dynamic packing generation is that the required time increases significantly for the increasing number of particles.
+For the case of triaxial compression as the compaction phase, one possible solution to save time is to compress only a limited amount of particles \emph{periodically}, resulting in a periodic unit cell.
+The periodic cell is then copied wherever needed for the desired initial sample and cropped to meet geometric requirements.
+With this approach, a sample of any size is generated at (almost) constant time.
+
+Figure \ref{figDemPackingFraction} shows packing fractions of the periodic compaction for various numbers of particles with a convergence to the value $\approx0{.}61$.
+Figure \ref{figDemPackingIsotropy} shows spatial isotropy of inter-particle links.
+For the evaluation, only link directions with absolute value of $z$ coordinate less than $0{.}7$ were extracted.
+Then they were projected into $xy$ plane, converted to angle in the range $[0,\pi)$ and put into $32$ bins.
+Amounts of directions in corresponding bins are plotted.
+The grey circle means average value.
+
+As a consequence of this geometric isotropy, the resulting elastic material parameters are (almost) isotropic, too.
+See chapter \ref{chapMacroproperties} for more information.
+
+\begin{figure}[htb]
+	\centering
+	\inputplot{randomPeriPack_packingFraction}
+	\caption[Packing fraction of dynamic periodic compaction]{Packing fraction of dynamic periodic compaction for various numbers of particles}
+	\label{figDemPackingFraction}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\inputplot{packingIsotropy}
+	\vspace{-2cm}
+	\caption{Isotropy of links for $\numberOfParticles=4000$ and $\interactionRatio=1{.}5$}
+	\label{figDemPackingIsotropy}
+\end{figure}
+
+
+
+
+
+
+
+
+
+\section{Cohesive particle model for concrete}\label{secDemCpm}
+
+The cohesive particle model for concrete (CPM) is a material model for the discrete element method with the aim to model concrete failure.
+The model is described in detail in \cite{Smilauer2010a} together with its extensions for confined loadings and loading at high strain rates.
+Only its basic version needed for the purposes of the thesis is reviewed in this section.
+Furthermore, only the version for spherical packings with uniform radius is considered.
+
+The model is formulated in terms of stress and strain.
+It evaluates normal and shear stress based on normal and shear strain, material parameters and history variables.
+Material parameters and history variables are listed in table \ref{tabDemCpmParamsHistoryVars}.
+Strain and stress evaluation is described in the following subsections.
+
+\subsection{Contact kinematics}
+Consider two spherical particles $\particleA$ and $\particleB$ with centers $\particlePosition_\particleA$ and $\particlePosition_\particleB$, respectively.
+
+When a link (cohesive or not) between the two particles is created, the original length of the link
+\begin{equation}
+	\linkLength = \norm{\particlePosition_\particleB^0-\particlePosition_\particleA^0}
+	.
+\end{equation}
+is computed and stored. The superscript 0 denotes the value at the time of the link creation.
+
+\subsubsection{Normal strain}
+Normal contact displacement of the link is defined as the difference between the current and original link length
+\begin{equation}
+	\linkDisplacementNormal = \norm{\particlePosition_\particleB-\particlePosition_\particleA} - \linkLength
+	.
+\end{equation}
+See figure \ref{figDemCpmDsplNormal}.
+
+The normal strain is simply the normal displacement divided by the original length of the link:
+\begin{align}
+	\linkStrainNormal &= \frac{\linkDisplacementNormal}{\linkLength}
+	&
+	\linkStrainNormalVector &= \linkStrainNormal\normalVector
+	.
+\end{align}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=13cm]{raphaelpy/contact_displacement_normal}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{13cm}
+		\put(-0.818181818182,0.181818181818){\makebox(-.02,.04)[rt]{$\particlePosition_\particleA^0$}}
+		\put(-0.636363636364,0.181818181818){\makebox(0,.04)[lt]{$\particlePosition_\particleB^0$}}
+		\put(-0.363636363636,0.145454545455){\makebox(-.01,.03)[rt]{$\particlePosition_\particleA$}}
+		\put(-0.145454545455,0.218181818182){\makebox(0,0)[lb]{$\particlePosition_\particleB$}}
+		\put(-0.254545454545,0.181818181818){\makebox(0,.04)[rt]{$\linkDisplacementNormal$}}
+	\end{picture}
+	\caption{2D illustration of the normal displacement of the link}
+	\label{figDemCpmDsplNormal}
+\end{figure}
+
+\subsubsection{Shear strain}
+While the normal displacement and strain are computed directly, the situation with shear displacement and strain is somewhat more complicated.
+The link geometry is defined by the two centers, uniquely defining
+the contact point
+\begin{equation}
+	\contactPoint = \frac{1}{2}(\particlePosition_\particleA+\particlePosition_\particleB)
+	,
+\end{equation}
+the link direction expressed by a unit vector
+\begin{equation}
+	\normalVector = \frac{\particlePosition_\particleB-\particlePosition_\particleA}{\norm{\particlePosition_\particleB-\particlePosition_\particleA}}
+\end{equation}
+and a plane perpendicular to this direction.
+The local coordinate system is therefore not uniquely defined.
+For this reason, the shear components are evaluated in the global coordinate system.
+In YADE implementation, the shear displacement is updated incrementally in each integration step.
+The increment consists of projecting the previous shear displacement such that it remains perpendicular to the current direction vector. Then the actual shear displacement increment is computed with respect to current $\normalVector$ and linear and angular velocities of interacting spheres
+\begin{equation}
+	\velocityVector_{\particleA\particleB} =
+	(\velocityVector_\particleB+\halfBranch_\particleB\normalVector\cross\angularVelocityVector_\particleB)
+	-
+	(\velocityVector_\particleA+\halfBranch_\particleA\normalVector\cross\angularVelocityVector_\particleA)
+\end{equation}
+projected to the direction vector
+\begin{equation}
+	\velocityVector_{\particleA\particleB}^\perp = \velocityVector_{\particleA\particleB}-\normalVector(\normalVector\cdot\velocityVector_{\particleA\particleB})
+\end{equation}
+The values $\halfBranch_\particle$ are distance from the contact point to the center of corresponding particle $\particle$
+\begin{equation}
+	\halfBranch_\particle = \norm{\contactPoint-\particlePosition_\particle}
+	,
+\end{equation}
+which reduces to
+\begin{equation}
+	\halfBranch_\particleA = \halfBranch_\particleB = \frac{1}{2}\norm{\particlePosition_\particleB-\particlePosition_\particleA}
+\end{equation}
+for the case of equally sized spheres.
+
+Shear displacement increment is computed as the shear velocity multiplied by time increment
+\begin{equation}
+	\Delta\linkDisplacementShearVector = \velocityVector_{\particleA\particleB}^\perp\Delta\Time
+	.
+\end{equation}
+
+See \cite{yade2015,Smilauer2010a} or figure \ref{figDemCpmDsplShear} for more details.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=13cm]{raphaelpy/contact_displacement_shear}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{13cm}
+		\put(-0.275450494481,0.244533301625){\makebox(-.02,.02)[rt]{$\linkDisplacementShearVector$}}
+	\end{picture}
+	\caption{2D illustration of the shear displacement of the link}
+	\label{figDemCpmDsplShear}
+\end{figure}
+
+
+\subsection{Constitutive law}\label{secDemCpmConstitutiveLaw}
+
+\begin{table}
+	\centering
+	\caption{CPM material parameters and history variables}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Material parameter & symbol & units \\
+		\hline
+		\hline
+		normal modulus & $\linkMaterialStiffnessNormal$ & Pa \\
+		\hline
+		limit elastic strain & $\strainO$ & - \\
+		\hline
+		strain defining softening & $\strainF$ & - \\
+		\hline
+		shear modulus & $\linkMaterialStiffnessShear$ & Pa \\
+		\hline
+		initial cohesion & $\cohesionInitial$ & Pa \\
+		\hline
+		friction angle & $\frictionAngle$ & - \\
+		\hline
+	\end{tabular}
+	\\
+	\vspace{1em}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		History variable & symbol & units \\
+		\hline
+		\hline
+		damage variable & $\damage$ & - \\
+		\hline
+		historically maximum strain & $\kappa$ & - \\
+		\hline
+		shear plastic strain & $\linkStrainShearVectorPlastic$ & - \\
+		\hline
+	\end{tabular}
+	\label{tabDemCpmParamsHistoryVars}
+\end{table}
+
+Forces needed by the DEM program for equations of motion are simply the stress values multiplied by the cross section area:
+\begin{align}
+	\force_\normalComponent &= \linkCrossSectionArea\linkStressNormal
+	&
+	\forceVector_\normalComponent &= \force_\normalComponent\normalVector
+	&
+	\forceVector_\shearComponent &= \linkCrossSectionArea\linkStressShearVector
+	.
+\end{align}
+The cross section area is considered as
+\begin{equation}
+	\linkCrossSectionArea = \pi\radius^2
+	,
+\end{equation}
+where $\radius$ is the radius of the spheres.
+
+
+\subsubsection{Normal stress}
+
+\begin{figure}[htb]
+	\centering
+	\inputplot{cpm_law_tester_normal_simple_tension}
+	\caption{Physical meaning of CPM material parameters in normal direction}
+	\label{figCpmStressStrainNormal}
+\end{figure}
+
+\begin{figure}[hbt]
+	\centering
+	\inputplot{cpm_law_tester_normal_cyclic}
+	\caption[CPM in normal direction]{CPM in normal direction - illustration of unloading and reloading and stiffness reduction due to damage}
+	\label{figCpmStressStrainNormalCyclic}
+\end{figure}
+
+Constitutive law in the normal direction is inspired by (1D) damage mechanics and
+defines normal stress $\linkStressNormal$ in terms of normal strain $\linkStrainNormal$
+\begin{align}
+	\linkStressNormal = [1-\damage H(\linkStrainNormal)]\linkMaterialStiffnessNormal\linkStrainNormal
+	.
+\end{align}
+$\linkMaterialStiffnessNormal$ is the normal modulus and defines the elastic slope in the normal direction.
+$\damage\in[0,1]$ is the damage variable and influences stiffness for unloading and reloading in the tensile regime.
+The Heaviside function $H(\linkStrainNormal)$ deactivates damage influence in compression, which physically corresponds to
+crack closure.
+$\damage$ is computed based on the damage evolution function $\damageEvolutionFunction$ defined in terms of historically maximum normal strain $\kappa$ and material parameters $\strainO$ and $\strainF$:
+\begin{align}
+	\kappa &= \max_\Time(\linkStrainNormal)
+	\\
+	\damage = \damageEvolutionFunction(\kappa) &= 1-\frac{\strainO}{\kappa}\exp\left(-\frac{\kappa-\strainO}{\strainF}\right)
+\end{align}
+$\strainO$ defines the elastic limit strain (the product $\linkMaterialStiffnessNormal\strainO$ equals the link tensile strength).
+$\strainF$ defines the initial softening slope and therefore controls the softening branch.
+See figures \ref{figCpmStressStrainNormal} and \ref{figCpmStressStrainNormalCyclic} for illustration.
+
+
+
+
+\subsubsection{Shear stresses}
+
+\begin{figure}
+	\centering
+	\inputplot{cpm_shear_plasticity_func}
+	\inputplot{cpm_shear_plasticity_func2}
+	\caption{Plasticity surface in shear direction}
+	\label{figCpmShearPlastSurf}
+\end{figure}
+\begin{figure}
+	\centering
+	\inputplot{cpm_shear_stress_strain}
+	\caption{Stress strain diagram in shear direction}
+	\label{figCpmStressStrainShear}
+\end{figure}
+
+Constitutive law in the shear direction is inspired by plasticity and defines shear stress $\linkStressShearVector$ in terms of shear strain $\linkStrainShearVector$
+\begin{equation}
+	\linkStressShearVector = \linkMaterialStiffnessShear(\linkStrainShearVector-\linkStrainShearVectorPlastic)
+	.
+\end{equation}
+$\linkMaterialStiffnessShear$ is the shear modulus and defines the elastic slope in the shear direction.
+$\linkStrainShearVectorPlastic$ is the shear plastic strain.
+
+The shear stress is limited by the Mohr-Coulomb-like plasticity condition
+\begin{align}
+	f(\linkStressNormal,\linkStressShearVector)
+	&=
+	\norm{\linkStressShearVector} - (\cohesion-\linkStressNormal\tan\frictionAngle)
+	\le 0
+	&
+	\cohesion &= (1-\damage)\cohesionInitial
+	.
+\end{align}
+Cohesion $\cohesion$ is computed from material parameter initial cohesion $\cohesionInitial$ and the damage variable $\damage$ and defines the limit shear stress in pure shear loading.
+Internal angle $\frictionAngle$ determines the influence of normal stress on the plasticity condition.
+See figures \ref{figCpmShearPlastSurf} and \ref{figCpmStressStrainShear} for illustration.
+
+The non-associated plastic flow rule
+\begin{equation}
+	\linkStrainShearVectorPlasticRate = \dot\lambda\frac{\linkStressShearVector}{\norm{\linkStressShearVector}}
+\end{equation}
+is chosen for computational reasons.
+The stress return is then simply the radial return, which can be evaluated directly (does not involve any iterative method).
+Furthermore, the plasticity in shear does not influence the normal direction.
+As a result, the normal stress can be directly evaluated first (independently on the shear direction) and the shear stress is directly evaluated afterwards (with already known damage variable $\damage$).
+
+
+
+
+
+\subsection{Structural behavior}\label{secDemCpmStructBehavior}
+Figure \ref{figDemCpmUniaxResults} shows results of uniaxial tension and uniaxial compression tests for several sets of material parameters.
+The tests were performed on a $50\times50\times50$ mm cubic sample containing $\approx 50{,}000$ particles, each of size (diameter) $2$ mm.
+The boundary conditions are imposed by prescribing the velocity of top and bottom boundary layers of particles.
+The boundary particles are free to move in the lateral direction.
+The initial cohesive links were created considering interaction ratio $\interactionRatio=1{.}5$.
+
+In this illustrative example, the results are structural (macroscopic) Young's modulus $\youngModulus$, tensile strength $f_t$ and compressive strength $f_c$.
+The material parameters are $\linkMaterialStiffnessNormal$, $\linkMaterialStiffnessShear$, $\strainO$, $\strainF$, $\cohesion$ and $\frictionAngle$, see table \ref{tabDemCpmParamsHistoryVars}. In general, the macroscopic quantities could be considered to depend on all material parameters:
+\begin{align}
+	\youngModulus &= f(\linkMaterialStiffnessNormal,\linkMaterialStiffnessShear,\strainO,\strainF,\cohesion,\frictionAngle)
+	\\
+	f_t           &= f(\linkMaterialStiffnessNormal,\linkMaterialStiffnessShear,\strainO,\strainF,\cohesion,\frictionAngle)
+	\\
+	f_c           &= f(\linkMaterialStiffnessNormal,\linkMaterialStiffnessShear,\strainO,\strainF,\cohesion,\frictionAngle)
+.
+\end{align}
+Using the dimensional analysis, both micro- and macroscopic parameters can be transformed into a set of dimensionally independent or dimensionless parameters.
+The initial functions $f(\bullet)$ are transformed into new functions $\pi(\bullet)$.
+Firstly, macroscopic elastic parameters depend only on microscopic elastic parameters (as discussed in chapter \ref{chapMacroproperties}):
+\begin{equation}
+	\youngModulus = \linkMaterialStiffnessNormal \pi_\youngModulus\br{\frac{\linkMaterialStiffnessShear}{\linkMaterialStiffnessNormal}}
+	.
+\end{equation}
+The inelastic parameters are transformed in a similar way:
+\begin{align}
+	f_t &= \linkMaterialStiffnessNormal\strainO\pi_{f_t}\br{\frac{\strainF}{\strainO},\frac{\cohesion}{\linkMaterialStiffnessNormal\strainO},\frictionAngle}
+	\\
+	f_r = \frac{f_c}{f_t} &= \pi_{f_r}\br{\frac{\strainF}{\strainO},\frac{\cohesion}{\linkMaterialStiffnessNormal\strainO},\frictionAngle}
+	.
+\end{align}
+$\linkMaterialStiffnessNormal\strainO$ represents the link tensile strength, $\strainF/\strainO$ relative ductility and $\cohesion/(\linkMaterialStiffnessNormal\strainO)$ relative cohesion.
+
+Figure \ref{figDemCpmUniaxResults} shows results for varying link stiffness, link strength and both link stiffness and link strength.
+The other quantities ($\strainO$, $\frictionAngle$, $\strainF/\strainO$ and $\cohesion/(\linkMaterialStiffnessNormal\strainO)$) are the same for all four simulations.
+The macroscopic response is close to the theoretical expectations and therefore the macroscopic stiffness and strength can be easily estimated based on the link stiffness and link tensile strength.
+This approach is applied in chapter \ref{chapMCPMNewModel}.
+
+\begin{table}
+	\centering
+	\caption{Material parameters used for illustrative stress-strain curves in figure \ref{figDemCpmUniaxResults}}
+	\begin{tabular}{|c||c|c|}
+		\hline
+		simulation & $\linkMaterialStiffnessNormal/\linkMaterialStiffnessNormal_1$ & $(\linkMaterialStiffnessNormal\strainO)/(\linkMaterialStiffnessNormal/\strainO)_1$ \\
+		\hline
+		\hline
+		1 & 1 & 1 \\
+		\hline
+		2 & 1 & 2 \\
+		\hline
+		3 & 2 & 1 \\
+		\hline
+		4 & 2 & 2 \\
+		\hline
+	\end{tabular}
+	\label{tabDemCpmParamsIllustration}
+\end{table}
+
+\begin{figure}
+	\centering
+	\inputplot{cpm_uniax_tension}
+	\inputplot{cpm_uniax_compression}
+	\caption[Uniaxial tension and compression results of CPM model]{Uniaxial tension and compression results of CPM model with material parameters according to table \ref{tabDemCpmParamsIllustration}}
+	\label{figDemCpmUniaxResults}
+\end{figure}

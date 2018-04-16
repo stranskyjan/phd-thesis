@@ -1,0 +1,61 @@
+\pagestyle{empty}
+\hypersetup{pageanchor=false} % to get rid of "pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% cover and title page
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newgeometry{inner=1.0in,outer=1.0in,top=40mm,bottom=20mm}
+\begin{titlepage}
+	\centering
+	\textbf{\large\MakeUppercase{\university}}\par
+	\vspace{30mm}
+	{\includegraphics[width=77mm]{ctu_logo_bw}\par}
+	\vspace{34mm}
+	\textbf{\large\MakeUppercase{doctoral thesis statement}}\par
+\end{titlepage}
+
+\cleardoublepage
+\newgeometry{inner=0.9in,outer=0.9in,top=25.5mm,bottom=20mm}
+\begin{titlepage}
+	\centering
+	\textbf{\large\MakeUppercase{\university}}\par
+	\textbf{\normalsize\faculty}\par
+	\textbf{\normalsize\department}\par
+	\vspace{42mm}
+	{\Large\authorDegree\ \authorName\par}
+	\vspace{17mm}
+	{\Large\MakeUppercase{\thesisTitle}\par}
+	\vspace{29mm}
+	Ph.D Programme: \textbf{\PhDProgramme}\par
+	Branch of study: \textbf{\branchOfStudy}\par
+	\vspace{25mm}
+	{\large\textbf{Doctoral thesis statement for obtaining the degree of „Doctor“, abbreviated to „Ph.D.”}\par}
+	\vspace{46mm}
+	{\Large\submissionPlace, \monthname[\submissionMonth], \submissionYear\par}
+\end{titlepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\restoregeometry
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\hypersetup{pageanchor=true}
+\setcounter{page}{1}
+\pagestyle{main}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% table of contents
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pdfbookmark{\contentsname}{toc}
+\chaptermark{\contentsname}
+\tableofcontents

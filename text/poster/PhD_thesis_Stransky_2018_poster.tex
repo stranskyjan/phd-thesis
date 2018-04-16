@@ -1,0 +1,132 @@
+\documentclass{phdposter}
+
+
+\input{commands}
+\input{common}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hypersetup{% field setting in PDF document
+	pdftitle={\thesisTitle},%
+	pdfauthor={\authorName},%
+	pdfcreator={\authorName},%
+	pdfproducer={\authorName},%
+	pdfsubject={Doctoral thesis poster},%
+	pdfkeywords={\keywords}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{rotating} % turn environment
+
+\title{\thesisTitle}
+
+\begin{document}
+
+\postertitle
+
+
+\begin{posterframe}{.49\textwidth}{Abstract}
+The thesis deals with various aspects of the discrete element method (DEM) with application to modeling of concrete failure and combination of DEM with the finite element method (FEM).
+
+\begin{itemize}
+	\item
+	Elastic properties of DEM models are investigated both analytically and numerically.
+	\item
+	The evaluation of the stress tensor and couple stress tensor from discrete forces based on the principle of virtual work is reviewed and new formulas for the couple stress tensor are presented and discussed.
+	\item
+	Coupling of FEM code OOFEM and DEM code YADE is described.
+	Several classes of coupling approaches (namely surface, direct volume, multiscale, contact and sequential) are addressed and illustrated on simple examples.
+	\item
+	The development and results of a new mesoscale discrete element model for concrete is described.
+	The validation against experimental data from literature shows the ability of the model to realistically capture the dependence of various material properties on the actual mesoscale structure of the material.
+\end{itemize}
+\end{posterframe}
+%
+\hfill
+%
+\begin{posterframe}{.49\textwidth}{Elastic properties of particle models}
+Based on microplane theory, the stiffness tensor $\stiffnessTensorElastic$ and Young's modulus $\youngModulus$ and Poisson's ratio $\poissonRatio$ can be estimated as:
+\begin{equation}
+	\stiffnessTensorElastic
+	=
+	\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{5\volume} \br{\linkMaterialStiffnessNormal-\linkMaterialStiffnessShear} \vol{\projectionTensor4}
+	+
+	\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{15\volume} \br{2\linkMaterialStiffnessNormal+3\linkMaterialStiffnessShear} \sym{\identityTensor4}
+\end{equation}
+\begin{equation}
+	\youngModulus
+	=
+	\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{3\volume}
+	\cdot
+	\frac{\linkMaterialStiffnessNormal\br{2\linkMaterialStiffnessNormal+3\linkMaterialStiffnessShear}}{4\linkMaterialStiffnessNormal+\linkMaterialStiffnessShear}
+	, \quad\quad\quad
+	\poissonRatio
+	= \frac{\linkMaterialStiffnessNormal-\linkMaterialStiffnessShear}{4\linkMaterialStiffnessNormal+\linkMaterialStiffnessShear}
+\end{equation}
+The figure below shows very good agreement of the analytical estimates with numerical results.
+\begin{center}
+	\resizebox{.22\textwidth}{!}{\inputplot{preprocessed_macromicro_E_I1.50}}
+	\resizebox{.22\textwidth}{!}{\inputplot{preprocessed_macromicro_nu_I1.50}}
+\end{center}
+\vspace{12mm}
+\end{posterframe}
+
+\postervspace
+
+\begin{posterframe}{.49\textwidth}{DEM--FEM coupling}
+Various classes of FEM--DEM concurrent coupling strategies (namely the surface, direct volume, multiscale and contact coupling) is described and illustrated on a simple example.
+Existing software packages \OOFEM\ and \YADE\ are chosen for the coupling.
+The examples together with the unifying framework form a new open source code project.
+\par
+\centering
+	\includegraphics[width=20cm,trim={0 3cm 0 0},clip]{coupling/vol1/vol1-0000}\par
+	\includegraphics[width=20cm,trim={0 2.8cm 0 1cm},clip]{coupling/vol1/vol1-0020}\par
+	\includegraphics[width=20cm,trim={0 1.6cm 0 2.3cm},clip]{coupling/vol1/vol1-0050}\par
+	\includegraphics[width=20cm,trim={0 .3cm 0 2.6cm},clip]{coupling/vol1/vol1-0087}\par
+	\vspace{3mm}
+	\includegraphics[width=7.7cm,trim={0 1.6cm 0 0.5cm},clip]{coupling/surf1/poly/surf1-0000}
+	\includegraphics[width=7.7cm,trim={0 1.6cm 0 0.5cm},clip]{coupling/surf1/poly/surf1-0030}
+	\includegraphics[width=7.7cm,trim={0 1.6cm 0 0.5cm},clip]{coupling/surf1/poly/surf1-0060}
+\end{posterframe}
+%
+\hfill
+%
+\begin{posterframe}{.49\textwidth}{New mesoscale model for concrete}
+\begin{minipage}[c]{.29\textwidth}
+	A new discrete element model for concrete taking into account the heterogeneous mesoscale structure of concrete (i.e., aggregates and ITZ between aggregates and matrix) is proposed and tested.
+	The validation against experimental data from the literature shows the ability of the model to realistically capture the dependence of various material properties (elastic modulus, tensile and compressive strength, fracture energy) on the actual mesoscale structure of the material.
+
+	The graphs below show comparison of simulations and experimental data for concrete mixtures with different maximum aggregate size (on horizontal axis).
+\end{minipage}
+\hfill
+\begin{minipage}[r]{.17\textwidth}
+	\includegraphics[width=11cm]{raphaelpy/mcpm_itz_possibilities_1}
+	\\
+	\vspace{-5mm}
+	\includegraphics[width=11cm]{raphaelpy/mcpm_itz_possibilities_2}
+\end{minipage}
+\begin{center}
+	\hspace*{-2cm}\resizebox{.43\textwidth}{!}{\inputplot{validationBeygi}}
+	\hspace{-2cm}
+	\begin{turn}{90}\inputplot{validationBeygi_legend}\end{turn}
+\end{center}
+\end{posterframe}
+
+\postervspace
+
+\begin{posterframe}{\textwidth}{Selected publications}
+	\begin{enumerate}[label={[\arabic*]},leftmargin=1.2em,labelsep=.3em]
+		\fontsize{29.5}{36} \selectfont
+		\item J. Stránský and M. Jirásek. \quotes{Calibration of Particle Models using Cells with Periodic Boundary Conditions}. In: \textit{Particles 2011}. Barcelona, 2011.
+		\item J. Stránský. \quotes{Open Source DEM-FEM Coupling}. In: \textit{Particles 2013}. Stuttgart, 2013.
+		\item W. Song, B. Huang, X. Shu, J. Stránský, and H. Wu. Interaction between railroad ballast and sleeper: a DEM-FEM approach. \textit{International Journal of Geomechanics} (submitted).
+	\end{enumerate}
+\end{posterframe}
+
+\postervspace
+
+\begin{posterframe}{\textwidth}{Acknowledgements}
+The financial support by an industrial partner, by the Czech Science Foundation under project GAČR 106/08/1508 and by SGS projects of the \university\ is gratefully acknowledged.
+\end{posterframe}
+
+\hspace{\fill}
+
+\end{document}

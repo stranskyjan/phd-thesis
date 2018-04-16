@@ -1,0 +1,21 @@
+diff -rNw -U 0 yade-2017.01a/pkg/dem/Polyhedra.hpp yade-2017.01a/pkg/dem/Polyhedra.hpp
+--- yade-2017.01a/pkg/dem/Polyhedra.hpp
++++ yade-2017.01a/pkg/dem/Polyhedra.hpp
+@@ -111 +111 @@
+-			.def("setVertices",&Polyhedra::setVertices4,"set 4 vertices and update receiver. Each vertex is single argument.")
++			.def("setVertices4",&Polyhedra::setVertices4,"set 4 vertices and update receiver. Each vertex is single argument.")
+diff -rNw -U 0 yade-2017.01a/pkg/dem/ScGeom.cpp yade-2017.01a/pkg/dem/ScGeom.cpp
+--- yade-2017.01a/pkg/dem/ScGeom.cpp
++++ yade-2017.01a/pkg/dem/ScGeom.cpp
+@@ -77 +77 @@
+-		Vector3r c2x = (contactPoint - rbp2->pos + shift2);
++		Vector3r c2x = (contactPoint - (rbp2->pos + shift2));
+diff -rNw -U 0 yade-2017.01a/py/pack/pack.py yade-2017.01a/py/pack/pack.py
+--- yade-2017.01a/py/pack/pack.py
++++ yade-2017.01a/py/pack/pack.py
+@@ -554 +554 @@
+-def randomPeriPack(radius,initSize,rRelFuzz=0.0,memoizeDb=None,noPrint=False):
++def randomPeriPack(radius,initSize,rRelFuzz=0.0,memoizeDb=None,noPrint=False,seed=0):
+@@ -574 +574 @@
+-	sp.makeCloud(Vector3().Zero,O.cell.refSize,radius,rRelFuzz,-1,True)
++	sp.makeCloud(Vector3().Zero,O.cell.refSize,radius,rRelFuzz,-1,True,seed=seed)

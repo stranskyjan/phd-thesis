@@ -1,0 +1,326 @@
+\pagestyle{empty}
+\hypersetup{pageanchor=false} % to get rid of "pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% cover and title page
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newgeometry{inner=75.5mm,outer=0.0mm,top=22mm,bottom=22mm}
+\begin{titlepage}
+	\newcommand{\coverline}[1]{%
+		\saveexpandmode%
+		\expandarg%
+		\StrSubstitute{#1}{ }{\noexpand\protect\\}[\tmptmp]%
+		\restoreexpandmode%
+		\MakeUppercase{\tmptmp}%
+		\par%
+	}
+	%
+	\raggedright
+	\fontsize{24pt}{28pt}\selectfont
+	\setlength{\parindent}{0cm}
+	\hyphenpenalty=10000
+	\bf
+	%
+	\coverline{\university}
+	\vspace{1em}
+	\coverline{\faculty}
+	\vspace{2.35em}
+	{\includegraphics[width=58mm]{ctu_logo}\par}
+	\vspace{2.5em}
+	\coverline{\thesisType}
+	\vspace{1em}
+	\coverline{\submissionYear}
+	\vfill
+	\coverline{\authorName}
+\end{titlepage}
+
+\cleardoublepage
+\newgeometry{inner=1.0in,outer=1.0in,top=0.6in,bottom=0.65in}
+\begin{titlepage}
+	\centering
+	\includegraphics[height=18mm]{ctu_logo}\par
+	\vspace{3mm}
+	\textbf{\MakeUppercase{\university}}\par
+	\vspace{-3mm}
+	{\color{colorCTU}{\rule{\textwidth}{.35mm}}}\par
+	\vspace{-.5mm}
+	{\footnotesize{\textbf{\faculty}}\par}
+	\vspace{1mm}
+	{\footnotesize{\textbf{\department}}\par}
+	\vspace{35.5mm}
+	{\large{\textbf{\thesisTitle}}\par}
+	\vspace{59mm}
+	{\large\textbf{\MakeUppercase{\thesisType}}\par}
+	\vspace{10mm}
+	{{\textbf{\authorDegree\ \authorName}}\par}
+	\vfill
+	\begin{flushleft}
+		\noindent Doctoral study programme: \PhDProgramme\par
+		\vspace{2mm}
+		\noindent Branch of study: \branchOfStudy\par
+		\vspace{9.5mm}
+		\noindent Doctoral thesis supervisor: \supervisor\par
+	\end{flushleft}
+	\vspace{28mm}
+	\textbf{\submissionPlace, \submissionYear}\par
+\end{titlepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\restoregeometry
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% dedication
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\vspace*{50mm}
+\begin{center}
+	\large
+	\it
+	I would like to dedicate this thesis to my grandmother,
+	\\
+	who wished to have a copy, but passed away just a few days before it
+	\\
+	became completed.
+	She always appreciated my academic achievements, taught me how to be patient and strong-willed and inspired me
+	\\
+	enormously to study and work hard.
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% declaration
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\noindent
+\begin{minipage}[t]{.17\textwidth}
+	% http://tex.stackexchange.com/questions/309310/how-can-i-align-a-minipage-of-text-to-a-minipage-of-figure
+	\raisebox{\dimexpr-\height+\ht\strutbox}{\includegraphics[height=18mm]{ctu_logo_bw}}
+\end{minipage}
+\begin{minipage}[t]{.81\textwidth}
+	\vspace{-2.3mm}
+	\textbf{\MakeUppercase{\university}}\par
+	\vspace{-3.2mm}
+	\rule{\textwidth}{1pt}\par
+	\vspace{-1mm}
+	{\footnotesize\textbf{\noindent\faculty}}\par
+	\vspace{-.5mm}
+	{\footnotesize\noindent \address\par}
+\end{minipage}\par
+{\sf
+	\vspace{12.5mm}
+	\begin{center}
+		{\Large\textbf{DECLARATION}\par}
+	\end{center}\par
+	\vspace{8mm}
+	\noindent Ph.D. student's name: \authorName\par
+	\vspace{4mm}
+	\begin{raggedright}
+	\noindent Title of doctoral thesis: \nohyphens{\thesisTitle}\par
+	\end{raggedright}
+	\vspace{9mm}
+	\noindent I hereby declare that this doctoral thesis is my own work and effort written under the guidance of my supervisor, \supervisor\par % the end sentence period contained in \supervisor macro
+	\noindent All sources and other materials used have been quoted in the list of references.\par
+	\vspace{5mm}
+	\noindent The doctoral thesis was written in connection with research projects:
+		\par
+		GAČR 106/08/1508,\par
+		SGS11/021/OHK1/1T/11,\par
+		SGS12/027/OHK1/1T/11,\par
+		SGS13/034/OHK1/1T/11,\par
+		SGS14/029/OHK1/1T/11,\par
+		SGS15/030/OHK1/1T/11.
+	\par
+	\vspace{19mm}
+	\noindent
+	\begin{minipage}[t]{.45\textwidth}
+		In \submissionPlace, \submissionDate
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{.5\textwidth}
+		\centering
+		\mydotfill{.3em} \\
+		signature
+	\end{minipage}
+	\par
+}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepage
+\hypersetup{pageanchor=true}
+\setcounter{page}{1}
+\pagestyle{main}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% abstract
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Abstrakt}
+\chaptermark{Abstrakt}
+\abstractCS
+
+\vspace{2em}
+\noindent \emph{Klíčová~slova:} \keywordsCS
+
+
+\cleardoublepageempty
+\chapterNonumber{Abstract}
+\abstract
+
+\vspace{2em}
+\begin{sloppypar}
+\noindent \emph{Keywords:} \keywords
+\end{sloppypar}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% acknowledgement
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepageempty
+\chapterNonumber{Acknowledgements}
+
+I would like to express my sincere thanks and warmest gratitude to all those who encouraged and supported me throughout my Ph.D. study (accidental omissions in the following list do not mean disacknowledgements).
+
+\begin{itemize}
+
+\item
+% supervisor
+First of all, I would like to express my sincere gratitude and thanks to my supervisor Milan Jirásek
+for his support, encouragement and patience during the whole study,
+for his personal and collegial attitude,
+the freedom that I have obtained in research directions
+and for being greatly inspiring both professionally and personally.
+It was a pleasure to cooperate with him.
+I would also like to thank him for his course Modeling of Localized Inelastic Deformation that I attended at the beginning of my Ph.D. studies and for organising annual bowling MK events.
+
+\item
+% other department members
+Grateful thanks go to other department members Bořek Patzák and Vít Šmilauer for valuable discussions and for the help with \OOFEM.
+I am especially grateful to Jan Zeman, who determined the direction of my next study,
+for inspiration and for the honor to cooperate with him from my second university year until the Bachelor's thesis.
+
+\item
+% department friends
+\begin{sloppypar}
+I would also like to thank my department friends (listed in alphabetical order)
+\mbox{Martin} Doškář,
+Edita Dvořáková,
+Karolina Hájková,
+Jan Havelka,
+Petr Havlásek,
+Petr Hlaváček,
+Adéla Hlobilová,
+Martin Horák,
+Filip Kolařík,
+David Krybus,
+Karel Mikeš,
+Eva Myšáková,
+Michal Přinosil,
+Vladimír Šána,
+Václav Šmilauer,
+Karel \mbox{Šobra},
+Jaroslav Vondřejc
+and others
+for valuable discussions, inspiration and for friendly atmosphere and fun at the department.
+\end{sloppypar}
+
+\item
+% financial support
+The financial support by the industrial partner, by the Czech Science Foundation under project GAČR 106/08/1508 and by SGS projects of the \university\ is also gratefully acknowledged.
+
+\item
+% open source codes
+My respect and thanks go to the authors of great open-source codes
+Python,
+\TeX\ and \LaTeX,
+Gnuplot,
+Linux and Ubuntu,
+Vim,
+\YADE,
+\OOFEM,
+etc., etc.
+
+\item
+% family
+Last but definitely not least, I am deeply indebted to all my family.
+I am grateful to my parents for their huge support and encouragement during (not only) the years of my study and for all of the sacrifices that they have made for me.
+I would like to thank my brother for countless discussions on various topics and his support during the thesis finalization.
+
+The very last but the warmest and most sincere thank belongs to my wife Katka and sons Péťa and Adámek.
+Words cannot express how grateful I am for their continuous huge love, support, encouragement, inspiration, for what they all taught me and for the final motivation to complete the thesis.
+Their patience with me during the finalization period, when my presence at home was rather occasional, is truly admirable.
+\end{itemize}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% table of contents
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepageempty
+\pdfbookmark{\contentsname}{toc}
+\chaptermark{\contentsname}
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% list of figures
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepageempty
+\phantomsection
+\addcontentsline{toc}{chapter}{\listfigurename}
+\chaptermark{\listfigurename}
+\listoffigures
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% list of tables
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cleardoublepageempty
+\phantomsection
+\addcontentsline{toc}{chapter}{\listtablename}
+\chaptermark{\listtablename}
+\listoftables
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Notation
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\cleardoublepageempty
+%\chapterNonumber{Notation}
+%{
+%\renewcommand{\arraystretch}{1.}
+%\begin{tabular}{ll}
+%	$a$ & a \\
+%\end{tabular}
+%%\newpage
+%\begin{tabular}{ll}
+%	$b$ & b \\
+%\end{tabular}
+%}
+%

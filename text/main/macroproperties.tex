@@ -1,0 +1,1083 @@
+\chapter{Macroscopic elastic properties of DEM models}\label{chapMacroproperties}
+
+The particle model investigated in this chapter consists of rigid spheres with uniform radius $\radius$ connected by links that can transmit normal stress and shear stress.
+Each particle possesses six degrees of freedom, three translations and three rotations.
+
+Initially, particles whose center distance $\linkLength$ is less than $2\radius\interactionRatio$ (where $\interactionRatio$ is called interaction ratio) are connected by cohesive links.
+Each link is characterized by its
+length $\linkLength$ (distance between centers of connected particles),
+unit normal vector $\normal$
+and
+fictitious cross section area
+\begin{equation}
+	\linkCrossSectionArea = \linkCrossSectionAreaFactor\radius^2
+	.
+	\label{eqMacroPropertiesElasticLinkCSArea}
+\end{equation}
+$\linkCrossSectionAreaFactor$ may differ for specific constitutive law formulations, usual values are $\linkCrossSectionAreaFactor=1$ or $\linkCrossSectionAreaFactor=\pi$.
+
+Links in our model have normal and shear (or transversal) elastic fictitious material
+stiffness
+$\linkMaterialStiffnessNormal$
+and
+$\linkMaterialStiffnessShear$
+[Pa] and normal and shear link stiffness
+$\linkStiffnessNormal = \frac{\linkMaterialStiffnessNormal\linkCrossSectionArea}{\linkLength}$
+and
+$\linkStiffnessShear = \frac{\linkMaterialStiffnessShear\linkCrossSectionArea}{\linkLength}$
+[N/m] (see section \ref{secDemCpm}).
+
+In a cube of dimension $\cubeDimension$ and volume $\cubeVolume=\cubeDimension^3$ consider a random, densely packed assembly of spherical particles with radius $\radius$ (see section \ref{secDEMInitialPacking}).
+If the number of particles $\numberOfParticles$ is high enough, the assembly behaves macroscopically as an isotropic material.
+The elastic properties of that macroscopic material are determined by two material constants, for example Young's modulus $\youngModulus$ and Poisson ratio $\poissonRatio$.
+In a very general case, we can express the macroscopic material properties as functions of all relevant variables:
+\begin{align}
+	\youngModulus &= f_\youngModulus \left(
+		\linkMaterialStiffnessNormal,
+		\linkMaterialStiffnessShear,
+		\radius,
+		\interactionRatio,
+		\cubeDimension,
+		\numberOfParticles,
+		\linkCrossSectionArea
+	\right)
+	\label{eqMacroPropertiesElasticGeneralYoung}
+	\\
+	\poissonRatio &= f_\poissonRatio \left(
+		\linkMaterialStiffnessNormal,
+		\linkMaterialStiffnessShear,
+		\radius,
+		\interactionRatio,
+		\cubeDimension,
+		\numberOfParticles,
+		\linkCrossSectionArea
+	\right)
+	\label{eqMacroPropertiesElasticGeneralPoisson}
+\end{align}
+
+Using dimensional analysis we can identify two dimensionally independent variables
+(e.g., $\linkMaterialStiffnessNormal$ and $\radius$)
+and two dimensionless variables $\interactionRatio$ and $\numberOfParticles$.
+Applying Buckingham $\pi$ theorem, we can rewrite equations (\ref{eqMacroPropertiesElasticGeneralYoung}) and (\ref{eqMacroPropertiesElasticGeneralPoisson}) in terms of new dimensionless variables as
+\begin{align}
+	\frac{\youngModulus}{\linkMaterialStiffnessNormal} &=
+	\pi_\youngModulus \left(
+		\frac{\linkMaterialStiffnessShear}{\linkMaterialStiffnessNormal},
+		\frac{\radius^2}{\linkCrossSectionArea},
+		\frac{\radius}{\cubeDimension},
+		\interactionRatio,
+		\numberOfParticles
+	\right)
+	\label{eqMacroPropertiesElasticDimensionlessYoung}
+	\\
+	\poissonRatio &= \pi_\poissonRatio \left(
+		\frac{\linkMaterialStiffnessShear}{\linkMaterialStiffnessNormal},
+		\frac{\radius^2}{\linkCrossSectionArea},
+		\frac{\radius}{\cubeDimension},
+		\interactionRatio,
+		\numberOfParticles
+	\right)
+	\label{eqMacroPropertiesElasticDimensionlessPoisson}
+\end{align}
+Based on physical considerations, most of the dimensionless variables on the right side of (\ref{eqMacroPropertiesElasticDimensionlessYoung}) and (\ref{eqMacroPropertiesElasticDimensionlessPoisson}) can be eliminated:
+
+In principle, the number of particles $\numberOfParticles$ could be considered as independent of the relative particle size
+$\radius/\cubeDimension$.
+However, we are interested in the behavior of densely packed assemblies of particles, which are prepared by a simulated compaction process.
+It turns out that, for large values of $\numberOfParticles$, the packing fraction
+\begin{equation}
+	\packingFraction =
+	\frac{\volume_{particles}}{\volume_{total}} =
+	\frac{4\pi\numberOfParticles\radius^3}{3\cubeDimension^3}
+\end{equation}
+tends to a constant, approximately equal to
+$0{.}612$,
+which is close to the value $0{.}64$
+(theoretical maximum packing fraction for random close packing \cite{TorquatoTruskettDebenedetti2000a}), see section \ref{secDEMInitialPacking}.
+Therefore, the ratio $\radius/\cubeDimension$ for such dense assemblies can be determined from $\numberOfParticles$ and does not need to be considered as an independent variable.
+
+Furthermore, as $\numberOfParticles$ tends to infinity, the macroscopic properties approach a certain limit,
+which represents the effective properties of an equivalent elastic continuum.
+If it is chosen sufficiently high, the corresponding periodic cell is a representative volume element and its properties are close to the theoretical limit.
+Therefore, $\numberOfParticles$ does not need to be considered as a variable influencing the results, it just has to be chosen
+sufficiently high.
+
+The ratio $\radius^2/\linkCrossSectionArea$ is taken as constant, according to equation (\ref{eqMacroPropertiesElasticLinkCSArea}).
+Even if it was not, the dependence of the macroscopic properties on this ratio would be very simple.
+Young's modulus (or any other elastic stiffness) would be inversely proportional to $\radius^2/\linkCrossSectionArea$ and the Poisson's ratio would not depend on it at all.
+
+After all these considerations, we can rewrite the
+relationship between macro- and microscopic material
+parameters as
+\begin{align}
+	\frac{\youngModulus}{\linkMaterialStiffnessNormal} &=
+	\pi_\youngModulus \left(
+		\frac{\linkMaterialStiffnessShear}{\linkMaterialStiffnessNormal},
+		\interactionRatio
+	\right)
+	\label{eqMacroPropertiesElasticDimensionlessSimplifiedYoung}
+	\\
+	\poissonRatio &= \pi_\poissonRatio \left(
+		\frac{\linkMaterialStiffnessShear}{\linkMaterialStiffnessNormal},
+		\interactionRatio
+	\right)
+	\label{eqMacroPropertiesElasticDimensionlessSimplifiedPoisson}
+\end{align}
+
+The specific forms of equations (\ref{eqMacroPropertiesElasticDimensionlessSimplifiedYoung}) and (\ref{eqMacroPropertiesElasticDimensionlessSimplifiedPoisson}) are addressed in following sections.
+
+
+
+
+\section{Theoretical analytical values}\label{secMacroPropertiesElasticAnalytical}
+The presented derivation of analytical evaluation of elastic constants is a generalized version of \cite{KuhlDAddettaLeukartRamm2001a}.
+
+Given a vector $\tensor1{v}$ and a unit vector $\normalVector$, $\tensor1{v}$ can be split into the part parallel to $\normalVector$ and the part perpendicular to $\normalVector$ denoted by subscript $\normalComponent$ and $\shearComponent$, respectively:
+\begin{equation}
+	\begin{aligned}
+		\tensor1{v} & = \tensor1{v}_\normalComponent + \tensor1{v}_\shearComponent
+		\\
+		\tensor1{v}_\normalComponent &= (\tensor1{v}\cdot\normalVector)\normalVector = v_\normalComponent\normalVector
+		\\
+		v_\normalComponent &= \tensor1{v}\cdot\normalVector
+		\\
+		\tensor1{v}_\shearComponent &= \tensor1{v}-\tensor1{v}_\normalComponent
+		=
+		\tensor1{v}-(\tensor1{v}\cdot\normalVector)\normalVector
+		=
+		\tensor1{v}-v_\normalComponent\normalVector
+		.
+	\end{aligned}
+	\label{eqMacroPropertiesElasticTheorVectorSplitNormalShear}
+\end{equation}
+
+The stiffness tensor $\stiffnessTensorElastic$ is derived bases on the stress tensor $\stressTensor$ induced by the prescribed strain tensor $\strainTensor$.
+Displacement of particles are assumed to be linear governed by strain tensor
+\begin{equation}
+	\displacementVector_\particle = \positionVector_\particle\cdot\strainTensor
+	.
+\end{equation}
+
+Each link $\contact$ is considered as a fictitious bar connecting particles $\particleA$ and $\particleB$ with
+branch vector $\branchVector^\contact$,
+length $\branch^\contact$
+and
+unit direction (normal) vector $\normalVector^\contact$ related as
+\begin{align}
+	\branchVector^\contact &= \positionVector_\particleB - \positionVector_\particleA
+	&
+	\branch^\contact=\norm{\branchVector^\contact} &= \sqrt{\branchVector^\contact\cdot\branchVector^\contact}
+	&
+	\normalVector^\contact &= \frac{\branchVector^\contact}{\norm{\branchVector^\contact}} = \frac{\branchVector^\contact}{\branch^\contact}
+	&
+	\branchVector^\contact &= \branch^\contact\normalVector^\contact
+	.
+	\label{eqMacroPropertiesElasticTheorKinematicRelations}
+\end{align}
+The change of the branch vector (relative displacement) is given by the displacement of particles as
+\begin{equation}
+	\Delta\branchVector^\contact
+	=
+	\displacementVector_\particleB - \displacementVector_\particleA
+	=
+	\positionVector_\particleB\cdot\strainTensor - \positionVector_\particleA\cdot\strainTensor
+	=
+	(\positionVector_\particleB - \positionVector_\particleA)\cdot\strainTensor
+	=
+	\branchVector^\contact\cdot\strainTensor
+	.
+	\label{eqMacroPropertiesElasticTheorKinematicConstraints}
+\end{equation}
+According to (\ref{eqMacroPropertiesElasticTheorVectorSplitNormalShear}), the relative displacement can be split into normal and shear component:
+\begin{equation}
+	\Delta\branchVector^\contact = \Delta\branch^\contact_\normalComponent\normalVector^\contact + \Delta\branchVector^\contact_\shearComponent
+	.
+\end{equation}
+Applying relations
+(\ref{eqMacroPropertiesElasticTheorVectorSplitNormalShear})
+and
+(\ref{eqMacroPropertiesElasticTheorKinematicRelations})
+and kinematic constraints (\ref{eqMacroPropertiesElasticTheorKinematicConstraints}):
+\begin{equation}
+	\Delta\branch^\contact_\normalComponent
+	=
+	\Delta\branchVector^\contact\cdot\normalVector^\contact
+	=
+	\branchVector^\contact\cdot\strainTensor\cdot\normalVector^\contact
+	=
+	\branch^\contact\normalVector^\contact\cdot\strainTensor\cdot\normalVector^\contact
+	=
+	\branch^\contact(\normalVector^\contact\otimes\normalVector^\contact):\strainTensor
+	=
+	\branch^\contact\normalTensor2^\contact:\strainTensor
+	\label{eqMacroPropertiesElasticTheorDeltaBranchN}
+\end{equation}
+\begin{equation}
+	\begin{gathered}
+		\Delta\branchVector^\contact_\shearComponent
+		=
+		\Delta\branchVector^\contact - \normalVector^\contact\Delta\branch^\contact_\normalComponent
+		=
+		\branchVector^\contact\cdot\strainTensor - \normalVector^\contact(\branch^\contact\normalVector^\contact\otimes\normalVector^\contact:\strainTensor)
+		=
+		\branch^\contact\normalVector^\contact\cdot\strainTensor - \branch^\contact(\normalVector^\contact\otimes\normalVector^\contact\otimes\normalVector^\contact):\strainTensor
+		= \\ =
+		\branch^\contact\normalVector^\contact\cdot\sym{\identityTensor4}:\strainTensor - \branch^\contact\normalTensor3^\contact:\strainTensor
+		=
+		\branch^\contact\shearTensor3:\strainTensor
+	\end{gathered}
+	\label{eqMacroPropertiesElasticTheorDeltaBranchT}
+\end{equation}
+where
+\begin{align}
+	\normalTensor2 &= \normalVector\otimes\normalVector
+	\\
+	\normalTensor3 &= \normalVector\otimes\normalVector\otimes\normalVector
+	=\normalTensor2\otimes\normalVector
+	=\normalVector\otimes\normalTensor2
+	\\
+	\normalTensor4 &= \normalVector\otimes\normalVector\otimes\normalVector\otimes\normalVector
+	=\normalTensor2\otimes\normalTensor2
+	\\
+	\shearTensor3 &= \normalVector\cdot\sym{\identityTensor4} - \normalVector\otimes\normalVector\otimes\normalVector
+	=
+	\normalVector\cdot\sym{\identityTensor4} - \normalTensor3
+	\\
+	\shearTensor3\T &= \sym{\identityTensor4}\cdot\normalVector - \normalTensor3
+\end{align}
+\begin{equation}
+	\begin{gathered}
+		\shearTensor4
+		=
+		\shearTensor3\T\cdot\shearTensor3
+		=
+		(\sym{\identityTensor4}\cdot\normalVector-\normalTensor3)
+		\cdot
+		(\normalVector\cdot\sym{\identityTensor4}-\normalTensor3)
+		= \\ =
+		(\sym{\identityTensor4}\cdot\normalVector)\cdot(\normalVector\cdot\sym{\identityTensor4})
+		-
+		(\sym{\identityTensor4}\cdot\normalVector)\cdot\normalTensor3
+		-
+		\normalTensor3\cdot(\normalVector\cdot\sym{\identityTensor4})
+		+
+		\normalTensor3\cdot\normalTensor3
+		= \\ =
+		(\sym{\identityTensor4}\cdot\normalVector)\cdot(\normalVector\cdot\sym{\identityTensor4})
+		-
+		\normalTensor4
+		-
+		\normalTensor4
+		+
+		\normalTensor4
+		=
+		(\sym{\identityTensor4}\cdot\normalVector)\cdot(\normalVector\cdot\sym{\identityTensor4})
+		-
+		\normalTensor4
+	\end{gathered}
+\end{equation}
+are projection and auxiliary tensors.
+
+Constitutive law assumes independent normal and shear direction and that resulting normal and shear forces are parallel to normal and shear relative displacements:
+\begin{align}
+	\forceVector^\contact &= \normalVector^\contact\force^\contact_\normalComponent + \forceVector^\contact_\shearComponent
+	\\
+	\force^\contact_\normalComponent &= \linkStiffnessNormal^\contact\Delta\branch^\contact_\normalComponent =
+	\frac{\linkMaterialStiffnessNormal\linkCrossSectionArea^\contact}{\linkLength^\contact}\Delta\branch^\contact_\normalComponent
+	\\
+	\forceVector^\contact_\shearComponent &= \linkStiffnessShear^\contact\Delta\branchVector^\contact_\shearComponent =
+	\frac{\linkMaterialStiffnessShear\linkCrossSectionArea^\contact}{\linkLength^\contact}\Delta\branchVector^\contact_\shearComponent
+	.
+\end{align}
+Substituting kinematic assumptions
+(\ref{eqMacroPropertiesElasticTheorDeltaBranchN})
+and
+(\ref{eqMacroPropertiesElasticTheorDeltaBranchT})
+yields
+\begin{align}
+	\force^\contact_\normalComponent &=
+	\frac{\linkMaterialStiffnessNormal\linkCrossSectionArea^\contact}{\linkLength^\contact}\Delta\branch^\contact_\normalComponent
+	=
+	\linkMaterialStiffnessNormal\linkCrossSectionArea^\contact\normalTensor2^\contact:\strainTensor
+	\\
+	\forceVector^\contact_\shearComponent &=
+	\frac{\linkMaterialStiffnessShear\linkCrossSectionArea^\contact}{\linkLength^\contact}\Delta\branchVector^\contact_\shearComponent
+	=
+	\linkMaterialStiffnessShear\linkCrossSectionArea^\contact\shearTensor3^\contact:\strainTensor
+	.
+	\label{eqMacroPropertiesElasticTheorConstitutive}
+\end{align}
+
+Stress tensor is defined according to equation (\ref{eqDemDiscreteStressFinalStressInternalForces}).
+Because both the strain tensor $\strainTensor$ and the desired elastic stiffness tensor $\stiffnessTensorElastic$ is symmetric, we consider only the symmetric part of the stress tensor in the derivation.
+\begin{equation}
+	\begin{gathered}
+		\stressTensor
+		=
+		\frac{1}{\volume} \sum_\contact \sym{(\branchVector^\contact\otimes\forceVector^\contact)}
+		=
+		\frac{1}{\volume} \sum_\contact \sym{(\branch^\contact\normalVector^\contact\otimes(\normalVector^\contact\force^\contact_\normalComponent+\forceVector^\contact_\shearComponent))}
+		=
+		\frac{1}{\volume} \sum_\contact \branch^\contact\sym{(\normalVector^\contact\otimes\normalVector^\contact\force^\contact_\normalComponent+\normalVector^\contact\otimes\forceVector^\contact_\shearComponent)}
+		= \\ =
+		\frac{1}{\volume} \sum_\contact \branch^\contact(\normalTensor2^\contact\force^\contact_\normalComponent+\sym{(\normalVector^\contact\otimes\forceVector^\contact_\shearComponent)})
+	\end{gathered}
+\end{equation}
+The last term can be rewritten as
+\begin{equation}
+	\begin{gathered}
+		\sym{(\normalVector\otimes\forceVector_\shearComponent)}
+		=
+		\sym{(\forceVector_\shearComponent\otimes\normalVector)}
+		=
+		\sym{\identityTensor4}:(\forceVector_\shearComponent\otimes\normalVector)
+		=
+		(\sym{\identityTensor4}\cdot\normalVector)\cdot\forceVector_\shearComponent
+		-
+		\normalTensor3\cdot\forceVector_\shearComponent
+		= \\ =
+		(\sym{\identityTensor4}\cdot\normalVector - \normalTensor3)\cdot\forceVector_\shearComponent
+		=
+		\shearTensor3\T\cdot\forceVector_\shearComponent
+		.
+	\end{gathered}
+\end{equation}
+The term $\normalTensor3\cdot\forceVector_\shearComponent$ is zero (normal vector $\normalVector$ is perpendicular to the shear force $\forceVector_\shearComponent$) and is added to get consistent formalism.
+
+Substituting constitutive assumptions (\ref{eqMacroPropertiesElasticTheorConstitutive}) yields
+\begin{equation}
+	\begin{gathered}
+		\stressTensor
+		=
+		\frac{1}{\volume} \sum_\contact \branch^\contact\br{\normalTensor2^\contact\force^\contact_\normalComponent+{\shearTensor3^\contact}\T\cdot\forceVector^\contact_\shearComponent}
+		= \\ =
+		\frac{1}{\volume} \sum_\contact \branch^\contact\br{\normalTensor2^\contact\br{\linkMaterialStiffnessNormal\linkCrossSectionArea^\contact\normalTensor2^\contact:\strainTensor}+{\shearTensor3^\contact}\T\cdot\br{\linkMaterialStiffnessShear\linkCrossSectionArea^\contact\shearTensor3^\contact:\strainTensor}}
+		= \\ =
+		\frac{1}{\volume} \sum_\contact \branch^\contact\linkCrossSectionArea^\contact\br{\linkMaterialStiffnessNormal\br{\normalTensor2^\contact\otimes\normalTensor2^\contact}:\strainTensor+\linkMaterialStiffnessShear\br{{\shearTensor3^\contact}\T\cdot\shearTensor3^\contact}:\strainTensor}
+		= \\ =
+		\frac{1}{\volume} \sum_\contact \branch^\contact\linkCrossSectionArea^\contact\br{\linkMaterialStiffnessNormal\normalTensor4^\contact+\linkMaterialStiffnessShear\shearTensor4^\contact}:\strainTensor
+		.
+	\end{gathered}
+\end{equation}
+Comparison to the elastic stress-strain law (\ref{eqAppendixMathContinuumStressStrainLawLinear})
+\begin{equation}
+	\stressTensor
+	=
+	\stiffnessTensorElastic:\strainTensor
+\end{equation}
+yields the expression of stiffness tensor
+\begin{equation}
+	\stiffnessTensorElastic =
+	\frac{1}{\volume} \sum_\contact \branch^\contact\linkCrossSectionArea^\contact\br{\linkMaterialStiffnessNormal\normalTensor4^\contact+\linkMaterialStiffnessShear\shearTensor4^\contact}
+	.
+	\label{eqMacroPropertiesElasticTheorStiffnessTensor}
+\end{equation}
+
+According to \cite{KuhlDAddettaLeukartRamm2001a}, sum of terms dependent on direction $\normalVector^\contact$ can be approximated with an integral over solid angle
+\begin{equation}
+	\sum_\contact^\numberOfContacts f\br{\normalVector^\contact} = \frac{\numberOfContacts}{4\pi}\int_\solidAngle f(\normalVector) \dSolidAngle
+	.
+	\label{eqMacroPropertiesElasticTheorSumToIntegral}
+\end{equation}
+The integration domain here is the surface of the unit sphere.
+
+
+Using identities (\ref{eqAppendixMathUnitSphereIntegralNinjnknl}) and (\ref{eqAppendixMathUnitSphereIntegralIijabnancIcakl})
+\begin{equation}
+	\int_\solidAngle \normalTensor4 \dSolidAngle
+	=
+	\int_\solidAngle \normalVector\otimes\normalVector\otimes\normalVector\otimes\normalVector \dSolidAngle
+	=
+	\frac{4\pi}{15} \br{3\vol{\projectionTensor4}+2\sym{\identityTensor4}}
+\end{equation}
+\begin{equation}
+	\begin{gathered}
+		\int_\solidAngle \shearTensor4 \dSolidAngle
+		=
+		\int_\solidAngle
+			\br{\sym{\identityTensor4}\cdot\normalVector}\cdot\br{\normalVector\cdot\sym{\identityTensor4}}
+			-
+			\normalTensor4
+		\dSolidAngle
+		=
+		\int_\solidAngle
+			\br{\sym{\identityTensor4}\cdot\normalVector}\cdot\br{\normalVector\cdot\sym{\identityTensor4}}
+		\dSolidAngle
+		-
+		\int_\solidAngle
+			\normalTensor4
+		\dSolidAngle
+		= \\ =
+		\frac{4\pi}{3}\sym{\identityTensor4}
+		-
+		\frac{4\pi}{15} \br{3\vol{\projectionTensor4}+2\sym{\identityTensor4}}
+		=
+		\frac{4\pi}{5}\br{\sym{\identityTensor4}-\vol{\projectionTensor4}}
+		,
+	\end{gathered}
+\end{equation}
+applying approximation (\ref{eqMacroPropertiesElasticTheorSumToIntegral})
+and
+assuming the uniform distribution of branch lengths and cross section areas
+\begin{equation}
+	\begin{gathered}
+		\sum_\contact \branch^\contact\linkCrossSectionArea^\contact f\br{\normalVector^\contact}
+		\approx
+		\sum_\contact \frac{\sum_\contact \branch^\contact\linkCrossSectionArea^\contact}{\numberOfContacts} f(\normalVector^\contact)
+		=
+		\frac{\sum_\contact \branch^\contact\linkCrossSectionArea^\contact}{\numberOfContacts}
+		\sum_\contact f(\normalVector^\contact)
+		\approx \\ \approx
+		\frac{\sum_\contact \branch^\contact\linkCrossSectionArea^\contact}{\numberOfContacts}
+		\cdot
+		\frac{\numberOfContacts}{4\pi} \int_\solidAngle f(\normalVector)
+		=
+		\frac{\sum_\contact \branch^\contact\linkCrossSectionArea^\contact}{4\pi} \int_\solidAngle f(\normalVector)
+	\end{gathered}
+\end{equation}
+yields
+\begin{equation}
+	\begin{gathered}
+		\stiffnessTensorElastic
+		=
+		\frac{1}{\volume} \sum_\contact \branch^\contact\linkCrossSectionArea^\contact\br{\linkMaterialStiffnessNormal\normalTensor4^\contact+\linkMaterialStiffnessShear\shearTensor4^\contact}
+		\approx
+		\frac{\numberOfContacts}{4\pi\volume} \int_\solidAngle \branch^\contact\linkCrossSectionArea^\contact\br{\linkMaterialStiffnessNormal\normalTensor4+\linkMaterialStiffnessShear\shearTensor4} \dSolidAngle
+		\approx \\ \approx
+		\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{4\pi\volume} \int_\solidAngle \linkMaterialStiffnessNormal\normalTensor4+\linkMaterialStiffnessShear\shearTensor4 \dSolidAngle
+		=
+		\frac{\sum\branch\linkCrossSectionArea}{4\pi\volume} \br{
+			\linkMaterialStiffnessNormal \frac{4\pi}{15} \br{3\vol{\projectionTensor4}+2\sym{\identityTensor4}}
+			\linkMaterialStiffnessShear \frac{4\pi}{5}\br{\sym{\identityTensor4}-\vol{\projectionTensor4}}
+		}
+		= \\ =
+		\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{5\volume} \br{\linkMaterialStiffnessNormal-\linkMaterialStiffnessShear} \vol{\projectionTensor4}
+		+
+		\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{15\volume} \br{2\linkMaterialStiffnessNormal+3\linkMaterialStiffnessShear} \sym{\identityTensor4}
+		.
+	\end{gathered}
+\end{equation}
+
+Comparing with the Hooke's law (\ref{eqAppendixMathContinuumElasticStiffnessTensorIsIv})
+\begin{equation}
+	\stiffnessTensorElastic
+	=
+	\frac{3\youngModulus\poissonRatio}{(1+\poissonRatio)(1-2\poissonRatio)}\vol{\projectionTensor4}
+	+
+	\frac{\youngModulus}{1+\poissonRatio}\sym{\identityTensor4}
+\end{equation}
+yields the approximation of macroscopic elastic constants
+\begin{align}
+	\youngModulus &=
+	\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{3\volume}
+	\cdot
+	\frac{\linkMaterialStiffnessNormal\br{2\linkMaterialStiffnessNormal+3\linkMaterialStiffnessShear}}{4\linkMaterialStiffnessNormal+\linkMaterialStiffnessShear}
+	&
+	\poissonRatio &= \frac{\linkMaterialStiffnessNormal-\linkMaterialStiffnessShear}{4\linkMaterialStiffnessNormal+\linkMaterialStiffnessShear}
+	.
+	\label{eqMacroPropertiesElasticTheorElastConstantsApprox}
+\end{align}
+See also \textfile{codes/scripts/tests/macroelastic.py}.
+
+
+\section{Static FEM solution}
+
+The links fictitiously connect centers of particles and can be represented by bars with length $\linkLength$ and cross section area $\linkCrossSectionArea$.
+In the FEM solution described below, particles are modeled as nodes with six degrees of freedom, three displacements and three rotations
+\begin{equation}
+	\displacementVector = \{\displacement_1, \displacement_2, \displacement_3\}\T
+	\qquad
+	\rotationVector = \{\rotation_1, \rotation_2, \rotation_3\}\T
+\end{equation}
+respectively.
+Links are modeled as beam-like finite elements.
+
+Each particle (node) $\particle$ has
+center $\particlePosition_\particle$
+and a nodal displacement vector
+\begin{equation}
+	\nodalDsplVector_\particle
+	=
+	\begin{Bmatrix} \displacementVector \\ \rotationVector \end{Bmatrix}
+	=
+	\{
+		\displacement_1,
+		\displacement_2,
+		\displacement_3,
+		\rotation_1,
+		\rotation_2,
+		\rotation_3
+	\}\T
+	.
+\end{equation}
+
+A nodal displacement vector of a link (finite element) is constructed by merging the displacement vectors of connected particles $\particleA$ and $\particleB$
+\begin{equation}
+	\linkNodalDsplVector
+	=
+	\begin{Bmatrix}
+		\nodalDsplVector_\particleA
+		\\
+		\nodalDsplVector_\particleB
+	\end{Bmatrix}
+	=
+	\{
+		\displacement_{\particleA1},
+		\displacement_{\particleA2},
+		\displacement_{\particleA3},
+		\rotation_{\particleA1},
+		\rotation_{\particleA2},
+		\rotation_{\particleA3},
+		\displacement_{\particleB1},
+		\displacement_{\particleB2},
+		\displacement_{\particleB3},
+		\rotation_{\particleB1},
+		\rotation_{\particleB2},
+		\rotation_{\particleB3}
+	\}\T
+	.
+	\label{eqMacroPropertiesElasticLinkNodalDsplVectorDef}
+\end{equation}
+The values of $\linkNodalDsplVector$ uniquely defines the contact displacement, i.e, the fictitious mutual displacement at the center of the link, expressed in the local coordinate system of the link
+\begin{equation}
+	\displacementVector_\contact \begin{Bmatrix}
+		\displacement_\normalComponent \\
+		\displacementVector_\shearComponent
+	\end{Bmatrix}
+	= \begin{Bmatrix}
+		\displacement_\normalComponent \\
+		\displacement_{\shearComponent1} \\
+		\displacement_{\shearComponent2} \\
+	\end{Bmatrix}
+\end{equation}
+and the equivalent strain of the link
+\begin{equation}
+	\linkStrainVector = \frac{1}{\linkLength}\displacementVector_\contact
+	.
+\end{equation}
+
+The local coordinate system $\linkGlobToLocE_\normalComponent, \linkGlobToLocE_{\shearComponent1}, \linkGlobToLocE_{\shearComponent2}$
+is defined such that the first base vector
+\begin{equation}
+	\linkGlobToLocE_\normalComponent = \frac{\particlePosition_\particleB-\particlePosition_\particleA}{\norm{\particlePosition_\particleB-\particlePosition_\particleA}}
+	,
+\end{equation}
+is a normalized vector given by the centers of connected particles,
+$\linkGlobToLocE_{\shearComponent1}$ is chosen arbitrarily but must be perpendicular to $\linkGlobToLocE_\normalComponent$
+and finally the last base vector is defined by the cross product
+\begin{equation}
+	 \linkGlobToLocE_{\shearComponent2} = \linkGlobToLocE_\normalComponent \cross \linkGlobToLocE_{\shearComponent1}
+	 .
+\end{equation}
+Its matrix representation is an orthogonal matrix with rows equal to local base vectors
+\begin{equation}
+	\linkGlobToLoc = \begin{bmatrix}
+		\linkGlobToLocE_\normalComponent\T \\
+		\linkGlobToLocE_{\shearComponent1}\T \\
+		\linkGlobToLocE_{\shearComponent2}\T
+	\end{bmatrix},
+	\quad
+	\linkGlobToLoc\T=\linkGlobToLoc\inv
+\end{equation}
+and can be used to transform a vector from the global to the local coordinate system and vice versa:
+\begin{equation}
+	\linkGlobToLoc\displacementVector = \displacementVector_\lcs
+	,\qquad
+	\linkGlobToLoc\rotationVector = \rotationVector_\lcs
+	,\qquad
+	\linkGlobToLoc\T\displacementVector_\lcs = \displacementVector
+	,\qquad
+	\linkGlobToLoc\T\rotationVector_\lcs = \rotationVector
+	\label{eqMacroPropertiesElasticLinkGlobToLocApplication}
+\end{equation}
+
+The transformation matrix $\linkTrsfMat$ transforms nodal displacement vector $\linkNodalDsplVector$ from the global coordinate system:
+\begin{equation}
+	\linkTrsfMat\linkNodalDsplVector = \linkNodalDsplVector_\lcs
+	,\quad
+	\linkTrsfMat\T\linkNodalDsplVector_\lcs = \linkNodalDsplVector
+	\label{eqMacroPropertiesElasticLinkTrsfMatApplication}
+\end{equation}
+Because of the structure of $\linkNodalDsplVector$ (\ref{eqMacroPropertiesElasticLinkNodalDsplVectorDef}) and using (\ref{eqMacroPropertiesElasticLinkGlobToLocApplication}) it has the form
+\begin{equation}
+	\linkTrsfMat = \begin{bmatrix}
+		\linkGlobToLoc & \cdot & \cdot & \cdot \\
+		\cdot & \linkGlobToLoc & \cdot & \cdot \\
+		\cdot & \cdot & \linkGlobToLoc & \cdot \\
+		\cdot & \cdot & \cdot & \linkGlobToLoc
+	\end{bmatrix}
+	.
+\end{equation}
+
+The relation between nodal displacements and equivalent strains can be rewritten in the matrix form as
+\begin{equation}
+	\linkStrainVector
+	=
+	\linkStrainDisplacementMatrix \linkNodalDsplVector
+	=
+	\linkStrainDisplacementMatrix_\lcs \linkNodalDsplVector_\lcs
+	,
+	\label{eqMacroPropertiesElasticDsplStrainRelations}
+\end{equation}
+where
+\begin{equation}
+	{
+	\newcommand{\z}{\cdot}
+	\newcommand{\h}{\frac{\linkLength}{2}}
+	\linkStrainDisplacementMatrix_\lcs = \frac{1}{\linkLength} \begin{bmatrix}
+		-1 & \z & \z & \z & \z &  \z &  1 & \z & \z & \z & \z &  \z \\
+		\z & -1 & \z & \z & \z & -\h & \z &  1 & \z & \z & \z & -\h \\
+		\z & \z & -1 & \z & \h &  \z & \z & \z &  1 & \z & \h &  \z
+	\end{bmatrix}
+	}
+\end{equation}
+is a strain-displacement (or geometric) matrix of the element with respect to the local coordinate system.
+Using (\ref{eqMacroPropertiesElasticDsplStrainRelations}) and (\ref{eqMacroPropertiesElasticLinkTrsfMatApplication}), the global geometric matrix $\linkStrainDisplacementMatrix$ is defined as
+\begin{equation}
+	\linkStrainVector
+	=
+	\linkStrainDisplacementMatrix \linkNodalDsplVector
+	=
+	\linkStrainDisplacementMatrix_\lcs \linkNodalDsplVector_\lcs
+	=
+	\linkStrainDisplacementMatrix_\lcs \linkTrsfMat\linkTrsfMat\T \linkNodalDsplVector_\lcs
+	=
+	\linkStrainDisplacementMatrix_\lcs \linkTrsfMat \linkNodalDsplVector
+	\arrowWithSpaces
+	\linkStrainDisplacementMatrix = \linkStrainDisplacementMatrix_\lcs \linkTrsfMat
+	.
+\end{equation}
+
+Link stress vector
+\begin{equation}
+	\linkStressVector = \begin{Bmatrix}
+		\linkStressNormal \\
+		\linkStressShearVector
+	\end{Bmatrix}
+	 = \begin{Bmatrix}
+		\linkStressNormal \\
+		\linkStressShear[1] \\
+		\linkStressShear[2]
+	\end{Bmatrix}
+	 = \begin{Bmatrix}
+		\linkMaterialStiffnessNormal \linkStrainNormal \\
+		\linkMaterialStiffnessShear \linkStrainShear[1] \\
+		\linkMaterialStiffnessShear \linkStrainShear[2]
+	\end{Bmatrix}
+\end{equation}
+can be expressed in the matrix form
+\begin{equation}
+	\linkStressVector = \linkMaterialStiffnessMatrix \linkStrainVector
+\end{equation}
+with
+\begin{equation}
+	\linkMaterialStiffnessMatrix = \begin{bmatrix}
+		\linkMaterialStiffnessNormal & 0 & 0 \\
+		0 & \linkMaterialStiffnessShear & 0 \\
+		0 & 0 & \linkMaterialStiffnessShear
+	\end{bmatrix}
+\end{equation}
+being material stiffness matrix.
+
+The link stiffness matrix is computed using the standard formula
+\begin{equation}
+	\linkStiffnessMatrix =
+	\int_\volume \linkStrainDisplacementMatrix\T\materialStiffnessMatrix\linkStrainDisplacementMatrix \dVolume
+	=
+	\linkCrossSectionArea\linkLength
+	\linkStrainDisplacementMatrix\T\materialStiffnessMatrix\linkStrainDisplacementMatrix
+	.
+\end{equation}
+
+Nodal forces can then be expressed as
+\begin{equation}
+	\linkNodalForceVector = \linkStiffnessMatrix\linkNodalDsplVector
+	=
+	\linkCrossSectionArea\linkLength
+	\linkStrainDisplacementMatrix\T\materialStiffnessMatrix\linkStrainDisplacementMatrix\linkNodalDsplVector
+	= \linkCrossSectionArea\linkLength \linkStrainDisplacementMatrix\T \linkStressVector
+	.
+\end{equation}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=15cm]{raphaelpy/link_gcs_lcs}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{15cm}
+
+\put(-0.755555555556,0.144444444444){\makebox(0,-.01)[t]{$\displacement_{\particleA1}$}}
+\put(-0.811111111111,0.2){\makebox(0,0)[l]{$\displacement_{\particleA2}$}}
+\put(-0.566666666667,0.2){\makebox(0,-.01)[t]{$\displacement_{\particleB1}$}}
+\put(-0.622222222222,0.255555555556){\makebox(0,0)[l]{$\displacement_{\particleB2}$}}
+\put(-0.163368583246,0.187898129111){\makebox(0,-.01)[t]{$\linkDisplacementNormal$}}
+\put(-0.232342573555,0.225520305643){\makebox(0,.03)[t]{$\linkDisplacementShear[1]$}}
+\put(-0.922222222222,0.0333333333333){\makebox(0,0)[bl]{$x_1$}}
+\put(-0.977777777778,0.0888888888889){\makebox(0,0)[l]{$x_2$}}
+\put(-0.424479694357,0.0490092402218){\makebox(0,0)[bl]{$\linkGlobToLocE_\normalComponent$}}
+\put(-0.493453684666,0.086631416754){\makebox(0,0)[l]{$\linkGlobToLocE_{\shearComponent1}$}}
+\put(-0.811111111111,0.144444444444){\makebox(0,0)[rt]{$\particlePosition_\particleA$}}
+\put(-0.622222222222,0.2){\makebox(0,-.01)[t]{$\particlePosition_\particleB$}}
+		
+	\end{picture}
+	\caption[Illustration of the global and local coordinate system of the link]{Illustration of the global (left) and local (right) coordinate system of the link}
+\end{figure}
+
+
+\subsection{Periodic boundary conditions}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=6cm]{raphaelpy/peri_packing_2d_illustration_0}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{6cm}
+		\put(-0.615384615385,0.384615384615){\makebox(0,-.01)[lt]{$\particleA$}}
+		\put(-0.230769230769,0.769230769231){\makebox(0,0)[l]{$\particleA'$}}
+		\put(-0.394230769231,0.605769230769){\makebox(0,-.01)[lt]{$\particleB$}}
+		\put(-0.778846153846,0.221153846154){\makebox(0,-.02)[t]{$\particleB'$}}
+	\end{picture}
+	\caption{2D example of periodic cell and \quotes{periodic} links}
+	\label{figMacroPropertiesFemPariodicStructureIllustration}
+\end{figure}
+
+Numerical simulations have been done on a representative cell with periodic boundary conditions.
+The implementation of the periodic boundary conditions is analogous to the implementation described by \cite{GrasslJirasek2010a}.
+Elements crossing the boundary of the bounding cube (connecting one particle inside the cell with another particle physically located in one of the neighboring cells) is modified in a special way.
+Consider such an element connecting particles $\particleA'$ and $\particleB$ and a corresponding element connecting periodic images of these particles, denoted as $\particleA$ and $\particleB'$ (see Figure \ref{figMacroPropertiesFemPariodicStructureIllustration}).
+Both elements are real links of the structure, but for the analysis purposes only one of them is taken into account when setting up the equilibrium equations (in our example we chose link $\particleA\particleB'$).
+
+Consider a macroscopic deformation
+\begin{equation}
+	\macroscopicDeformationVector = \left\{
+		\macroscopicDeformation_{11},
+		\macroscopicDeformation_{22},
+		\macroscopicDeformation_{33},
+		\macroscopicDeformation_{23},
+		\macroscopicDeformation_{31},
+		\macroscopicDeformation_{12}
+	\right\}\T
+	.
+\end{equation}
+Periodic boundary conditions are imposed by the set of constraint equations that contain the components of $\macroscopicDeformation$:
+\begin{equation}
+	\begin{aligned}
+		\displacement_{\particleB'1} &= \displacement_{\particleB1} + \macroscopicDeformation_{11}\periodicShift_1\cubeDimension + \frac{1}{2}\macroscopicDeformation_{12}\periodicShift_2\cubeDimension + \frac{1}{2}\macroscopicDeformation_{31}\periodicShift_3\cubeDimension
+		\\
+		\displacement_{\particleB'2} &= \displacement_{\particleB2} + \macroscopicDeformation_{22}\periodicShift_2\cubeDimension + \frac{1}{2}\macroscopicDeformation_{12}\periodicShift_1\cubeDimension + \frac{1}{2}\macroscopicDeformation_{23}\periodicShift_3\cubeDimension
+		\\
+		\displacement_{\particleB'3} &= \displacement_{\particleB3} + \macroscopicDeformation_{33}\periodicShift_3\cubeDimension + \frac{1}{2}\macroscopicDeformation_{31}\periodicShift_1\cubeDimension + \frac{1}{2}\macroscopicDeformation_{23}\periodicShift_2\cubeDimension
+		\\
+		\rotation_{\particleB'1} &= \rotation_{\particleB1} \\
+		\rotation_{\particleB'2} &= \rotation_{\particleB2} \\
+		\rotation_{\particleB'3} &= \rotation_{\particleB3} \\
+	\end{aligned}
+	\label{eqMacroPropertiesElasticFemPeriDspl}
+\end{equation}
+$\cubeDimension$ is the dimension of the cubic periodic cell, constants $\periodicShift$ have integer values (usually $-1$, $0$ or $1$) and specify the position of the particle outside the cell according to the relations
+\begin{equation}
+	\begin{aligned}
+		\position_{\particleB'1} &= \position_{\particleB1} + \periodicShift_1\cubeDimension
+		\\
+		\position_{\particleB'2} &= \position_{\particleB2} + \periodicShift_2\cubeDimension
+		\\
+		\position_{\particleB'3} &= \position_{\particleB3} + \periodicShift_3\cubeDimension
+		.
+	\end{aligned}
+\end{equation}
+Using equations (\ref{eqMacroPropertiesElasticFemPeriDspl}), the displacement of connected particles $\particleA$ and $\particleB'$ (periodic image of particle $\particleB$) can be written in terms of the displacements of particles $\particleA$ and $\particleB$ and the macroscopic deformation as
+\begin{equation}
+	\begin{Bmatrix}
+		\displacementVector_\particleA \\
+		\displacementVector_{\particleB'}
+	\end{Bmatrix}
+	=
+	\matTPeri
+	\begin{Bmatrix}
+		\displacementVector_\particleA \\
+		\displacementVector_\particleB \\
+		\macroscopicDeformationVector
+	\end{Bmatrix}
+\end{equation}
+
+The upper block (first $12\!\!\times\!\!12$ components out of $12\!\!\times\!\!18$) of the transformation matrix $\matTPeri$ corresponds to the identity matrix,
+and the only non-zero components of the lower block are in rows {7-9} and in columns {13-18}:
+\begin{equation}
+	{
+	\newcommand{\sss}[1]{\scriptstyle{#1}}
+	\begin{matrix}
+		{}
+		&
+		\begin{matrix}
+			\sss{13} \hspace{.20em} &
+			\sss{14} \hspace{.20em} &
+			\sss{15} \hspace{.35em} &
+			\sss{16} \hspace{.60em} &
+			\sss{17} \hspace{.60em} &
+			\sss{18} &
+		\end{matrix}
+		&
+		{}
+		\vspace{.3em}
+		\\
+		\matTPeri_{(7-9,13-18)} =
+		\cubeDimension
+		&
+		\begin{bmatrix}
+			\periodicShift_1 & 0 & 0 &
+			0 & \frac{1}{2}\periodicShift_3 & \frac{1}{2}\periodicShift_2 \\
+			0 & \periodicShift_2 & 0 &
+			\frac{1}{2}\periodicShift_3 & 0 & \frac{1}{2}\periodicShift_1 \\
+			0 & 0 & \periodicShift_3 &
+			\frac{1}{2}\periodicShift_2 & \frac{1}{2}\periodicShift_1 & 0
+		\end{bmatrix}
+		&
+		\begin{matrix}
+			\sss{7} \\
+			\sss{8} \\
+			\sss{9}
+		\end{matrix}
+	\end{matrix}
+	}
+\end{equation}
+
+Using the transformation matrix $\matTPeri$, the modified stiffness matrix of the \quotes{periodic} elements (with 18 rows and 18
+columns) can be expressed in the form
+\begin{equation}
+	\linkStiffnessMatrix
+	=
+	\linkCrossSectionArea\linkLength
+	\matTPeri\T
+	\linkStrainDisplacementMatrix\T\materialStiffnessMatrix\linkStrainDisplacementMatrix
+	\matTPeri
+	.
+\end{equation}
+The components of macroscopic deformation $\macroscopicDeformationVector$ are therefore considered as global degrees of freedom.
+The corresponding \quotes{load} components are directly related to the macroscopic stress
+(they are equal to the stress components multiplied by the volume of the cell).
+To prevent displacement of the assembly as a rigid
+body, one particle needs to be \quotes{supported} by setting its three displacements to zero.
+
+
+\subsection{\OOFEM\ implementation}
+The results presented in this thesis are computed with \OOFEM, version 2{.}0.
+
+Particles are implemented in \code{Particle} class, which is derived from \code{Node} class.
+Interactions are implemented in \code{CohesiveSurface3d} class, derived from \code{StructuralElement} class.
+
+For the periodic solution, a link finite element has three nodes -- two physical nodes and one node representing macroscopic deformation.
+The particle representing macroscopic deformation has (by convention) coordinates equal to dimensions of the periodic cell and has to be the third particle of the element.
+See the source codes for more information.
+
+The implementation files of \code{CohesiveSurface3d} class were slightly refactored to correspond with the description in the section (especially the computation of strain-displacement matrix $\linkStrainDisplacementMatrix$) and can be found in the file \textfile{codes/oofemyade/oofem-2.0/src/sm}.
+
+
+\subsection{Evaluation}
+To obtain the macroscopic elastic stiffness matrix of a particle assembly, the assembly is subjected to six simulations.
+In each simulation, one component of the macroscopic deformation $\macroscopicDeformationVector$
+is set to one while all the others are prescribed as zeros.
+The individual components of the macroscopic stress then represent the coefficients in the corresponding column of the macroscopic stiffness matrix $\stiffnessMatrixElastic$.
+
+
+\section{Dynamic DEM solution}
+For the sake of completeness, the results obtained by DEM are also presented.
+Periodic boundary conditions according to section \ref{secDemDemExtensions} are used.
+The macroscopic deformation is controlled by the deformation of the periodic cell.
+Numerical damping helps to remove kinetic energy from the system.
+
+The evaluation is similar to the FEM case.
+The assembly is subjected to six simulations.
+In each simulation, one component of the macroscopic deformation
+is set to a \quotes{small} value $\strain$ while all the others are prescribed as zeros.
+The transformation matrix of the periodic cell is adjusted according to the desired macroscopic deformation and the model is relaxed to (almost) static equilibrium.
+The individual components of the macroscopic stress divided by the value of $\strain$ then represent the coefficients in the corresponding column of the macroscopic stiffness matrix $\stiffnessMatrixElastic$.
+
+
+
+
+
+\section{Results}
+
+\subsection{Isotropy of elastic constants}\label{secMacropropertiesResultsIsotropy}
+Firstly, macroscopic isotropy and stability of results for a variable number of particles $\numberOfParticles$ has been studied.
+\begin{equation}
+	\complianceMatrixElastic = \stiffnessMatrixElastic\inv
+	=
+	\begin{bmatrix}
+		\frac{1}{\youngModulus_1} & -\frac{\poissonRatio_{21}}{\youngModulus_2} & -\frac{\poissonRatio_{31}}{\youngModulus_3} & \cdot & \cdot & \cdot \\
+		-\frac{\poissonRatio_{12}}{\youngModulus_1} & \frac{1}{\youngModulus_2} & -\frac{\poissonRatio_{32}}{\youngModulus_3} & \cdot & \cdot & \cdot \\
+		-\frac{\poissonRatio_{13}}{\youngModulus_1} & -\frac{\poissonRatio_{23}}{\youngModulus_2} & \frac{1}{\youngModulus_3} & \cdot & \cdot & \cdot \\
+		\cdot & \cdot & \cdot & \frac{1}{\shearModulus_{23}} & \cdot & \cdot \\
+		\cdot & \cdot & \cdot & \cdot & \frac{1}{\shearModulus_{31}} & \cdot \\
+		\cdot & \cdot & \cdot & \cdot & \cdot & \frac{1}{\shearModulus_{12}}
+	\end{bmatrix}
+	\label{eqMacroPropertiesElasticResultsOrthotropicComliance}
+\end{equation}
+
+Several particle assemblies have been analyzed and the macroscopic constants $\youngModulus$ and $\poissonRatio$ have been evaluated for a number of values of the dimensionless quantities $\interactionRatio$ and $\linkStiffnessShear/\linkStiffnessNormal$.
+
+The resulting material is first considered as orthotropic, with compliance matrix $\complianceMatrixElastic$ (\ref{eqMacroPropertiesElasticResultsOrthotropicComliance}), from which
+$\youngModulus_1$,
+$\youngModulus_2$,
+$\youngModulus_3$,
+$\poissonRatio_{12}$,
+$\poissonRatio_{21}$,
+$\poissonRatio_{13}$,
+$\poissonRatio_{31}$,
+$\poissonRatio_{23}$,
+and
+$\poissonRatio_{32}$
+are easily extracted.
+In the ideal case of an isotropic material, all Young's moduli and Poisson's ratios would be identical.
+To verify that the results indeed closely correspond to an isotropic behavior is one of the goals of this study.
+
+The isotropy has been evaluated based on the following quantities:
+\begin{itemize}
+	\item
+		Relative anisotropy of Young's modulus $\youngModulus$
+		\begin{equation}
+			\frac{\Delta\youngModulus}{\youngModulus} = \frac{\max_i\abs{\youngModulus_i-\youngModulus_\avg}}{\youngModulus_\avg}
+			.
+			\label{eqMacroPropertiesElasticResultsRelativeAnizotropyYoung}
+		\end{equation}
+		$\youngModulus_i$ denotes $i$-th computed modulus and $\youngModulus_\avg$ their average value.
+	\item
+		Relative anisotropy of Poisson's ratio
+		\begin{equation}
+			\frac{\Delta\poissonRatio}{\poissonRatio}=\frac{\max_{ij}\abs{\poissonRatio_{ij}-\poissonRatio_\avg}}{\shearModulus_\avg}
+			\label{eqMacroPropertiesElasticResultsRelativeAnizotropyPoisson}
+		\end{equation}
+	\item
+		Relative anisotropy of shear modulus
+		\begin{equation}
+		{
+			\newcommand{\ggggg}{\frac{\youngModulus_\avg}{2\left(1+\poissonRatio_\avg\right)}}
+			\frac{\Delta\shearModulus}{\shearModulus} = \frac{\max_i\abs{\shearModulus_i-\ggggg}}{\ggggg}
+			\label{eqMacroPropertiesElasticResultsRelativeAnizotropyShear}
+		}
+		\end{equation}
+	\item
+		In the stiffness or compliance matrix of the isotropic material, there are a few zero elements.
+		However, these elements are nonzero in the result of numerical simulations.
+		The last studied quantity is therefore the relative deviation from zero of these elements
+		\begin{equation}
+			\frac{\Delta}{\youngModulus} = \frac{\max_{ij}\left(\abs{\stiffness_{ij}}\right)}{\youngModulus_\avg}.
+			\label{eqMacroPropertiesElasticResultsRelativeAnizotropyNonzero}
+		\end{equation}
+		$\stiffness_{ij}$ denotes elements, which are zero for isotropic material.
+\end{itemize}
+
+The findings can be summarized as:
+\begin{itemize}
+	\item
+		The mean material parameters $\youngModulus$ and $\poissonRatio$ are almost independent of the number of particles,
+		even for $\numberOfParticles$ less than 100.
+		For more than 200 particles per periodic cell, the values of mean material parameters do not change for any type of simulation (i.e., for any ratio $\linkStiffnessShear/\linkStiffnessNormal$ and any interaction ratio $\interactionRatio$).
+		See figure \ref{figMacroPropertiesElasticResultsStabilityAvg}.
+	\item
+		The relative anisotropy of Young's modulus decreases with increasing number of particles.
+		The convergence is faster for higher $\interactionRatio$ and for higher $\linkStiffnessShear/\linkStiffnessNormal$.
+		See figure \ref{figMacroPropertiesElasticResultsRelativeAnizotropyYoung}.
+	\item
+		The relative anisotropy of Poisson's ratio $\poissonRatio$ has a similar trend:
+		for an increasing number of particles, its relative anisotropy decreases.
+		In contrast to the case of Young's modulus, the slowest convergence (or even no convergence at all) has been observed for ratio
+		$\linkStiffnessShear/\linkStiffnessNormal$ close to 1.
+		This is caused by the fact that for $\linkStiffnessShear/\linkStiffnessNormal=1$,
+		the Poisson's ratio $\poissonRatio$ has a theoretical value 0 and the relative error is therefore higher.
+		See figure \ref{figMacroPropertiesElasticResultsRelativeAnizotropyPoisson}.
+	\item
+		The theoretically vanishing components of the stiffness matrix of the macroscopic material are indeed almost zero,
+		again for increasing $\numberOfParticles$ the error is smaller.
+		Faster convergence has been observed on samples with higher $\interactionRatio$ and for
+		$\linkStiffnessShear/\linkStiffnessNormal$ closer to 1.
+		See figure \ref{figMacroPropertiesElasticResultsRelativeAnizotropyShear}.
+	\item
+		The relative error of the formula
+		$\shearModulus=\frac{\youngModulus}{2(1+\poissonRatio)}$
+		gets smaller for increasing $\numberOfParticles$.
+		The convergence is faster for $\linkStiffnessShear/\linkStiffnessNormal$ closer to 1.
+		See figure \ref{figMacroPropertiesElasticResultsRelativeAnizotropyZero}.
+	\item
+		All of the general trends described above are consistent with our expectations.
+\end{itemize}
+
+\begin{figure}
+	\centering
+	\inputplot{stiffnessMatrix_oofem_isotropy_avgs}
+	\caption[Stability of mean values of $\youngModulus$ and $\poissonRatio$]{Stability of mean values of Young's modulus $\youngModulus$ and Poisson's ratio $\poissonRatio$ for various numbers of particles $\numberOfParticles$}
+	\label{figMacroPropertiesElasticResultsStabilityAvg}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\inputplot{stiffnessMatrix_oofem_isotropy_dE}
+	\caption{Relative anisotropy of Young's modulus $\Delta\youngModulus/\youngModulus$ for various $\numberOfParticles$}
+	\label{figMacroPropertiesElasticResultsRelativeAnizotropyYoung}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\inputplot{stiffnessMatrix_oofem_isotropy_dNu}
+	\caption{Relative anisotropy of Poisson's ratio $\Delta\poissonRatio/\poissonRatio$ for various $\numberOfParticles$}
+	\label{figMacroPropertiesElasticResultsRelativeAnizotropyPoisson}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\inputplot{stiffnessMatrix_oofem_isotropy_dG}
+	\caption{Relative deviation from mean shear modulus $\Delta\shearModulus/\shearModulus$ for various $\numberOfParticles$}
+	\label{figMacroPropertiesElasticResultsRelativeAnizotropyShear}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\inputplot{stiffnessMatrix_oofem_isotropy_dD}
+	\caption{Relative deviation of \quotes{zero} elements of stiffness matrix $\Delta/\youngModulus$ for various $\numberOfParticles$}
+	\label{figMacroPropertiesElasticResultsRelativeAnizotropyZero}
+\end{figure}
+
+
+
+
+\subsection{Comparison of analytical and numerical results}
+The mean values of Young's modulus and Poisson's ratio according to section \ref{secMacropropertiesResultsIsotropy} have been considered as the results of numerical tests to compare analytical and numerical results.
+The numerical relation between macro- and microscopic parameters has been computed for several values of $\interactionRatio$ and compared to the analytical values.
+
+In graphs, points represent numerically obtained data and data according to equation (\ref{eqMacroPropertiesElasticTheorStiffnessTensor}).
+The line represents the analytical dependence according to equation (\ref{eqMacroPropertiesElasticTheorElastConstantsApprox}).
+
+The numerical results of static FEM, quasi-static DEM simulations and equation (\ref{eqMacroPropertiesElasticTheorStiffnessTensor}) are practically indistinguishable from each other.
+Certain discrepancy can be found for larger values of $\linkMaterialStiffnessShear/\linkMaterialStiffnessNormal\to\infty$ because
+then Young's modulus tends to zero relatively to the shear modulus.
+
+As seen from the graphs, the agreement between analytically and numerically obtained data is very good for higher values of $\interactionRatio$.
+On the other hand, the analytical formula underestimates the actual (numerically determined) values of Poisson's ratio and overestimates the actual values of Young's modulus for $\interactionRatio<1{.}3$.
+For all values of $\interactionRatio$, the value of Poisson's ratio in the limit case for $\linkMaterialStiffnessShear/\linkMaterialStiffnessNormal\to\infty$ ($\linkMaterialStiffnessNormal=0$) is $-1$ (the extreme theoretical value for Poisson's ratio), while the maximum attainable value is $\frac{1}{4}$ for higher values of $\interactionRatio$, which corresponds to equation (\ref{eqMacroPropertiesElasticTheorElastConstantsApprox}).
+A higher value of Poisson's ratio, up to $0{.}335$, is obtained for $\interactionRatio=1{.}05$.
+
+\begin{figure}
+	\centering
+	\inputplot{preprocessed_macromicro_E_I1.05}
+	\inputplot{preprocessed_macromicro_nu_I1.05}
+	\caption[Relation between macro- and microscopic parameters for $\interactionRatio=1{.}05$]{Relation between macro- and microscopic parameters for $\interactionRatio=1{.}05$ (semilogarithmic plot)}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\inputplot{preprocessed_macromicro_E_I1.25}
+	\inputplot{preprocessed_macromicro_nu_I1.25}
+	\caption[Relation between macro- and microscopic parameters for $\interactionRatio=1{.}25$]{Relation between macro- and microscopic parameters for $\interactionRatio=1{.}25$ (semilogarithmic plot)}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\inputplot{preprocessed_macromicro_E_I1.50}
+	\inputplot{preprocessed_macromicro_nu_I1.50}
+	\caption[Relation between macro- and microscopic parameters for $\interactionRatio=1{.}50$]{Relation between macro- and microscopic parameters for $\interactionRatio=1{.}50$ (semilogarithmic plot)}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\inputplot{preprocessed_macromicro_E_I2.00}
+	\inputplot{preprocessed_macromicro_nu_I2.00}
+	\caption[Relation between macro- and microscopic parameters for $\interactionRatio=2{.}00$]{Relation between macro- and microscopic parameters for $\interactionRatio=2{.}00$ (semilogarithmic plot)}
+\end{figure}

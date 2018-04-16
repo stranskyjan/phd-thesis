@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[main=english,czech]{babel}
+\usepackage[%
+	paperheight=120mm,%
+	paperwidth=120mm,%
+	top=1mm,%
+	left=1mm,%
+	bottom=0mm,%
+	right=0mm,%
+]{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{pict2e}
+
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[scaled]{helvet}
+
+\setlength{\unitlength}{1mm}
+\setlength\parindent{0pt}
+
+\input{common}
+\input{commands}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% field setting in PDF document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hypersetup{
+	pdftitle={\authorName, \thesisType, CD print},%
+	pdfauthor={\authorName},%
+	pdfcreator={\authorName},%
+	pdfproducer={\authorName},%
+	pdfsubject={CD print},%
+	pdfkeywords={\keywords}%
+}
+
+\newcommand{\coverline}[1]{\MakeUppercase{#1}\par}
+\newcommand{\circles}{%
+	\vfill%
+	\begin{picture}(0,0)%
+		\put(-.5,60){\circle{118}}%
+		\put(-.5,60){\circle{36}}%
+		\put(-.5,60){\circle{15}}%
+	\end{picture}%
+}
+
+% uncomment this line to get output without circles
+%\renewcommand{\circles}{}
+
+\begin{document}
+	\fontsize{14.5pt}{19pt}\selectfont
+	\setlength{\parindent}{0cm}
+	\bf
+	\centering
+	\vspace*{5mm}
+	{\includegraphics[width=30mm]{ctu_logo_bw}\par}
+	\vspace{45mm}
+	\coverline{\university}
+	\coverline{\faculty}
+	\coverline{\thesisType}
+	\coverline{\authorName}
+	\coverline{\submissionYear}
+	\circles
+\end{document}

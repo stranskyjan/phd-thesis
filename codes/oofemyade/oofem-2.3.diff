@@ -1,0 +1,32 @@
+diff -rNw -U 0 oofem-2.3/src/sm/concretedpm.C oofem-2.3/src/sm/concretedpm.C
+--- oofem-2.3/src/sm/concretedpm.C
++++ oofem-2.3/src/sm/concretedpm.C
+@@ -327 +327,8 @@
+-
++	  double E = mat->give('E', gp);
++	  double nu = mat->give('n', gp);
++	  StressVector effectiveStress(stressVector, _3dMat);
++	if (damage == 1.0) {
++	  effectiveStress.times( -1. );
++	} else if (damage == 0.0) {
++	  effectiveStress.times( -1. );
++	} else {
+@@ -331 +338 @@
+-
++		 kappaP = kappaD + 1;
+@@ -334,2 +340,0 @@
+-    if ( damage < 1. ) {
+-        StressVector effectiveStress(stressVector, _3dMat);
+@@ -337,3 +341,0 @@
+-        double E = mat->give('E', gp);
+-        double nu = mat->give('n', gp);
+-        effectiveStress.applyElasticCompliance(plasticStrain, E, nu);
+@@ -340,0 +343 @@
++   effectiveStress.applyElasticCompliance(plasticStrain, E, nu);
+diff -rNw -U 0 oofem-2.3/src/sm/gpinitmodule.C oofem-2.3/src/sm/gpinitmodule.C
+--- oofem-2.3/src/sm/gpinitmodule.C
++++ oofem-2.3/src/sm/gpinitmodule.C
+@@ -89 +89,2 @@
+-            MaterialStatus *status = static_cast< MaterialStatus * >( gp->giveMaterialStatus() );
++            //MaterialStatus *status = static_cast< MaterialStatus * >( gp->giveMaterialStatus() );
++            MaterialStatus *status = static_cast< MaterialStatus * >( mat->giveStatus(gp) );

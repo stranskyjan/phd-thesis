@@ -1,0 +1,1678 @@
+{
+\newcommand{\ssa}{a}
+\newcommand{\ssA}{A}
+\newcommand{\ssb}{b}
+\newcommand{\ssB}{B}
+\newcommand{\ssc}{c}
+\newcommand{\ssC}{C}
+\newcommand{\ssd}{d}
+\newcommand{\ssD}{D}
+\newcommand{\tta}{\tensor1{\ssa}}
+\newcommand{\ttb}{\tensor1{\ssb}}
+\newcommand{\ttc}{\tensor1{\ssc}}
+\newcommand{\ttd}{\tensor1{\ssd}}
+\newcommand{\ttaa}{\tensor2{\ssA}}
+\newcommand{\ttaaa}{\tensor3{\ssA}}
+\newcommand{\ttaaaa}{\tensor4{\ssA}}
+\newcommand{\ttbb}{\tensor2{\ssB}}
+\newcommand{\ttbbb}{\tensor3{\ssB}}
+\newcommand{\ttbbbb}{\tensor4{\ssB}}
+\newcommand{\ttcc}{\tensor2{\ssC}}
+\newcommand{\ttccc}{\tensor3{\ssC}}
+\newcommand{\ttcccc}{\tensor4{\ssC}}
+\newcommand{\sssym}{S}
+\newcommand{\ssantisym}{W}
+\newcommand{\ttsym}{\tensor2{\sssym}}
+\newcommand{\ttantisym}{\tensor2{\ssantisym}}
+\newcommand{\ssaxial}{w}
+\newcommand{\ttaxial}{\tensor1{\ssaxial}}
+\newcommand{\myforall}[1]{\forall #1;\qquad }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% M A T H
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter[Mathematical and physical concepts and notations]{Mathematical and physical\\concepts and notations}
+\label{chapMath}
+%==================================================================================
+Because the reader may be used to a different notation or terminology,
+\quotes{generally known} mathematical and physical theory is summarized in this chapter.
+
+Some identities and equations of this chapter are referenced multiple times from the core part of the thesis, which was another motivation to create this appendix.
+
+This chapter also contains some \quotes{generally known} derivations or derivations which themselves are not so important for the results provided by this thesis, but which are, according to the author's opinion, worth to be mentioned.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% T E N S O R S
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Tensors}
+%==================================================================================
+Both index notation
+\begin{equation}
+	\ssa, \ssa_i, \ssA_{ij}, \ssA_{ijk}, \ssA_{ijkl}
+\end{equation}
+and symbolic notation
+\begin{equation}
+	\ssa, \tta, \ttaa, \ttaaa, \ttaaaa
+\end{equation}
+are used in this thesis.
+The two lines of symbols above show notation for a zero (scalar), first (vector), second, third and fourth order tensor, respectively.
+The notations are interchangeable, but there are situations, where one is preferable to the other.
+
+The so called Einstein summation rule is used for index notation, for instance
+{
+\newcommand{\tmp}{\ssA_{ij}\ssC_{jk}\ssD_{mmkl}}
+\begin{equation}
+	\ssA_{il}
+	= \tmp
+	\equiv
+	\sum_j \sum_k \sum_m
+	\tmp
+	.
+\end{equation}
+}
+
+This thesis works with Cartesian coordinate system, so there is no need to distinguish between covariant, contravariant or mixed tensors.
+
+
+
+
+\subsection{Algebraic operations and properties}
+The following algebraic operations, written usually in both index and symbolic notation, are used throughout the thesis.
+Some symbols (e.g., $\LeviCivita$, $\identityTensor2$ or $\identityTensor4$) are defined in the next section \ref{secAppendixMathTensorsSpecialSymbols}.
+
+\subsubsection{Contraction}
+\begin{align}
+	\ssa &= \ttb\cdot\ttc,
+	&
+	\ssa &= \ssb_i \ssc_i
+	\\
+	\tta &= \ttbb\cdot\ttc,
+	&
+	\ssa_i &= \ssB_{ij} \ssc_j
+	\\
+	\tta &= \ttb\cdot\ttcc,
+	&
+	\ssa_i &= \ssb_j \ssC_{ji}
+	\\
+	\ttaa &= \ttbb\cdot\ttcc,
+	&
+	\ssA_{ij} &= \ssB_{ik} \ssC_{kj}
+	\\
+	\ttaa &= \ttb\cdotMiddle\ttccc
+	&
+	\ssA_{ij} &= \ssb_k\ssC_{ikj}
+	\\
+	\ttaa &= \ttbbb\cdot\ttc
+	&
+	\ssA_{ij} &= \ssB_{ijk}\ssc_{k}
+	\\
+	\ttaaaa &= \ttbbb\cdot\ttccc
+	&
+	\ssA_{ijkl} &= \ssB_{ijm}\ssC_{mkl}
+\end{align}
+The operator $\cdotMiddle$ denotes contraction with respect to the middle index.
+
+\subsubsection{Double contraction}
+\begin{align}
+	\ssa &= \ttaa:\ttbb,
+	&
+	\ssa &= \ssA_{ij} \ssB_{ij}
+	\\
+	\ttaa &= \ttbbbb:\ttcc,
+	&
+	\ssA_{ij} &= \ssB_{ijkl} \ssC_{kl}
+	\\
+	\ttaa &= \ttbb:\ttcccc,
+	&
+	\ssA_{ij} &= \ssB_{kl} \ssC_{klij}
+	\\
+	\tta &= \ttbbb:\ttcc,
+	&
+	\ssA_{i} &= \ssB_{ijk} \ssC_{jk}
+	\\
+	\ttaa &= \ttbbb:\ttccc,
+	&
+	\ssA_{ij} &= \ssB_{ikl} \ssC_{klj}
+	\\
+	\ttaaaa &= \ttbbbb:\ttcccc,
+	&
+	\ssA_{ijkl} &= \ssB_{ijmn} \ssC_{mnkl}
+\end{align}
+
+\subsubsection{Dyadic (outer, tensor, direct) product}
+\begin{align}
+	\ttaa &= \tta\otimes\ttb,
+	&
+	\ssA_{ij} &= \ssa_i \ssb_j
+	\\
+	\ttaaaa &= \ttbb\otimes\ttcc
+	&
+	\ssA_{ijkl} &= \ssB_{ij} \ssC_{kl}
+\end{align}
+
+\subsubsection{Cross product}
+\begin{align}
+	\ttc &= \tta\cross\ttb = \ttb\cdot\LeviCivita\cdot\tta = -\ttb\cross\tta
+	&
+	\ssc_i &= \leviCivita{ijk}\ssa_j\ssb_k = \ssb_k\leviCivita{kij}\ssa_j = -\leviCivita{ijk}\ssa_k\ssb_j =
+	\\
+	\ttcc &= \identityTensor2\cross\ttb = \LeviCivita\cdot\ttb
+	&
+	\ssC_{ij} &= \leviCivita{ijk}\ssb_k
+	\\
+	\ttc &= \identityTensor2\cross\ttbb = \LeviCivita:\ttbb,
+	&
+	\ssc_i &= \leviCivita{ijk}\ssB_{jk}
+\end{align}
+$\LeviCivita, \leviCivita{ijk}$ is the Levi-Civita permutation symbol (\ref{eqAppendixMathTensorsLeviCivitaDefinition}).
+
+\subsubsection{Transposition of a second order tensor}
+\begin{align}
+	\ttaa\T &
+	&
+	\ssA_{ij}\T &= \ssA_{ji}
+\end{align}
+
+\subsubsection{Symmetric and antisymmetric second order tensor, axial vector, decomposition}
+Any symmetric second order tensor $\ttsym$ equals its transposition:
+\begin{align}
+	\ttsym &= \ttsym\T
+	&
+	S_{ij} &= S_{ji}
+\end{align}
+Any antisymmetric second order tensor $\ttantisym$ equals minus its transposition:
+\begin{align}
+	\ttantisym &= -\ttantisym\T
+	&
+	\ssantisym_{ij} &= -\ssantisym_{ji}
+	\label{eqAppendixMathTensorsAntisymmetricTensorTransposition}
+\end{align}
+Any antisymmetric second order tensor $\ttantisym$ can be expressed in terms of its dual (axial) vector $\ttaxial$ such that for any $\ttb$
+\begin{align}
+	\myforall\ttb \ttb\cdot\ttantisym &= \ttaxial\cross\ttb,
+	&
+	\myforall{\ssb_i} \ssb_i\ssantisym_{ij} &= \leviCivita{jki}\ssaxial_kb_i
+	,
+\end{align}
+therefore
+\begin{align}
+	\ttantisym &= \LeviCivita\cdot\ttaxial = \identityTensor2\cross\ttaxial
+	&
+	\ssantisym_{ij} &= \leviCivita{jki}\ssaxial_k = \leviCivita{ijk}\ssaxial_k
+	&
+	\ttantisym &= \begin{bmatrix}
+		0 & w_3 & -w_2 \\
+		-w_3 & 0 & w_1 \\
+		w_2 & -w_1 & 0
+	\end{bmatrix}
+	\label{eqAppendixMathTensorsAxialVector1}
+	\\
+	\ttaxial &= \frac{1}{2}\LeviCivita:\ttantisym = \frac{1}{2}\identityTensor2\cross\ttantisym
+	&
+	\ssaxial_k &= \frac{1}{2}\leviCivita{kij}\ssantisym_{ij}
+	&
+	\ttaxial &= \{W_{23},W_{31},W_{12}\}\T
+	.
+	\label{eqAppendixMathTensorsAxialVector2}
+\end{align}
+The duality of the last equations can be easily shown using properties of $\LeviCivita$
+and substituting (\ref{eqAppendixMathTensorsAxialVector2}) into (\ref{eqAppendixMathTensorsAxialVector1}) or vice versa:
+\begin{gather}
+	\begin{gathered}
+		\ttaxial = \frac{1}{2}\LeviCivita:\ttantisym = \frac{1}{2}\LeviCivita:\LeviCivita\cdot\ttaxial = \frac{1}{2}2\,\identityTensor2\cdot\ttaxial = \ttaxial
+		\\
+		\ssaxial_k = \frac{1}{2}\leviCivita{kij}\ssantisym_{ij} = \frac{1}{2}\leviCivita{kij}\leviCivita{ijl}\ssaxial_l = \frac{1}{2}2\kdelta{kl}\ssaxial_l = \ssaxial_k
+	\end{gathered}
+	\\
+	\begin{gathered}
+		\ttantisym = \LeviCivita\cdot\ttaxial = \frac{1}{2}\LeviCivita\cdot\LeviCivita:\ttantisym = \frac{1}{2}2\antisym{\identityTensor4}:\ttantisym = \ttantisym
+		\\
+		\ssantisym_{ij} = \leviCivita{ijk}w_k = \leviCivita{ijk}\frac{1}{2}\leviCivita{klm}\ssantisym_{lm} = \frac{1}{2}(\kdelta{il}\kdelta{jm}-\kdelta{im}\kdelta{lj})\ssantisym_{lm} = \frac{1}{2}(\ssantisym_{ij}-\ssantisym_{ji}) = \ssantisym_{ij}
+	\end{gathered}
+\end{gather}
+
+Any second order tensor can be decomposed into the symmetric and the antisymmetric part.
+\begin{align}
+	\ttaa &= \sym{\ttaa}+\antisym{\ttaa}
+	&
+	\ssA_{ij} &= \sym{\ssA_{ij}} + \antisym{\ssA_{ij}}
+	\\
+	\sym{\ttaa} &= \frac{1}{2}\left(\ttaa+\ttaa\T\right) = \sym{\identityTensor4}:\ttaa
+	&
+	\sym{\ssA_{ij}} &= \frac{1}{2}\left(\ssA_{ij}+\ssA_{ji}\right) = \frac{1}{2}(\kdelta{ik}\kdelta{jl}+\kdelta{il}\kdelta{jk})\ssA_{kl}
+	\\
+	\antisym{\ttaa} &= \frac{1}{2}\left(\ttaa-\ttaa\T\right) = \antisym{\identityTensor4}:\ttaa
+	&
+	\antisym{\ssA_{ij}} &= \frac{1}{2}\left(\ssA_{ij}-\ssA_{ji}\right) = \frac{1}{2}(\kdelta{ik}\kdelta{jl}-\kdelta{il}\kdelta{jk})\ssA_{kl}
+\end{align}
+
+\subsubsection{Trace of a second order tensor}
+A trace of a second order tensor is the sum of its diagonal elements.
+The trace is the first invariant of a second order tensor.
+\begin{equation}
+	\trace{\ttaa} = \ssA_{11} + \ssA_{22} + \ssA_{33}
+\end{equation}
+It can be computed as a double contraction with the second order identity tensor.
+\begin{align}
+	\trace{\ttaa} &= \ttaa:\identityTensor2 = \identityTensor2:\ttaa
+	&
+	\trace{\ssA_{ij}} &= \ssA_{ij}\kdelta{ij} = \kdelta{ij}\ssA_{ij} = \ssA_{ii} = \ssA_{11} + \ssA_{22} + \ssA_{33}
+\end{align}
+
+\subsubsection{Volumetric part of a second order tensor}
+A volumetric (hydrostatic, spherical, isotropic) part of a second order tensor is a product of its mean value (one third of its trace) and the second order identity tensor
+\begin{align}
+	\vol{\ttaa} &= \frac{\trace{\ttaa}}{3}\identityTensor2
+	= \frac{1}{3}(\ttaa:\identityTensor2)\identityTensor2
+	= \frac{1}{3}\identityTensor2\otimes\identityTensor2:\ttaa
+	&
+	\vol{\ssA_{ij}} &= \frac{\ssA_{kk}}{3}\kdelta{ij}
+	= \frac{1}{3}\kdelta{ij}\kdelta{kl}\ssA_{kl}
+	.
+	\label{eqAppendixMathTensorsVolumetricPart}
+\end{align}
+
+Trace of the volumetric part equals trace of the original tensor
+\begin{equation}
+	\trace{\vol{\ttaa}} = \trace{\frac{\trace{\ttaa}}{3}\identityTensor2} = \frac{\trace{\ttaa}}{3}\trace{\identityTensor2} = \frac{\trace{\ttaa}}{3}3=\trace{\ttaa}
+	\label{eqAppendixMathTensorsTraceOfVolumetricPartEqTraceOrig}
+\end{equation}
+
+
+
+\subsection{Special tensor instances and identities} \label{secAppendixMathTensorsSpecialSymbols}
+
+\subsubsection{Second order identity tensor}
+A matrix representation of the second order identity tensor is the identity matrix.
+For the index notation, Kronecker delta is used.
+\begin{align}
+	\identityTensor2 &= \begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}
+	&
+	\kdelta{ij} &= \left\{\begin{array}{rcl}1&\text{if}&i=j\\0&\text{if}&i\neq j\end{array}\right.
+\end{align}
+\begin{align}
+	\myforall\ttaa \identityTensor2\cdot\ttaa &= \ttaa\cdot\identityTensor2 = \ttaa
+	&
+	\myforall{\ssA_{mn}} \kdelta{ik}\ssA_{kj} &= \ssA_{ik}\kdelta{kj} = \ssA_{ij}
+	.
+	\label{eqAppendixMathTensorsMul2byIdentity}
+\end{align}
+
+\subsubsection{Levi-Civita permutation symbol}
+\begin{align}
+	\LeviCivita &
+	&
+	\leviCivita{ijk} &= \left\{\begin{array}{rcl}
+		+1 & \text{if} & (i,j,k) \in \{(1,2,3), (2,3,1), (3,1,2)\} \\
+		-1 & \text{if} & (i,j,k) \in \{(3,2,1), (1,3,2), (2,1,3)\} \\
+		 0 & \text{if} & i=j \quad \text{or} \quad j=k \quad \text{or} \quad k=i
+	\end{array}\right.
+	\label{eqAppendixMathTensorsLeviCivitaDefinition}
+\end{align}
+therefore
+\begin{equation}
+	\leviCivita{ijk}=\leviCivita{jki}=\leviCivita{kij}=-\leviCivita{kji}-\leviCivita{ikj}=-\leviCivita{jik}
+\end{equation}
+and
+\begin{align}
+	\LeviCivita:\LeviCivita &= 2\,\identityTensor2
+	&
+	\leviCivita{ikl}\leviCivita{klj} &= 2\kdelta{ij}
+	\\
+	\LeviCivita\cdot\LeviCivita &= 2\antisym{\identityTensor4}
+	&
+	\leviCivita{ijm}\leviCivita{mkl} &= \kdelta{ik}\kdelta{jl} - \kdelta{il}\kdelta{jk}
+	.
+\end{align}
+
+\subsubsection{Fourth order identity tensors}
+\begin{align}
+	\identityTensor4 &
+	&
+	\identity_{ijkl} &= \kdelta{ik}\kdelta{jl}
+	\\
+	\T\identityTensor4 &
+	&
+	\T\!\identity_{ijkl} &= \kdelta{il}\kdelta{jk}
+	\\
+	\sym{\identityTensor4} &= \frac{1}{2}(\identityTensor4 + {\T\identityTensor4})
+	&
+	\sym{\identity}_{ijkl} &= \frac{1}{2}(\kdelta{ik}\kdelta{jl}+\kdelta{il}\kdelta{jk})
+	\label{eqAppendixMathTensorsSymIdentity4Def}
+	\\
+	\antisym{\identityTensor4} &= \frac{1}{2}(\identityTensor4-{\T\identityTensor4}) = \frac{1}{2}\LeviCivita\cdot\LeviCivita
+	&
+	\antisym{\identity}_{ijkl} &= \frac{1}{2}(\kdelta{ik}\kdelta{jl}-\kdelta{il}\kdelta{jk})
+\end{align}
+with following properties
+\begin{align}
+	\myforall\ttaa& \identityTensor4:\ttaa = \ttaa:\identityTensor4 = \ttaa
+	&
+	\myforall{\ssA_{mn}}& \kdelta{ik}\kdelta{jl}\ssA_{kl} = \ssA_{ij},\quad \ssA_{ij}\kdelta{ik}\kdelta{jl} = \ssA_{kl}
+	\\
+	\myforall\ttaa& {\T\identityTensor4}:\ttaa = \ttaa:{\T\identityTensor4} = \ttaa\T
+	&
+	\myforall{\ssA_{mn}}& \kdelta{il}\kdelta{jk}\ssA_{kl} = \ssA_{ji},\quad \ssA_{ij}\kdelta{il}\kdelta{jk} = \ssA_{lk}
+\end{align}
+\begin{equation}
+	\begin{aligned}
+		\myforall\ttaa& \sym{\identityTensor4}:\ttaa = \frac{1}{2}(\identityTensor4+{\T\identityTensor4}):\ttaa = \frac{1}{2}(\ttaa+\ttaa\T) = \sym{\ttaa}
+		\\
+		\myforall\ttaa& \ttaa:\sym{\identityTensor4} = \ttaa:\frac{1}{2}(\identityTensor4+{\T\identityTensor4}) = \frac{1}{2}(\ttaa+\ttaa\T) = \sym{\ttaa}
+		\label{eqAppendixMathTensorsIdentity4symProperties}
+	\end{aligned}
+\end{equation}
+\begin{equation}
+	\begin{aligned}
+		\myforall\ttaa& \antisym{\identityTensor4}:\ttaa = \frac{1}{2}(\identityTensor4-{\T\identityTensor4}):\ttaa = \frac{1}{2}(\ttaa-\ttaa\T) = \antisym{\ttaa}
+		\\
+		\myforall\ttaa& \ttaa:\antisym{\identityTensor4} = \ttaa:\frac{1}{2}(\identityTensor4-{\T\identityTensor4}) = \frac{1}{2}(\ttaa-\ttaa\T) = \antisym{\ttaa}
+	\end{aligned}
+\end{equation}
+
+\subsubsection{Fourth order volumetric projection tensor}
+The volumetric part of a second order tensor (\ref{eqAppendixMathTensorsVolumetricPart}) can be rewritten to the form
+\begin{align}
+	\vol{\ttaa} &= \frac{1}{3}\identityTensor2\otimes\identityTensor2:\ttaa
+	= \vol{\projectionTensor4}:\ttaa
+	&
+	\vol{\ssA_{ij}} &= \frac{1}{3}\kdelta{ij}\kdelta{kl}\ssA_{kl}	
+	= \vol{\projection}_{ijkl}\ssA_{kl}
+	,
+\end{align}
+where
+\begin{align}
+	\vol{\projectionTensor4} &= \frac{1}{3}\identityTensor2\otimes\identityTensor2
+	&
+	\vol{\projection}_{ijkl} &= \frac{1}{3}\kdelta{ij}\kdelta{kl}
+	\label{eqAppendixMathTensorsVolProjDef}
+\end{align}
+is the fourth order volumetric projection tensor.
+
+\subsubsection{Special identities}
+\begin{align}
+	\tta\cdot\ttbb\cdot\ttc &= \ttbb:(\tta\otimes\ttc) = (\tta\otimes\ttc):\ttbb
+	&
+	\ssa_i \ssB_{ij} \ssc_j &= \ssB_{ij} \ssa_i \ssc_j = \ssa_i \ssc_j \ssB_{ij}
+	\label{eqAppendixMathTensorsSpecialIdentity_aBc}
+	\\
+	\tta\cdot\ttbb\cdot\tta &= \ttbb:(\tta\otimes\tta) = (\tta\otimes\tta):\ttbb
+	&
+	\ssa_i \ssB_{ij} \ssa_j &= \ssB_{ij} \ssa_i \ssa_j = \ssa_i \ssa_j \ssB_{ij}
+	\label{eqAppendixMathTensorsSpecialIdentity_aBa}
+\end{align}
+
+\begin{align}
+	\ttaa:(\identityTensor2\cross\ttb) &= (\identityTensor2\cross\ttaa)\cdot\ttb
+	&
+	\ssA_{ij}(\leviCivita{ijk}\ssb_k) = (\leviCivita{kij}\ssA_{ij})\ssb_k
+	\label{eqAppendixMathTensorsSpecialIdentity_AEb}
+\end{align}
+
+\begin{align}
+	\identityTensor2\cross(\ttb\otimes\ttc) &= \ttb\cross\ttc
+	&
+	\leviCivita{ijk}\ssb_j\ssc_k
+	\label{eqAppendixMathTensors1crossBouterCeqBcrossC}
+\end{align}
+
+\subsubsection{Unit vectors}
+A unit vector $\normalVector$ is a vector with its norm equal to 1
+\begin{align}
+	\norm{\normalVector} &= \sqrt{\normalVector\cdot\normalVector} = 1
+	&
+	\norm{\normalVector} &= \sqrt{\normal_i\normal_i} = 1
+	\\
+	\normalVector\cdot\normalVector &= 1
+	&
+	\normal_i\normal_i &= 1
+\end{align}
+resulting into useful identities
+\begin{equation}
+	\br{\sym{\identityTensor4}\cdot\normalVector}\cdot\br{\normalVector\otimes\normalVector\otimes\normalVector}
+	=
+	\sym{\identity}_{ijab}\normal_b\normal_a\normal_k\normal_l
+	=
+	\normal_i\normal_j\normal_k\normal_l
+	=
+	\normalVector\otimes\normalVector\otimes\normalVector\otimes\normalVector
+	,
+\end{equation}
+\begin{equation}
+	\br{\normalVector\otimes\normalVector\otimes\normalVector}\cdot\br{\normalVector\cdot\sym{\identityTensor4}}
+	=
+	\normal_i\normal_j\normal_a\normal_b\sym{\identity}_{bakl}
+	=
+	\normal_i\normal_j\normal_k\normal_l
+	=
+	\normalVector\otimes\normalVector\otimes\normalVector\otimes\normalVector
+	,
+\end{equation}
+\begin{equation}
+	\br{\normalVector\otimes\normalVector\otimes\normalVector}\cdot\br{\normalVector\otimes\normalVector\otimes\normalVector}
+	=
+	\normal_i\normal_j\normal_a\normal_a\normal_k\normal_l
+	=
+	\normal_i\normal_j\normal_k\normal_l
+	=
+	\normalVector\otimes\normalVector\otimes\normalVector\otimes\normalVector
+	,
+\end{equation}
+\begin{equation}
+	\begin{gathered}
+		\br{\sym{\identityTensor4}\cdot\normalVector}\cdot\br{\normalVector\cdot\sym{\identityTensor4}}
+		=
+		\sym{\identity}_{ijab}\normal_b\normal_c\sym{\identity}_{cakl}
+		=
+		\frac{1}{2}\br{\kdelta{ia}\kdelta{jb}+\kdelta{ib}\kdelta{ja}}\normal_b\normal_c\frac{1}{2}\br{\kdelta{ck}\kdelta{al}+\kdelta{cl}\kdelta{ak}}
+		= \\ =
+		\frac{1}{4}\br{
+			\kdelta{ia}
+			\kdelta{jb}
+			\kdelta{ck}
+			\kdelta{al}
+			+
+			\kdelta{ia}
+			\kdelta{jb}
+			\kdelta{cl}
+			\kdelta{ak}
+			+
+			\kdelta{ib}
+			\kdelta{ja}
+			\kdelta{ck}
+			\kdelta{al}
+			+
+			\kdelta{ib}
+			\kdelta{ja}
+			\kdelta{cl}
+			\kdelta{ak}
+		}\normal_b\normal_c
+		= \\ =
+		\frac{1}{4}\br{
+			\normal_j
+			\normal_k
+			\kdelta{il}
+			+
+			\normal_j
+			\normal_l
+			\kdelta{ik}
+			+
+			\normal_i
+			\normal_k
+			\kdelta{jl}
+			+
+			\normal_i
+			\normal_l
+			\kdelta{jk}
+		}
+		.
+	\end{gathered}
+	\label{eqAppendixMathTensorsUnitVectorsInnI}
+\end{equation}
+
+Trace of a tensor $\normalVector\otimes\normalVector$ equals 1:
+\begin{align}
+	\trace{\normalVector\otimes\normalVector} &= \identityTensor2:(\normalVector\otimes\normalVector)
+	= \normalVector\cdot\identityTensor2\cdot\normalVector = \normalVector\cdot\normalVector = 1
+	&
+	\trace{\normal_i\normal_j} &= \kdelta{ij}\normal_i\normal_j = \normal_i\normal_i = 1
+	\label{eqAppendixMathTensorsUnitVectorsTrNinj}
+\end{align}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% D I F F E R E N T I A L   C A L C U L U S
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Differential calculus}
+%==================================================================================
+The notation and terminology for differential calculus used in the thesis is summarized here.
+
+\paragraph{Gradient}
+\begin{align}
+	\ttb &= \bnabla \ssa = \frac{\partial \ssa}{\partial\coordinateVector}
+	&
+	\ssb_i &= \nabla_i \ssa = \frac{\partial \ssa}{\partial \position_i}
+	\\
+	\ttbb &= \bnabla\otimes\tta
+	&
+	\ssb_{ij} &= \nabla_i \ssa_j = \frac{\partial \ssa_j}{\partial \position_i}
+	\\
+	\ttbb &= \tta\otimes\bnabla
+	&
+	\ssb_{ij} &= \ssa_i \nabla_j = \frac{\partial \ssa_i}{\partial \position_j}
+\end{align}
+The symmetric gradient is the symmetric part of the gradient
+\begin{align}
+	\ttbb &= \sym{\bnabla}\otimes\tta = \sym{\left(\bnabla\otimes\tta\right)}
+	= \frac{1}{2}\left( \bnabla\otimes\tta + \tta\otimes\bnabla \right)
+	\\
+	\ssb_{ij} &= \sym{\nabla}_i \ssa_j = \sym{(\nabla_i \ssa_j)}
+	= \frac{1}{2}\left(\frac{\partial \ssa_i}{\partial \position_j}+\frac{\partial \ssa_j}{\partial \position_i}\right)
+\end{align}
+The antisymmetric gradient is the antisymmetric part of the gradient
+\begin{align}
+	\ttbb &= \antisym{\bnabla}\otimes\tta = \antisym{\left(\bnabla\otimes\tta\right)}
+	= \frac{1}{2}\left( \tta\otimes\bnabla - \bnabla\otimes\tta \right)
+	\\
+	\ssb_{ij} &= \antisym{\nabla}_i \ssa_j = \antisym{(\nabla_i \ssa_j)}
+	= \frac{1}{2}\left(\frac{\partial \ssa_i}{\partial \position_j}-\frac{\partial \ssa_j}{\partial \position_i}\right)
+\end{align}
+
+\paragraph{Divergence}
+\begin{align}
+	\ssb &= \bnabla\cdot\tta
+	&
+	\ssb &= \nabla_i \ssa_i = \frac{\partial \ssa_i}{\partial \position_i}
+	\\
+	\ttb &= \bnabla\cdot\ttaa
+	&
+	\ssb_j &= \nabla_i \ssA_{ij} = \frac{\partial \ssA_{ij}}{\partial \position_i}
+	\\
+	\ttbb &= \bnabla\cdotMiddle\ttaaa
+	&
+	\ssb_{ij} &= \nabla_k \ssa_{ikj} = \frac{\partial \ssA_{ikj}}{\partial \position_k}
+	.
+\end{align}
+$\bnabla\cdotMiddle$ means differentiation with respect to the middle index.
+
+\paragraph{Divergence theorem}
+Divergence theorem (also known as Gauss's and/or Ostrogradsky's theorem) is \quotes{multidimensional integration by parts}
+\begin{align}
+	\int_V \bnabla \cdot \tta \dVolume &= \int_{\surface} \normalVector \cdot \tta \dSurface
+	&
+	\int_V \nabla_i \ssa_i \dVolume &= \int_{\surface} \normal_i \ssa_i \dSurface
+	\\
+	\int_V \bnabla \cdot \ttaa \dVolume &= \int_{\surface} \normalVector \cdot \ttaa \dSurface
+	&
+	\int_V \nabla_i \ssA_{ij} \dVolume &= \int_{\surface} \normal_i \ssA_{ij} \dSurface
+	\label{eqAppendixMathTensorsDivergenceTheorem2}
+	\\
+	\int_V \bnabla\cdotMiddle\ttaaa \dVolume &= \int_{\surface} \normalVector\cdotMiddle\ttaaa \dSurface
+	&
+	\int_V \nabla_k \ssa_{ikj} \dVolume &= \int_{\surface} \normal_k \ssa_{ikj} \dSurface
+	\label{eqAppendixMathTensorsDivergenceTheorem3}
+\end{align}
+$\volume$ and $\surface$ denotes volume and surface of the integration domain, respectively.
+
+\paragraph{Derivatives of products}
+\begin{align}
+	\bnabla\cdot\br{\ttaa\cdot\ttb}& = \br{\bnabla\cdot\ttaa}\cdot\ttb + \ttaa:\br{\bnabla\cdot\ttb}
+	&
+	\nabla_i\br{\ssA_{ij}\ssb_j} = \br{\nabla_i\ssA_{ij}}\ssb_j + \ssA_{ij}\br{\nabla_i\ssb_j}
+	\label{eqAppendixMathTensorsDerivativesOfProducts1}
+	\\
+	\bnabla\cdotMiddle\br{\tta\otimes\ttbb}& = \br{\tta\otimes\bnabla}\cdot\ttbb + \tta\otimes\br{\bnabla\cdot\ttbb}
+	&
+	\nabla_j\br{\ssa_i\ssB_{jk}} = \br{\ssa_i\nabla_j}\ssB_{jk} + \ssa_i\br{\nabla_j\ssB_{jk}}
+	\label{eqAppendixMathTensorsDerivativesOfProducts2}
+\end{align}
+
+\paragraph{Gradient of position vector}
+A derivative of a vector with respect to itself is the second order identity tensor
+\begin{align}
+	\frac{\partial\tta}{\partial\tta} &= \identityTensor2
+	&
+	\frac{\partial \ssa_i}{\partial \ssa_j} &= \kdelta{ij}
+	.
+\end{align}
+Then it directly follows that the gradient of the position vector is the second order identity tensor
+\begin{equation}
+	\begin{aligned}
+		\bnabla\otimes\coordinateVector &= \identityTensor2
+		&
+		\nabla_i \position_j &= \frac{\partial \position_j}{\partial \position_i} = \kdelta{ij}
+		\\
+		\coordinateVector\otimes\bnabla &= \identityTensor2
+		&
+		\nabla_j \position_i &= \frac{\partial \position_i}{\partial \position_j} = \kdelta{ij}
+		.
+		\label{eqAppendixMathTensorsGradientOfPoisitionVector}
+	\end{aligned}
+\end{equation}
+
+\paragraph{Expressing a second order tensor using derivatives and position vector}
+Using equations
+(\ref{eqAppendixMathTensorsMul2byIdentity})
+(\ref{eqAppendixMathTensorsDerivativesOfProducts2})
+and
+(\ref{eqAppendixMathTensorsGradientOfPoisitionVector})
+yields
+\begin{gather}
+	\ssA_{ij} = \kdelta{ik}\ssA_{kj} = \br{\position_i\nabla_k}\ssA_{kj} = \nabla_k\br{\position_i \ssA_{kj}} - \position_i\br{\nabla_k \ssA_{kj}}
+	\\
+	\ttaa = \identityTensor2\cdot\ttaa = \br{\positionVector\otimes\bnabla}\cdot\ttaa =
+	\bnabla\cdotMiddle\br{\positionVector\otimes\ttaa} - \positionVector\otimes\br{\bnabla\cdot\ttaa}
+	.
+	\label{eqAppendixMathTensorsRank2usingDiffAndPosition}
+\end{gather}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% C O N T I N U U M  M E C H A N I C S
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Cosserat micropolar continuum mechanics} \label{secAppendixMathContinuum}
+%==================================================================================
+Basic concepts and conventions of Cosserat micropolar continuum are summarized in this section.
+Equations in this section are derived for the geometrically linear case from engineering point of view extending classical Boltzmann continuum knowledge.
+
+Cosserat continuum (named after Cosserat brothers \cite{Cosserat1896}) considers rotation of material points as an independent variable, therefore it can be used for the description of granular media.
+The presence of rotational degrees of freedom results in non-symmetric stress and strain tensors.
+
+For more details, see \cite{%
+EhlersVolk1999a,%
+Cosserat1896,%
+Alonsoarroquin2011a,%
+Vardoulakis2009a%
+}
+
+Consider a material domain with volume $\volume$ and surface $\surface$.
+Each material point has reference position $\positionVector$ and undergoes displacement $\displacementVector$ and \emph{independent} rotation $\rotationVector$.
+Body force $\bodyForceVector$ and body couple $\bodyCoupleVector$
+act at each inner point $\positionVector\in\volume$
+and
+surface force $\surfForceVector$ and surface couple $\surfCoupleVector$
+act at each surface point $\positionVector\in\surface$.
+All force and moment quantities may have zero values.
+
+
+
+
+\subsection{Kinematic equations}
+
+The displacement gradient
+\begin{align}
+	\displacementGradient &= \bnabla\otimes\displacementVector
+	&
+	\Displacement_{ij} &= \nabla_i\displacement_j
+\end{align}
+defines displacement $\dd\displacementVector$ of an infinitesimal line segment $\dd\positionVector$ as
+\begin{equation}
+	\dd\displacementVector = \dd\positionVector\cdot\displacementGradient
+\end{equation}
+and can be decomposed into the symmetric and antisymmetric part, representing \emph{macro} strain tensor $\strainTensor_M$ and rotation tensor $\rotationTensor_M$ (or corresponding axial vector $\rotationVector_M$), respectively:
+\begin{align}
+	\sym{\displacementGradient} &= \strainTensor_M = \sym{\bnabla}\otimes\displacementVector
+	= \frac{1}{2}\left(\bnabla\otimes\displacementVector+\displacementVector\otimes\bnabla\right)
+	\\
+	\antisym{\displacementGradient} &= \rotationTensor_M = \antisym{\bnabla}\otimes\displacementVector
+	= \frac{1}{2}\left( \bnabla\otimes\displacementVector - \displacementVector\otimes\bnabla \right)
+	= \identityTensor2\cross\rotationVector_M
+	\label{eqAppendixMathContinuumDispGradAntisym}
+	.
+\end{align}
+The difference between the independent rotation degree of freedom $\rotationVector$ and the macro rotation $\rotationVector_M$ is additional quantity, the so called \emph{micro} rotation $\rotationVector_m$:
+\begin{equation}
+	\rotationVector_m
+	=
+	\rotationVector - \rotationVector_M
+	.
+	\label{eqAppendixMathContinuumRotationSplitMicroMacro}
+\end{equation}
+$\rotationVector_m$ represents \quotes{rotation of material points}, see subsection \ref{subsecAppendixMathContinuumKinematicsExample}.
+Cosserat strain is then defined as the macrostrain plus the contribution of the microrotation:
+\begin{equation}
+	\strainTensor = \strainTensor_M - \identityTensor2\cross\rotationVector_m
+	,
+	\label{eqAppendixMathContinuumCosseratStrainDefinition}
+\end{equation}
+which can also be rewritten to the form
+\begin{equation}
+	\strainTensor
+	= \sym{\displacementGradient} - \identityTensor2\cross(\rotationVector-\rotationVector_M)
+	= \sym{\displacementGradient} + \antisym{\displacementGradient} - \identityTensor2\cross\rotationVector
+	= \displacementGradient - \identityTensor2\cross\rotationVector
+\end{equation}
+A more rigorous derivation is given by, e.g., \cite{Vardoulakis2009a}.
+
+Gradient of the rotation vector is the curvature tensor
+\begin{equation}
+	\curvatureTensor = \bnabla\otimes\rotationVector
+	.
+	\label{eqAppendixMathContinuumCurvatureTensorDefinition}
+\end{equation}
+
+\subsubsection{2D example, simple shear}\label{subsecAppendixMathContinuumKinematicsExample}
+Consider an elementary cube whose points have displacement
+$\displacementVector = \{ky,0\}\T$
+and \emph{total} rotation $\rotation=\rotation_M+\rotation_m$.
+The displacement gradient is
+\begin{align}
+	\displacementGradient &= \bnabla\otimes\displacementVector = \begin{bmatrix}
+		0 & 0\\
+		k & 0
+	\end{bmatrix}
+	,\qquad
+	\dd\positionVector\cdot\displacementGradient = \{\dd{x},\dd{y}\}\T \cdot \begin{bmatrix}
+		0 & 0\\
+		k & 0
+	\end{bmatrix} = \{k\dd{y},0\} = \dd\displacementVector
+\end{align}
+\begin{align}
+	\strainTensor_M
+	&=
+	\sym{\displacementGradient} = \begin{bmatrix}
+		0 & \frac{1}{2}k\\
+		\frac{1}{2}k & 0
+	\end{bmatrix}
+	&
+	\rotationTensor_M
+	&=
+	\antisym{\displacementGradient} = \begin{bmatrix}
+		0 & -\frac{1}{2}k \\
+		+\frac{1}{2}k & 0 \\
+	\end{bmatrix}
+	&
+	\rotation_M = -\frac{1}{2}k
+\end{align}
+
+Now consider the microstrain with the value
+\begin{align}
+	\rotation_m &= +\frac{1}{2}k
+	&
+	\rotationTensor_m &= \begin{bmatrix}
+		0 & +\frac{1}{2}k \\
+		-\frac{1}{2}k & 0 \\
+	\end{bmatrix}
+	.
+\end{align}
+The resulting Cosserat strain reads
+\begin{equation}
+	\strainTensor = \strainTensor_M - \identityTensor2\cross\rotation_m
+	=
+	\strainTensor = \strainTensor_M - \rotationTensor_m
+	=
+	\begin{bmatrix}
+		0 & \frac{1}{2}k \\
+		\frac{1}{2}k & 0 \\
+	\end{bmatrix}
+	-
+	\begin{bmatrix}
+		0 & +\frac{1}{2}k \\
+		-\frac{1}{2}k & 0 \\
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		0 & 0 \\
+		k & 0 \\
+	\end{bmatrix}
+\end{equation}
+Table \ref{tabAppendixMathCosseratStrain} illustrates individual components of the displacement gradient and strain tensor, especially the values $\strain_{12}=0$ (no relative shear deformation between particles) and $\strain_{21}=k$ (existent relative shear deformation between particles).
+
+\begin{table}
+	\centering
+	\caption{2D representation of Cosserat strain}
+	\def\w{3cm}
+	\def\v{v}
+	\begin{tabular}{|C{2.7cm}|C{1.5cm}|C{1.7cm}|C{1.6cm}|C{1cm}|C{2.8cm}|}
+		\hline
+		{}
+		&
+		$\displacementGradient$
+		&
+		$\sym{\displacementGradient}=\strainTensor_M$
+		&
+		$\antisym{\displacementGradient}\equiv\rotation_M$
+		&
+		$\rotation_m$
+		&
+		$\strainTensor=\strainTensor_M-\identityTensor2\cross\rotationVector_m$ \\
+		\hline
+		\hline
+		\includegraphics[width=\w]{raphaelpy/cosserat_strain_0}
+		&
+		$\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+		&
+		$\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+		&
+		0
+		&
+		0
+		&
+		$\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+		\\
+		\hline
+		\includegraphics[width=\w]{raphaelpy/cosserat_strain_1}
+		&
+		$\begin{bmatrix} 0 & \v \\ \v & 0 \end{bmatrix}$
+		&
+		$\begin{bmatrix} 0 & \v \\ \v & 0 \end{bmatrix}$
+		&
+		0
+		&
+		0
+		&
+		$\begin{bmatrix} 0 & \v \\ \v & 0 \end{bmatrix}$
+		\\
+		\hline
+		\includegraphics[width=\w]{raphaelpy/cosserat_strain_2}
+		&
+		$\begin{bmatrix} 0 & -\v \\ \v & 0 \end{bmatrix}$
+		&
+		$\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+		&
+		$-\v$
+		&
+		0
+		&
+		$\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+		\\
+		\hline
+		\includegraphics[width=\w]{raphaelpy/cosserat_strain_3}
+		&
+		$\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+		&
+		$\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+		&
+		0
+		&
+		$\v$
+		&
+		$\begin{bmatrix} 0 & -\v \\ \v & 0 \end{bmatrix}$
+		\\
+		\hline
+		\includegraphics[width=\w]{raphaelpy/cosserat_strain_4}
+		&
+		$\begin{bmatrix} 0 & 0 \\ 2\v & 0 \end{bmatrix}$
+		&
+		$\begin{bmatrix} 0 & \v \\ \v & 0 \end{bmatrix}$
+		&
+		$-\v$
+		&
+		0
+		&
+		$\begin{bmatrix} 0 & \v \\ \v & 0 \end{bmatrix}$
+		\\
+		\hline
+		\includegraphics[width=\w]{raphaelpy/cosserat_strain_5}
+		&
+		$\begin{bmatrix} 0 & 0 \\ 2\v & 0 \end{bmatrix}$
+		&
+		$\begin{bmatrix} 0 & \v \\ \v & 0 \end{bmatrix}$
+		&
+		$-\v$
+		&
+		$\v$
+		&
+		$\begin{bmatrix} 0 & 0 \\ 2\v & 0 \end{bmatrix}$
+		\\
+		\hline
+	\end{tabular}
+	\label{tabAppendixMathCosseratStrain}
+\end{table}
+
+
+
+
+\subsection{Equilibrium equations}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=10cm]{raphaelpy/cosserat_stress}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{10cm}
+		\put(-0.416666666667,0.5){\makebox(0,0)[tl]{$\bodyForce_1$}}
+		\put(-0.566666666667,0.5){\makebox(-.02,0)[r]{$\bodyCouple_3$}}
+		\put(-0.233333333333,0.5){\makebox(0,-.01)[t]{$\stress_{11}(\Delta\position_1)$}}
+		\put(-0.316666666667,0.583333333333){\makebox(0,-.01)[bl]{$\stress_{12}(\Delta\position_1)$}}
+		\put(-0.766666666667,0.5){\makebox(0,.05)[t]{$\stress_{11}(0)$}}
+		\put(-0.683333333333,0.416666666667){\makebox(-.02,0)[tr]{$\stress_{12}(0)$}}
+		\put(-0.5,0.766666666667){\makebox(0,0)[l]{$\stress_{21}(\Delta\position_2)$}}
+		\put(-0.416666666667,0.683333333333){\makebox(0,0)[l]{$\ \stress_{22}(\Delta\position_2)$}}
+		\put(-0.5,0.233333333333){\makebox(0,0)[l]{$\stress_{21}(0)$}}
+		\put(-0.583333333333,0.316666666667){\makebox(-.03,0)[r]{$\stress_{22}(0)$}}
+		\put(-0.1,0.5){\makebox(0,0)[l]{$\coupleStress_{13}(\Delta\position_1)$}}
+		\put(-0.9,0.5){\makebox(-.02,0)[r]{$\coupleStress_{13}(0)$}}
+		\put(-0.5,0.9){\makebox(0,.05)[t]{$\coupleStress_{23}(\Delta\position_1)$}}
+		\put(-0.5,0.1){\makebox(0,-.01)[t]{$\coupleStress_{23}(0)$}}
+	\end{picture}
+	\caption{2D representation of stresses and couple stresses on elementary cube}
+	\label{figAppendixMathCosseratInfininezimalBoxEqulibrium}
+\end{figure}
+
+The material point can be represented by an infinitesimal cube with dimensions $\Delta\tensor1{\position}$.
+
+The stress state of material point is expressed by second order stress tensor $\stressTensor$ and second order couple stress tensor $\coupleStressTensor$, see figure \ref{figAppendixMathCosseratInfininezimalBoxEqulibrium} for illustration.
+For the sake of simplicity, the two opposite corners have coordinates $\tensor2{0}$ and $\Delta\positionVector$, but the same results would hold for corners $\positionVector$ and $\positionVector+\Delta\positionVector$.
+
+The $ij$ component of stress (couple stress) tensor equals surface force (surface couple) acting on the surface with normal $\tensor1{e}_i$ in direction $\tensor1{e}_j$.
+Surface force $\surfForceVector$ and surface couple $\surfCoupleVector$ acting on surface with general normal $\normalVector$ can be
+expressed as the so called Cauchy's stress theorem
+\begin{align}
+	\surfForceVector &= \normalVector\cdot\stressTensor
+	&
+	\surfForce_j &= \normal_i\stress_{ij}
+	\label{eqAppendixMathContinuumStress2surfForce}
+	\\
+	\surfCoupleVector &= \normalVector\cdot\coupleStressTensor
+	&
+	\surfCouple_j &= \normal_i\coupleStress_{ij}
+	.
+	\label{eqAppendixMathContinuumCoupleStress2surfCouple}
+\end{align}
+
+Equilibrium equations are expressed in terms of body forces $\bodyForceVector$ and body couples $\bodyCoupleVector$ and can be derived from equilibrium on an infinitesimal cube considering its dimensions as a~limit $\norm{\Delta\tensor1{\position}}\to0$.
+For example, force equilibrium (2D) in direction 1 yields
+\begin{equation}
+	\begin{gathered}
+		- \Delta \position_2\stress_{11}(0)
+		+ \Delta \position_2\stress_{11}(\Delta \position_1)
+		- \Delta \position_1\stress_{21}(0)
+		+ \Delta \position_1\stress_{21}(\Delta \position_2)
+		+ \bodyForce_1\Delta \position_1 \Delta \position_2 = 0
+		\\
+		\frac{
+			  \Delta \position_2\stress_{11}(\Delta \position_1)
+			- \Delta \position_2\stress_{11}(0)
+		}{\Delta \position_1}
+		+
+		\frac{
+			  \Delta \position_1\stress_{21}(\Delta \position_2)
+			- \Delta \position_1\stress_{21}(0)
+		}{\Delta \position_2}
+		+ \bodyForce_1 = 0
+		\\
+		\xrightarrow{\lim_{\Delta \position_i\to0}}
+		\\
+		\nabla_1\stress_{11} + \nabla_2\stress_{21} + f_1 = 0
+		\label{eqAppendixMathContinuumForceEqulibriumDir1}
+	\end{gathered}
+\end{equation}
+and moment equilibrium yields
+\begin{equation}
+	\begin{gathered}
+		- \Delta \position_2\coupleStress_{13}(0)
+		+ \Delta \position_2\coupleStress_{13}(\Delta \position_1)
+		- \Delta \position_1\coupleStress_{23}(0)
+		+ \Delta \position_1\stress_{23}(\Delta \position_2)
+		+
+		\\
+		+ \Delta \position_2\stress_{12}\Delta \position_1
+		- \Delta \position_1\stress_{21}\Delta \position_2
+		+ \bodyCouple_3 \Delta \position_1 \Delta \position_2
+		=0
+		\\
+		\frac{
+			  \Delta \position_2\coupleStress_{13}(\Delta \position_1)
+			- \Delta \position_2\coupleStress_{13}(0)
+		}{\Delta \position_1}
+		+
+		\frac{
+			  \Delta \position_1\coupleStress_{23}(\Delta \position_2)
+			- \Delta \position_1\coupleStress_{23}(0)
+		}{\Delta \position_2}
+		+ \stress_{12} - \stress_{21} + \bodyCouple_3 = 0
+		\\
+		\xrightarrow{\lim_{\Delta \position_i\to0}}
+		\\
+		\nabla_1\coupleStress_{13} + \nabla_2\coupleStress_{23} + \stress_{12} - \stress_{21} + \bodyCouple_3 = 0
+		.
+		\label{eqAppendixMathContinuumMomentEqulibriumDir1}
+	\end{gathered}
+\end{equation}
+
+Generalization of (\ref{eqAppendixMathContinuumForceEqulibriumDir1}) and (\ref{eqAppendixMathContinuumMomentEqulibriumDir1}) yields full form of equilibrium equations (which can be derived more rigorously from linear momentum and angular momentum balance or virtual work principle, see section \ref{secAppendixMathContinuumVirtualWorks}):
+\begin{align}
+	\nabla_i\stress_{ij} + \bodyForce_j &= 0
+	&
+	\bnabla\cdot\stressTensor + \bodyForceVector &= \tensor2{0}
+	\label{eqAppendixMathContinuumForceEqulibrium}
+	\\
+	\nabla_i\coupleStress_{ik} + \leviCivita{kij}\stress_{ij} + \bodyCouple_k &= 0
+	&
+	\bnabla\cdot\coupleStressTensor + \identityTensor2\cross\stressTensor + \bodyCoupleVector &= \tensor2{0}
+	\label{eqAppendixMathContinuumMomentEqulibrium}
+	.
+\end{align}
+
+
+
+
+\subsection{Principle of virtual work}\label{secAppendixMathContinuumVirtualWorks}
+The virtual work principle (specifically the principle of virtual displacement) postulates that the virtual work of internal forces is equal to the virtual work of external forces
+\begin{equation}
+	\int_\volume \stressTensor:\virtual\strainTensor \dVolume
+	+
+	\int_\volume \coupleStressTensor:\virtual\curvatureTensor \dVolume
+	=
+	\int_\volume \bodyForceVector\cdot\virtual\displacementVector \dVolume
+	+
+	\int_\volume \bodyCoupleVector\cdot\virtual\rotationVector \dVolume
+	+
+	\int_\surface \surfForceVector\cdot\virtual\displacementVector \dSurface
+	+
+	\int_\surface \surfCoupleVector\cdot\virtual\rotationVector \dSurface
+	\label{eqAppendixMathContinuumVirtualWorks}
+\end{equation}
+for any admissible virtual displacement $\virtual\displacementVector$ and virtual rotation $\virtual\rotationVector$.
+Applying kinematic constraints (\ref{eqAppendixMathContinuumCosseratStrainDefinition}) and (\ref{eqAppendixMathContinuumCurvatureTensorDefinition}) on the virtual fields
+\begin{align}
+	\virtual\strainTensor &=
+	\virtual\displacementGradient - \identityTensor2\cross\virtual\rotationVector =
+	\bnabla\otimes\virtual\displacementVector - \identityTensor2\cross\virtual\rotationVector
+	\\
+	\virtual\curvatureTensor &= \bnabla\otimes\virtual\rotationVector
+\end{align}
+yields two independent equations
+\begin{align}
+	\int_\volume \stressTensor:(\bnabla\otimes\virtual\displacementVector) \dVolume
+	&=
+	\int_\volume \bodyForceVector\cdot\virtual\displacementVector \dVolume
+	+
+	\int_\surface \surfForceVector\cdot\virtual\displacementVector \dSurface
+	\label{eqAppendixMathContinuumVirtualWorksDspl}
+	\\
+	\int_\volume \coupleStressTensor:(\bnabla\otimes\virtual\rotationVector) \dVolume
+	-
+	\int_\volume \stressTensor:(\identityTensor2\cross\virtual\rotationVector) \dVolume
+	&=
+	\int_\volume \bodyCoupleVector\cdot\virtual\rotationVector \dVolume
+	+
+	\int_\surface \surfCoupleVector\cdot\virtual\rotationVector \dSurface
+	\label{eqAppendixMathContinuumVirtualWorksRot}
+	.
+\end{align}
+
+Using (\ref{eqAppendixMathTensorsDerivativesOfProducts1}) and (\ref{eqAppendixMathTensorsDivergenceTheorem2}),
+equation (\ref{eqAppendixMathContinuumVirtualWorksDspl}) can be rewritten to the form
+\begin{gather}
+	\begin{gathered}
+		\int_\volume \stressTensor:(\bnabla\otimes\virtual\displacementVector) \dVolume
+		=
+		\int_\volume \bnabla\cdot(\stressTensor\cdot\virtual\displacementVector) \dVolume
+		-
+		\int_\volume (\bnabla\cdot\stressTensor)\cdot\virtual\displacementVector \dVolume
+		= \\ =
+		\int_\surface \normalVector\cdot\stressTensor\cdot\virtual\displacementVector \dSurface
+		-
+		\int_\volume (\bnabla\cdot\stressTensor)\cdot\virtual\displacementVector \dVolume
+		=
+		\int_\volume \bodyForceVector\cdot\virtual\displacementVector \dVolume
+		+
+		\int_\surface \surfForceVector\cdot\virtual\displacementVector \dSurface
+	\end{gathered}
+	\\
+	\xrightarrow{\forall\virtual\displacementVector} \nonumber
+	\\
+	\bnabla\cdot\stressTensor + \bodyForceVector = \tensor2{0}
+	\label{eqAppendixMathContinuumVirtualWorksForceEqulibrium}
+	\\
+	\surfForceVector = \normalVector\cdot\stressTensor
+	\label{eqAppendixMathContinuumVirtualWorksStress2force}
+\end{gather}
+yielding equilibrium equations (\ref{eqAppendixMathContinuumForceEqulibrium}) and (\ref{eqAppendixMathContinuumStress2surfForce}).
+
+Using (\ref{eqAppendixMathTensorsDerivativesOfProducts1}) and (\ref{eqAppendixMathTensorsSpecialIdentity_AEb}),
+the first term of equation (\ref{eqAppendixMathContinuumVirtualWorksRot}) can be rewritten to the form
+\begin{equation}
+	\begin{gathered}
+		\int_\volume \coupleStressTensor:(\bnabla\otimes\virtual\rotationVector) \dVolume
+		=
+		\int_\volume \bnabla\cdot(\coupleStressTensor\cdot\virtual\rotationVector) \dVolume
+		-
+		\int_\volume (\bnabla\cdot\coupleStressTensor)\cdot\virtual\rotationVector \dVolume
+		= \\ =
+		\int_\surface \normalVector\cdot\coupleStressTensor\cdot\virtual\rotationVector \dSurface
+		-
+		\int_\volume (\bnabla\cdot\coupleStressTensor)\cdot\virtual\rotationVector \dVolume
+	\end{gathered}
+\end{equation}
+and the whole equation (\ref{eqAppendixMathContinuumVirtualWorksRot}) can be rewritten to the form
+\begin{gather}
+	\int_\volume \coupleStressTensor:(\bnabla\otimes\virtual\rotationVector) \dVolume
+	-
+	\int_\volume \stressTensor:(\identityTensor2\cross\virtual\rotationVector) \dVolume
+	= \\ =
+	\int_\surface \normalVector\cdot\coupleStressTensor\cdot\virtual\rotationVector \dSurface
+	-
+	\int_\volume (\bnabla\cdot\coupleStressTensor)\cdot\virtual\rotationVector \dVolume
+	-
+	\int_V (\identityTensor2\cross\stressTensor)\cdot\virtual\rotationVector \dVolume
+	=
+	\int_\volume \bodyCoupleVector\cdot\virtual\rotationVector \dVolume
+	+
+	\int_\surface \surfCoupleVector\cdot\virtual\rotationVector \dSurface
+	\nonumber
+	\\
+	\xrightarrow{\forall\virtual\rotationVector} \nonumber
+	\\
+	\bnabla\cdot\coupleStressTensor + \identityTensor2\cross\stressTensor + \bodyCoupleVector = \tensor2{0}
+	\label{eqAppendixMathContinuumVirtualWorksMomentEqulibrium}
+	\\
+	\surfCoupleVector = \normalVector\cdot\coupleStressTensor
+	\label{eqAppendixMathContinuumVirtualWorksCoupleStress2moment}
+\end{gather}
+yielding equilibrium equations (\ref{eqAppendixMathContinuumMomentEqulibrium}) and (\ref{eqAppendixMathContinuumCoupleStress2surfCouple}).
+
+Or the other way around, contracting local equlibrium equations
+(\ref{eqAppendixMathContinuumVirtualWorksForceEqulibrium}),
+(\ref{eqAppendixMathContinuumVirtualWorksStress2force}),
+(\ref{eqAppendixMathContinuumVirtualWorksMomentEqulibrium}) and
+(\ref{eqAppendixMathContinuumVirtualWorksCoupleStress2moment})
+with virtual displacement and virtual rotation and applying inverse modifications yields the equivalence of internal and external virtual work (\ref{eqAppendixMathContinuumVirtualWorks}).
+
+
+\subsection{Classical Boltzmann continuum}
+Classical Boltzmann continuum is a special case of Cosserat continuum, specifically the case when the microstrain, couples and couple stress tensor are zero:
+\begin{align}
+	\rotationVector_m &= \tensor1{0}
+	&
+	\bodyCoupleVector &= \tensor1{0}
+	&
+	\surfCoupleVector &= \tensor1{0}
+	&
+	\coupleStressTensor &= \tensor2{0}
+\end{align}
+Then
+rotation is defined by the antisymmetric part of the displacement gradient
+\begin{align}
+	\rotationVector &= \rotationVector_M
+	&
+	\identityTensor2\cross\rotationVector &= \identityTensor2\cross\rotationVector_M = \antisym{\displacementGradient}
+	,
+\end{align}
+strain tensor (\ref{eqAppendixMathContinuumCosseratStrainDefinition}) is the symmetric part of the displacement gradient
+\begin{equation}
+	\strainTensor = \strainTensor_M = \sym{\displacementGradient} = \sym{\bnabla}\otimes\displacementVector,
+\end{equation}
+and
+stress tensor (\ref{eqAppendixMathContinuumMomentEqulibrium}) is symmetric
+\begin{equation}
+	\identityTensor2\cross\stressTensor = \tensor1{0}
+	.
+\end{equation}
+
+The virtual work principle (\ref{eqAppendixMathContinuumVirtualWorks}) simplifies to (replacing the symmetric part of gradient with the gradient because of symmetry of the stress tensor)
+\begin{equation}
+	\int_\volume \stressTensor:\virtual\strainTensor \dVolume
+	=
+	\int_\volume \stressTensor:(\sym{\bnabla}\otimes\virtual\displacementVector) \dVolume
+	=
+	\int_\volume \stressTensor:(\bnabla\otimes\virtual\displacementVector) \dVolume
+	=
+	\int_\volume \bodyForceVector\cdot\virtual\displacementVector \dVolume
+	+
+	\int_\surface \surfForceVector\cdot\virtual\displacementVector \dSurface
+\end{equation}
+yielding (unchanged) local equilibrium conditions (\ref{eqAppendixMathContinuumVirtualWorksForceEqulibrium}) and (\ref{eqAppendixMathContinuumVirtualWorksStress2force}):
+\begin{align}
+	\bnabla\cdot\stressTensor + \bodyForceVector &= \tensor1{0}
+	&
+	\normalVector\cdot\stressTensor &= \surfForceVector
+\end{align}
+
+
+\subsubsection{Linear elasticity}
+The linear constitutive law
+\begin{equation}
+	\stressTensor
+	=
+	\stiffnessTensorElastic:\strainTensor
+	\label{eqAppendixMathContinuumStressStrainLawLinear}
+\end{equation}
+for linear isotropic material can be written in terms of Lamé coefficients $\lambda$ and $\mu$
+\begin{equation}
+	\stressTensor
+	=
+	2\mu\strainTensor + \lambda\identityTensor2\trace{\strainTensor}
+	=
+	2\mu\sym{\identityTensor4}:\strainTensor + 3\lambda\vol{\projectionTensor4}:\strainTensor
+	=
+	\br{2\mu\sym{\identityTensor4} + 3\lambda\vol{\projectionTensor4}}:\strainTensor
+\end{equation}
+with elastic stiffness tensor
+\begin{equation}
+	\stiffnessTensorElastic
+	=
+	2\mu\sym{\identityTensor4} + 3\lambda\vol{\projectionTensor4}
+	.
+	\label{eqAppendixMathContinuumStiffnessTensorElasicLame}
+\end{equation}
+Lamé coefficients can be expressed in terms of Young's modulus $\youngModulus$ and Poisson's ratio $\poissonRatio$ and vice versa:
+\begin{equation}
+	\begin{aligned}
+		\lambda &= \frac{\youngModulus\poissonRatio}{(1+\poissonRatio)(1-2\poissonRatio)}
+		&
+		\mu &= \shearModulus = \frac{\youngModulus}{2(1+\poissonRatio)}
+		\\
+		\poissonRatio &= \mu\frac{3\lambda+2\mu}{\lambda+\mu}
+		&
+		\poissonRatio &= \frac{\lambda}{2(\lambda+\mu)}
+		.
+		\label{eqAppendixMathContinuumLame2YoungPoisson}
+	\end{aligned}
+\end{equation}
+The elastic stiffness tensor can then be expressed as
+\begin{equation}
+	\stiffnessTensorElastic
+	=
+	\frac{\youngModulus}{1+\poissonRatio}\sym{\identityTensor4}
+	+
+	\frac{3\youngModulus\poissonRatio}{(1+\poissonRatio)(1-2\poissonRatio)}\vol{\projectionTensor4}
+	.
+	\label{eqAppendixMathContinuumElasticStiffnessTensorIsIv}
+\end{equation}
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% I N T E G R A L S
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Surface integrals over unit sphere}
+%==================================================================================
+Values of surface and volume integrals over the unit sphere (over the solid angle $\solidAngle$) of special tensorial functions
+\begin{equation}
+	\int_\solidAngle \dSolidAngle = 4\pi
+	\label{eqAppendixMathUnitSphereSurface}
+\end{equation}
+\begin{align}
+	\int_\solidAngle \normal_i\normal_j \dSolidAngle &= \frac{4\pi}{3}\kdelta{ij}
+	&
+	\int_\solidAngle \normalVector\otimes\normalVector \dSolidAngle &= \frac{4\pi}{3}\identityTensor2
+	\label{eqAppendixMathUnitSphereIntegralNinj}
+\end{align}
+\begin{gather}
+	\int_\solidAngle \normal_i\normal_j\normal_k\normal_l \dSolidAngle
+	= \frac{4\pi}{15}\left(\kdelta{ij}\kdelta{kl}+\kdelta{ik}\kdelta{jl}+\kdelta{il}\kdelta{jk}\right)
+	= \frac{4\pi}{15} \left(3\vol{\projection}_{ijkl}+2\sym{\identity}_{ijkl}\right)
+	\label{eqAppendixMathUnitSphereIntegralNinjnknlIndex}
+	\\
+	\int_\solidAngle \normalVector\otimes\normalVector\otimes\normalVector\otimes\normalVector \dSolidAngle
+	= \frac{4\pi}{15} \left(3\vol{\projectionTensor4}+2\sym{\identityTensor4}\right)
+	\label{eqAppendixMathUnitSphereIntegralNinjnknl}
+\end{gather}
+\begin{align}
+	\int_\solidAngle (\sym{\identityTensor4}\cdot\normalVector)\cdot(\normalVector\cdot\sym{\identityTensor4}) \dSolidAngle
+	&=
+	\frac{4\pi}{3}\sym{\identityTensor4}
+	&
+	\int_\solidAngle \sym{\identity}_{ijab}\normal_b\normal_c\sym{\identity}_{cakl} \dSolidAngle
+	&=
+	\frac{4\pi}{3}\sym{\identity}_{ijkl}
+	\label{eqAppendixMathUnitSphereIntegralIijabnancIcakl}
+\end{align}
+are derived in this section.
+The simple surface integral (\ref{eqAppendixMathUnitSphereSurface}) is mentioned here for the sake of completeness.
+
+The validity of the formulas can be shown by mere component by component analytical integration using spherical coordinate system, or can be derived in more general way using special identities and rules mentioned earlier in this chapter.
+
+
+
+\subsection{Spherical coordinate system}
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=7cm]{raphaelpy/spherical_coordinate_system}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{7cm}
+		\put(-0.0792523364486,0.35){\makebox(0,.06)[t]{$y$}}
+		\put(-0.64,0.910747663551){\makebox(0,0)[l]{$z$}}
+		\put(-0.920373831776,0.0696261682243){\makebox(0,.06)[rt]{$x$}}
+		\put(-0.406355140187,0.677102803738){\makebox(0,0)[l]{$(\rho,\zenithAngle,\azimuthAngle)$}}
+		\put(-0.569906542056,0.209813084112){\makebox(0,.045)[tl]{$\azimuthAngle$}}
+		\put(-0.546542056075,0.630373831776){\makebox(0,-.02)[tl]{$\zenithAngle$}}
+	\end{picture}
+	\caption{Spherical coordinate system}
+\end{figure}
+
+Spherical coordinate system specifies a point by three coordinates:
+\begin{itemize}
+	\item azimuth angle $\azimuthAngle$ ($0\le\azimuthAngle<2\pi$),
+	\item zenith angle $\zenithAngle$ ($0\le\azimuthAngle<\pi$),
+	\item radial distance $\rho$.
+\end{itemize}
+
+The $xyz$ components of position $\positionVector$ expressed by spherical coordinates are
+\begin{equation}
+	\positionVector = \begin{Bmatrix}
+		\rho\sin\zenithAngle\cos\azimuthAngle \\
+		\rho\sin\zenithAngle\sin\azimuthAngle \\
+		\rho\cos\zenithAngle
+	\end{Bmatrix}
+	.
+\end{equation}
+
+Integration of a function $f$ over the surface or volume of the unit sphere requires the expression for surface and volume element $\dSolidAngle$ and $\dVolume$ in spherical coordinates as follows:
+\begin{align}
+	\begin{aligned}
+		& \int_\solidAngle f \dSolidAngle
+		\\
+		\dSolidAngle &= \sin\zenithAngle\dZenithAngle\dAzimuthAngle
+	\end{aligned}
+	&
+	\begin{aligned}
+		& \int_\volume f \dVolume
+		\\
+		\dVolume &= \rho^2\sin\zenithAngle\dd{\rho}\dZenithAngle\dAzimuthAngle
+		.
+	\end{aligned}
+	\label{eqAppendixMathUnitSphereGeneralIntegralsShericalCS}
+\end{align}
+
+
+Integral $\int_\solidAngle\dSolidAngle$ is simply the surface area of the unit sphere
+\begin{equation}
+	\int_\solidAngle \dSolidAngle
+	= \int_0^{2\pi}\int_0^\pi \sin\zenithAngle\dZenithAngle\dAzimuthAngle = 4\pi
+	.
+\end{equation}
+
+Similarly, $\int_\volume\dVolume$ is simply the volume of the unit sphere
+\begin{equation}
+	\int_\volume \dVolume
+	= \int_0^{2\pi}\int_0^\pi\int_0^1 \rho^2\sin\zenithAngle\dd{\rho}\dZenithAngle\dAzimuthAngle = \frac{4\pi}{3}
+	.
+\end{equation}
+
+A special value of the volume integral of the squared distance from the unit sphere's center (used in the following section)
+\begin{equation}
+	\positionVector\cdot\positionVector
+	= \position_i\position_i
+	= x^2 + y^2 + z^2
+	= \rho^2
+	,
+\end{equation}
+equals
+\begin{equation}
+	\int_\volume \positionVector\cdot\positionVector \dVolume
+	= \int_\volume \position_i\position_i \dVolume
+	= \int_0^{2\pi}\int_0^\pi\int_0^1 \rho^4\sin\zenithAngle\idd{\rho}\dZenithAngle\dAzimuthAngle
+	= 4\pi \int_0^1\rho^4\dd{\rho}
+	= \frac{4\pi}{5}
+	.
+	\label{eqAppendixMathUnitSphereVolumeIntegralXixi}
+\end{equation}
+
+Assuming $\normalVector=\positionVector$
+\begin{equation}
+	\normalVector = \begin{Bmatrix}
+		\sin\zenithAngle\cos\azimuthAngle \\
+		\sin\zenithAngle\sin\azimuthAngle \\
+		\cos\zenithAngle
+	\end{Bmatrix}
+\end{equation}
+and $\rho=1$ for the points \emph{on} the surface of unit sphere, the validity of the following expressions can easily be shown by component-by-component analytical integration (\ref{eqAppendixMathUnitSphereGeneralIntegralsShericalCS}).
+\begin{align}
+	\int_\solidAngle \normal_i \normal_j \dSolidAngle &= \frac{4\pi}{3}\kdelta{ij}
+	&
+	\int_\solidAngle \normalVector\otimes\normalVector \dSolidAngle &= \frac{4\pi}{3}\identityTensor2
+\end{align}
+
+\begin{equation}
+	\begin{gathered}
+		\int_\solidAngle \normal_i \normal_j \normal_k \normal_l \dSolidAngle
+		= \frac{4\pi}{15} \br{ \kdelta{ij}\kdelta{kl} + \kdelta{ik}\kdelta{jl} + \kdelta{il}\kdelta{jk} }
+		=4\pi \left( \frac{3}{15}\vol{\projection}_{ijkl} + \frac{2}{15}\sym{\identity}_{ijkl} \right)
+		\\
+		\int_\solidAngle \normalVector\otimes\normalVector\otimes\normalVector\otimes\normalVector \dSolidAngle
+		=4\pi \left( \frac{3}{15}\vol{\projectionTensor4} + \frac{2}{15}\sym{\identityTensor4} \right)
+	\end{gathered}
+\end{equation}
+
+\begin{align}
+	\int_\solidAngle \br{\sym{\identityTensor4}\cdot\normalVector}\cdot\br{\normalVector\cdot\sym{\identityTensor4}} \dSolidAngle
+	&=
+	\frac{4\pi}{3}\sym{\identityTensor4}
+	&
+	\int_\solidAngle \sym{\identity}_{ijab}\normal_b\normal_c\sym{\identity}_{cakl} \dSolidAngle
+	&=
+	\frac{4\pi}{3}\sym{\identity}_{ijkl}
+\end{align}
+The validity of the analytical integration is shown in the script\par\textfile{codes/scripts/tests/intsolidangle.py}.
+
+
+
+
+\subsection{A more general derivation}
+A more general approach is presented below.
+The method is based on divergence theorem
+(\ref{eqAppendixMathTensorsDivergenceTheorem2}),
+identity
+(\ref{eqAppendixMathTensorsGradientOfPoisitionVector})
+and the fact that $\normalVector=\positionVector$ \emph{on} unit sphere surface.
+
+\subsubsection{Identity (\ref{eqAppendixMathUnitSphereIntegralNinj})}
+\begin{align}
+	\begin{aligned}
+		\int_\solidAngle \normal_i\normal_j\dSolidAngle
+		= \int_\solidAngle \normal_i\position_j\dSolidAngle
+		= \int_\volume \nabla_i\position_j\dVolume
+		= \int_\volume \kdelta{ij}\dVolume
+		= \frac{4\pi}{3}\kdelta{ij}
+		\\
+		\int_\solidAngle \normalVector\otimes\normalVector \dSolidAngle
+		= \int_\solidAngle \normalVector\otimes\positionVector \dSolidAngle
+		= \int_\volume \bnabla\otimes\positionVector \dVolume
+		= \int_\volume \identityTensor2 \dVolume
+		= \frac{4\pi}{3}\identityTensor2
+	\end{aligned}
+	\label{eqAppendixMathUnitSphereIntegralNinj2}
+\end{align}
+
+\subsubsection{Identity (\ref{eqAppendixMathUnitSphereIntegralNinjnknl})}
+First we investigate the relation between expressions
+$\int_\solidAngle \normalVector\cdot\normalVector\dSolidAngle$
+and
+$\int_\volume\positionVector\cdot\positionVector\dVolume$
+(because of the need to evaluate the derivative of a product, we begin with index notation).
+Using aforementioned tricks and identity (\ref{eqAppendixMathUnitSphereVolumeIntegralXixi}):
+\begin{equation}
+	\begin{gathered}
+		\int_\solidAngle \normal_i\normal_j \dSolidAngle
+		= \int_\solidAngle \normal_i\normal_j\normal_k\normal_k \dSolidAngle
+		= \int_\solidAngle \normal_i\position_j\position_k\position_k \dSolidAngle
+		= \int_\volume \nabla_i\br{\position_j\position_k\position_k} \dVolume
+		=
+		\\
+		= \int_\volume
+			\br{\nabla_i\position_j}\position_k\position_k
+			+
+			\position_j\br{\nabla_i\position_k}\position_k
+			+
+			\position_j\position_k\br{\nabla_i\position_k}
+		\dVolume
+		= \\ =
+		\int_\volume
+			\kdelta{ij}\position_k\position_k
+			+
+			\position_j\kdelta{ik}\position_k
+			+
+			\position_j\position_k\kdelta{ik}
+		\dVolume
+		= \int_\volume \kdelta{ij}\position_k\position_k + \position_i\position_j + \position_i\position_j \dVolume
+		= \\ =
+		2\int_\volume \position_i\position_j \dVolume + \kdelta{ij}\frac{4\pi}{5}
+		=
+		2\int_\volume \position_i\position_j \dVolume + \frac{3}{5}\int_\solidAngle \normal_i\normal_j \dSolidAngle
+		\label{eqAppendixMathUnitSphereSurfaceEqualityAux1}
+	\end{gathered}
+	\end{equation}
+Comparing the leftmost and the rightmost part of equation (\ref{eqAppendixMathUnitSphereSurfaceEqualityAux1}) and using (\ref{eqAppendixMathUnitSphereIntegralNinj2})
+\begin{align}
+	\begin{aligned}
+		\int_\volume \position_i\position_j \dVolume
+		= \frac{1}{5}\int_\solidAngle \normal_i\normal_j \dSolidAngle
+		= \frac{4\pi}{15}\kdelta{ij}
+		\\
+		\int_\volume \positionVector\cdot\positionVector \dVolume
+		= \frac{1}{5}\int_\solidAngle \normalVector\cdot\normalVector \dSolidAngle
+		= \frac{4\pi}{15}\identityTensor2
+		,
+	\end{aligned}
+	\label{eqAppendixMathUnitSphereIntegralNinjEqIntegralXixj}
+\end{align}
+$\int_\solidAngle \normal_i\normal_j\normal_k\normal_l \dSolidAngle$ can be rewritten to the form
+\begin{gather}
+	\int_\solidAngle \normal_i\normal_j\normal_k\normal_l \dSolidAngle
+	= \int_\solidAngle \normal_i\position_j\position_k\position_l \dSolidAngle
+	= \int_\volume \nabla_i(\position_j\position_k\position_l) \dVolume
+	=
+	\\
+	= \int_\volume (\nabla_i\position_j)\position_k\position_l + (\nabla_i\position_k)\position_j\position_l +(\nabla_i\position_l)\position_j\position_k \dVolume
+	=
+	\\
+	= \int_\volume \kdelta{ij}\position_k\position_l + \kdelta{ik}\position_j\position_l + \kdelta{il}\position_j\position_k \dVolume
+	.
+\end{gather}
+Recalling identity (\ref{eqAppendixMathUnitSphereIntegralNinjEqIntegralXixj}):
+\begin{equation}
+	\int_\solidAngle \normal_i\normal_j\normal_k\normal_l \dSolidAngle
+	= \int_\volume \kdelta{ij}\position_k\position_l + \kdelta{ik}\position_j\position_l + \kdelta{il}\position_j\position_k \dVolume
+	= \frac{4\pi}{15}\br{\kdelta{ij}\kdelta{kl}+\kdelta{ik}\kdelta{jl}+\kdelta{il}\kdelta{jk}}
+\end{equation}
+and definitions (\ref{eqAppendixMathTensorsVolProjDef}) and (\ref{eqAppendixMathTensorsSymIdentity4Def}):
+\begin{equation}
+	\begin{gathered}
+		\int_\solidAngle \normal_i\normal_j\normal_k\normal_l \dSolidAngle
+		= \frac{4\pi}{15}\br{\kdelta{ij}\kdelta{kl}+\kdelta{ik}\kdelta{jl}+\kdelta{il}\kdelta{jk}}
+		= \frac{4\pi}{15} \br{3\vol{\projection}_{ijkl}+2\sym{\identity}_{ijkl}}
+		\\
+		\int_\solidAngle \normalVector\otimes\normalVector\otimes\normalVector\otimes\normalVector \dSolidAngle
+		= \frac{4\pi}{15} \br{3\vol{\projectionTensor4}+2\sym{\identityTensor4}}
+	\end{gathered}
+	\label{eqAppendixMathUnitSphereIntegralNinjnknl2}
+\end{equation}
+
+
+\subsubsection{Identity (\ref{eqAppendixMathUnitSphereIntegralIijabnancIcakl})}
+With the help of
+(\ref{eqAppendixMathTensorsUnitVectorsInnI}),
+(\ref{eqAppendixMathUnitSphereIntegralNinj2})
+and
+(\ref{eqAppendixMathUnitSphereIntegralNinjnknl2}):
+\begin{equation}
+	\begin{gathered}
+		\int_\solidAngle \sym{\identity}_{ijab}\normal_b\normal_c\sym{\identity}_{cakl} \dSolidAngle
+		=
+		\int_\solidAngle
+		\frac{1}{4}\br{
+			\normal_j\normal_k\kdelta{il}
+			+
+			\normal_j\normal_l\kdelta{ik}
+			+
+			\normal_i\normal_k\kdelta{jl}
+			+
+			\normal_i\normal_l\kdelta{jk}
+		} \dSolidAngle
+		= \\ =
+		\frac{1}{4}\br{
+			\int_\solidAngle \normal_j\normal_k\kdelta{il} \dSolidAngle
+			+
+			\int_\solidAngle \normal_j\normal_l\kdelta{ik} \dSolidAngle
+			+
+			\int_\solidAngle \normal_i\normal_k\kdelta{jl} \dSolidAngle
+			+
+			\int_\solidAngle \normal_i\normal_l\kdelta{jk} \dSolidAngle
+		}
+		= \\ =
+		\frac{1}{4}\br{
+			\kdelta{il} \int_\solidAngle \normal_j\normal_k \dSolidAngle
+			+
+			\kdelta{ik} \int_\solidAngle \normal_j\normal_l \dSolidAngle
+			+
+			\kdelta{jl} \int_\solidAngle \normal_i\normal_k \dSolidAngle
+			+
+			\kdelta{jk} \int_\solidAngle \normal_i\normal_l \dSolidAngle
+		}
+		= \\ =
+		\frac{1}{4}\br{
+			\kdelta{il} \frac{4\pi}{3}\kdelta{jk}
+			+
+			\kdelta{ik} \frac{4\pi}{3}\kdelta{jl}
+			+
+			\kdelta{jl} \frac{4\pi}{3}\kdelta{ik}
+			+
+			\kdelta{jk} \frac{4\pi}{3}\kdelta{il}
+		}
+		= \\ =
+		\frac{4\pi}{3} \frac{1}{4} \br{
+			\kdelta{il} \kdelta{jk}
+			+
+			\kdelta{ik} \kdelta{jl}
+			+
+			\kdelta{jl} \kdelta{ik}
+			+
+			\kdelta{jk} \kdelta{il}
+		}
+		=
+		\frac{4\pi}{3} \frac{1}{4} \br{
+			2\kdelta{ik} \kdelta{jl}
+			+
+			2\kdelta{il} \kdelta{jk}
+		}
+		=
+		\frac{4\pi}{3}\frac{1}{2}\br{
+			\kdelta{ik} \kdelta{jl}
+			+
+			\kdelta{il} \kdelta{jk}
+		}
+	\end{gathered}
+\end{equation}
+\begin{align}
+	\int_\solidAngle \br{\sym{\identityTensor4}\cdot\normalVector}\cdot\br{\normalVector\cdot\sym{\identityTensor4}} \dSolidAngle
+	&=
+	\frac{4\pi}{3}\sym{\identityTensor4}
+	&
+	\int_\solidAngle \sym{\identity}_{ijab}\normal_b\normal_c\sym{\identity}_{cakl} \dSolidAngle
+	&=
+	\frac{4\pi}{3}\sym{\identity}_{ijkl}
+	\label{eqAppendixMathUnitSphereIntegralIijabnancIcakl2}
+\end{align}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% M I S C
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Miscellaneous}
+\paragraph{Geometric center}
+The geometric center or centroid $\centroidVector$ of a region $\volume$ is a point defined as
+\begin{align}
+	\centroidVector &= \frac{\int_\volume \positionVector \dVolume}{\volume},
+	&
+	\volume\centroidVector &= \int_\volume \positionVector \dVolume
+	.
+	\label{eqAppendixMathMiscFirstMomentOfVolume}
+\end{align}
+$\int_\volume\positionVector\dVolume$ is the first moment of volume with respect to the origin $\{0,0,0\}\T$.
+$\int_\volume\positionVector-\positionVector^a \dVolume$ is the first moment of volume with respect to the point $\positionVector^a$.
+Using the definition (\ref{eqAppendixMathMiscFirstMomentOfVolume}), it can be easily shown that the first moment of volume with respect to the centroid is zero:
+\begin{equation}
+	\int_\volume\positionVector - \centroidVector \dVolume
+	=
+	\int_\volume\positionVector\dVolume - \int_\volume \centroidVector \dVolume
+	=
+	\int_\volume\positionVector\dVolume - \volume\centroidVector
+	= \tensor1{0}
+	.
+\end{equation}
+
+}

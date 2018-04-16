@@ -1,0 +1,880 @@
+\chapter{Discrete stress tensor}\label{chapDiscreteStress}
+Discrete nature is an essential feature of DEM.
+However, in some cases one would like to transform such discrete information (contact forces for instance) into its continuum counterpart (e.g., stress tensor).
+To give an example, assume a sample of sand, which is on lower level definitely discrete domain, thus discrete forces may be used as a model for description of mutual interaction between individual grains.
+On the other hand, on a higher scale (e.g., building construction), investigation of each individual sand grain would not be meaningful (or even possible) and the same material is considered as a continuum.
+
+The evaluation of equivalent stress from discrete forces is a topic much older than DEM itself \cite{Love1927a} described in many papers \cite{Alonsoarroquin2011a,ChangKuhn2005a,Bagi1996a},
+but until these days it is a subject of debates in specialized literature \cite{BardetVardoulakis2001a,Bagi2003a,Kuhn2003a,BardetVardoulakis2003a,BardetVardoulakis2003b}.
+A brief summary of current knowledge and author's new ideas are presented in this chapter.
+
+The discrete elements in DEM possess 6 degrees of freedom, namely 3 displacements and 3 rotations.
+Classical Boltzmann continuum assumes 3 degrees of freedom (3 displacements) in each material point.
+Therefore a higher order (Cosserat for instance) model should be used for continuum approximation of DEM in its general form \cite{Alonsoarroquin2011a}.
+Readers not familiar with Cosserat continuum are referred to section \ref{secAppendixMathContinuum}.
+
+
+
+Consider a system of rigid particles $\particle$ represented as mass points $\positionVector_\particle$.
+The particles mutually interact with each other by fictitious links $\contact$ with resulting contact (internal) forces and couples acting at contact points $\contactPoint$.
+We consider external body forces $\bodyForceVector$, body couples $\bodyCoupleVector$, surface forces $\surfForceVector$ and surface couples $\surfCoupleVector$ as Dirac delta distributions transforming boundary and volume integrals into discrete sums over points of application $\externalp$ in terms of external forces $\externalForceVector$ and external couples $\externalCoupleVector$:
+\begin{align}
+	\int_\volume \bodyForceVector\cdot\virtual\displacementVector \dVolume
+	+
+	\int_\surface \surfForceVector\cdot\virtual\displacementVector \dSurface
+	&=
+	\sum_{\externalp} \externalForceVector\cdot\virtual\displacementVector
+	\\
+	\int_\volume \positionVector\otimes\bodyForceVector \dVolume
+	+
+	\int_\surface \positionVector\otimes\surfForceVector \dSurface
+	&=
+	\sum_{\externalp} \positionVector\otimes\externalForceVector
+	\\
+	\int_\volume \bodyCoupleVector\cdot\virtual\displacementVector \dVolume
+	+
+	\int_\surface \surfCoupleVector\cdot\virtual\displacementVector \dSurface
+	&=
+	\sum_{\externalp} \externalCoupleVector\cdot\virtual\displacementVector
+	\\
+	\int_\volume \positionVector\otimes\bodyCoupleVector \dVolume
+	+
+	\int_\surface \positionVector\otimes\surfCoupleVector \dSurface
+	&=
+	\sum_{\externalp} \positionVector\otimes\externalCoupleVector
+	.
+	\label{eqDemDiscreteStressLoadAsDiracDelta}
+\end{align}
+
+
+
+
+
+\section{Derivation based on virtual work}
+The principle of virtual displacements in Cosserat continuum (see section \ref{secAppendixMathContinuumVirtualWorks})
+\begin{align}
+	\int_\volume \stressTensor:(\bnabla\otimes\virtual\displacementVector) \dVolume
+	&=
+	\int_\volume \bodyForceVector\cdot\virtual\displacementVector \dVolume
+	+
+	\int_\surface \surfForceVector\cdot\virtual\displacementVector \dSurface
+	\\
+	\int_\volume \coupleStressTensor:(\bnabla\otimes\virtual\rotationVector) \dVolume
+	-
+	\int_\volume \stressTensor:(\identityTensor2\cross\virtual\rotationVector) \dVolume
+	&=
+	\int_\volume \bodyCoupleVector\cdot\virtual\rotationVector \dVolume
+	+
+	\int_\surface \surfCoupleVector\cdot\virtual\rotationVector \dSurface
+	.
+\end{align}
+is expressed in terms of the
+stress tensor $\stressTensor$,
+couple stress tensor $\coupleStressTensor$,
+and
+external load
+fields.
+The virtual fields are displacement $\virtual\displacementVector$ and its gradient $\virtual\displacementGradient=\bnabla\otimes\virtual\displacementVector$
+and rotation $\virtual\rotationVector$ and its gradient (curvature tensor) $\virtual\curvatureTensor=\bnabla\otimes\rotationVector$.
+
+The equivalent (couple) stress tensor is derived under the assumption that virtual work of discrete forces is equal to the virtual work of an equivalent continuum.
+We assume the \emph{macro} (couple) stress to be \emph{one constant value}, which is expressed by
+overlined symbols, e.g., $\volumeAverage{\stressTensor}$.
+The virtual fields are considered to be (at most) linear functions and therefore their gradients are constant (or zero).
+
+The derivation is presented for both external and internal discrete forces.
+For example, in the case of one rigid particle, no internal forces are present and only the derivation based on virtual work of discrete \emph{external} forces is meaningful.
+On the other hand, no external forces are present in the equilibrium case of a periodic cell and only the derivation based on virtual work of discrete \emph{internal} forces is meaningful.
+
+The internal forces of one particle may not be in equilibrium, but are required to be in equilibrium with (possibly zero) external load acting at the particle's reference point.
+This corresponds to static nonequilibrium case and the balancing load corresponds to inertial forces.
+The external loads are required to satisfy force and moment equilibrium conditions
+\begin{align}
+	\sum \forceVector &= \tensor1{0}
+	&
+	\sum \coupleVector + \sum\positionVector\cross\forceVector &= \tensor1{0}
+	.
+	\label{eqDemDiscreteStressEqulibriumAssumption}
+\end{align}
+
+
+
+
+
+\subsection{Virtual work of discrete external forces}
+Consider an external force $\externalForceVector$ and couple $\externalCoupleVector$ acting at point $\external{\positionVector}$.
+Together with virtual displacement $\external{\virtual\displacementVector}$ and rotation $\external{\virtual\rotationVector}$, the virtual work of these quantities is simply
+\begin{equation}
+	\external{\virtual\work}
+	=
+	\externalForceVector\cdot\external{\virtual\displacementVector}
+	+
+	\externalCoupleVector\cdot\external{\virtual\rotationVector}
+	.
+\end{equation}
+The total virtual work of external forces is the sum of contributions of individual discrete points $\externalp$:
+\begin{equation}
+	\virtual\work
+	=
+	\sum_\externalp \external{\virtual\work}
+	=
+	\sum_\externalp\externalForceVector\cdot\external{\virtual\displacementVector}
+	+
+	\sum_\externalp\externalCoupleVector\cdot\external{\virtual\rotationVector}
+	.
+	\label{eqDemDiscreteStressVirtualWorkDiscreteSystemExternal}
+\end{equation}
+
+
+\subsubsection{Virtual displacement}
+We start from the part of continuum virtual work principle which depends on virtual displacement (\ref{eqAppendixMathContinuumVirtualWorksDspl})
+\begin{equation}
+	\int_\volume \stressTensor:\virtual\displacementGradient \dVolume
+	=
+	\int_\volume \bodyForceVector\cdot\virtual\displacementVector \dVolume
+	+
+	\int_\surface \surfForceVector\cdot\virtual\displacementVector \dSurface
+	\label{eqDemDiscreteStressVirtualWorkVirtualDisplacement}
+	.
+\end{equation}
+The right hand side is the virtual work of external forces.
+The external forces are considered as Dirac delta distributions (\ref{eqDemDiscreteStressLoadAsDiracDelta}),
+which coincide with the virtual work of discrete external forces (\ref{eqDemDiscreteStressVirtualWorkDiscreteSystemExternal}):
+\begin{equation}
+	\int_\volume \bodyForceVector\cdot\virtual\displacementVector \dVolume
+	+
+	\int_\surface \surfForceVector\cdot\virtual\displacementVector \dSurface
+	=
+	\sum_{\externalp} \externalForceVector\cdot\external{\virtual\displacementVector}
+	.
+\end{equation}
+According to the assumption of \emph{constant} macro quantities, the left hand side can be rewritten to the form
+\begin{equation}
+	\int_\volume \stressTensor:\virtual\displacementGradient \dVolume
+	=
+	\virtual\displacementGradient:\volume\volumeAverage{\stressTensor}
+	.
+\end{equation}
+Virtual work equation (\ref{eqDemDiscreteStressVirtualWorkVirtualDisplacement}) can then be rewritten as
+\begin{equation}
+	\virtual\displacementGradient:\volume\volumeAverage{\stressTensor}
+	=
+	\sum_{\externalp} \externalForceVector\cdot\external{\virtual\displacementVector}
+	.
+\end{equation}
+
+Assuming constant $\virtual\displacementVector$ ($\virtual\displacementGradient=\tensor2{0}$) yields
+\begin{gather}
+	\tensor2{0}
+	=
+	\sum_{\externalp} \externalForceVector\cdot\external{\virtual\displacementVector}
+	\\
+	\xrightarrow{\forall\virtual\displacementVector=const}
+	\nonumber
+	\\
+	\sum_{\externalp} \externalForceVector
+	=
+	\tensor2{0}
+	.
+\end{gather}
+force equilibrium condition.
+
+Assuming homogeneous $\virtual\displacementGradient$
+\begin{equation}
+	\virtual\displacementVector = \positionVector\cdot\virtual\displacementGradient
+\end{equation}
+yields the expression for discrete stress tensor
+\begin{gather}
+	\virtual\displacementGradient:\volume\volumeAverage{\stressTensor}
+	=
+	\sum_{\externalp} \external{\positionVector}\cdot\virtual\displacementGradient\cdot\externalForceVector
+	=
+	\sum_{\externalp} \virtual\displacementGradient:(\external{\positionVector}\otimes\externalForceVector)
+	\\
+	\xrightarrow{\forall\virtual\displacementGradient}
+	\nonumber
+	\\
+	V\volumeAverage{\stressTensor}
+	=
+	\sum_{\externalp} \external{\positionVector}\otimes\externalForceVector
+	.
+	\label{eqDemDiscreteStressDerivedFromVirtualDspl}
+\end{gather}
+In general, the stress tensor may be non-symmetric, as illustrated in section \ref{secDemDiscreteStressExamples}.
+
+
+\subsubsection{Virtual rotation}
+We start from the part of continuum virtual work principle which depends on virtual rotation (\ref{eqAppendixMathContinuumVirtualWorksRot})
+\begin{equation}
+	\begin{gathered}
+		\int_\volume \coupleStressTensor:\virtual\curvatureTensor \dVolume
+		=
+		\int_\volume \stressTensor:(\identityTensor2\cross\virtual\rotationVector) \dVolume
+		+
+		\int_\volume \bodyCoupleVector\cdot\virtual\rotationVector \dVolume
+		+
+		\int_\surface \surfCoupleVector\cdot\virtual\rotationVector \dSurface	
+		.
+	\end{gathered}
+	\label{eqDemDiscreteStressVirtualWorkVirtualRotation}
+\end{equation}
+One part of the right hand side is the virtual work of external couples.
+The external couples are considered as Dirac delta distributions (\ref{eqDemDiscreteStressLoadAsDiracDelta}),
+which coincide with the virtual work of discrete couples (\ref{eqDemDiscreteStressVirtualWorkDiscreteSystemExternal}):
+\begin{equation}
+	\int_\volume \bodyCoupleVector\cdot\virtual\rotationVector \dVolume
+	+
+	\int_\surface \surfCoupleVector\cdot\virtual\rotationVector \dSurface	
+	=
+	\sum_{\externalp} \externalCoupleVector\cdot\external{\virtual\rotationVector}
+	.
+\end{equation}
+According to the assumption of \emph{constant} macro quantities, the left hand side of (\ref{eqDemDiscreteStressVirtualWorkVirtualRotation}) can be rewritten to the form
+\begin{equation}
+	\int_\volume \coupleStressTensor:\virtual\curvatureTensor \dVolume
+	=
+	\virtual\curvatureTensor:\volume\volumeAverage{\coupleStressTensor}
+	.
+\end{equation}
+Using equation (\ref{eqAppendixMathTensorsSpecialIdentity_AEb}) and again assuming \emph{constant} macro quantities yields
+\begin{equation}
+	\int_\volume \stressTensor:(\identityTensor2\cross\virtual\rotationVector) \dVolume
+	=
+	\int_\volume (\identityTensor2\cross\stressTensor)\cdot\virtual\rotationVector \dVolume
+	=
+	(\identityTensor2\cross\volumeAverage{\stressTensor})\cdot\int_\volume \virtual\rotationVector \dVolume
+	.
+\end{equation}
+Virtual work equation (\ref{eqDemDiscreteStressVirtualWorkVirtualRotation}) can then be rewritten to the form
+\begin{equation}
+	\virtual\curvatureTensor:\volume\volumeAverage{\coupleStressTensor}
+	-
+	(\identityTensor2\cross\volumeAverage{\stressTensor})\cdot \int_\volume \virtual\rotationVector \dVolume
+	=
+	\sum_{\externalp} \externalCoupleVector\cdot\external{\virtual\rotationVector}
+	.
+\end{equation}
+
+Assuming constant $\virtual\rotationVector$ ($\virtual\curvatureTensor=\tensor2{0}$) yields
+\begin{gather}
+	- (\identityTensor2\cross\volumeAverage{\stressTensor})\cdot \int_\volume \virtual\rotationVector \dVolume
+	=
+	\sum_{\externalp} \externalCoupleVector\cdot\external{\virtual\rotationVector}
+	\\
+	\xrightarrow{\forall\virtual\rotationVector=const}
+	\nonumber
+	\\
+	-\identityTensor2\cross\volume\volumeAverage{\stressTensor}
+	=
+	\sum_{\externalp} \externalCoupleVector
+	\label{eqDemDiscreteStressAsymmetryDerivedFromVirtualRot}
+\end{gather}
+antisymmetric part of stress tensor.
+Equation (\ref{eqDemDiscreteStressAsymmetryDerivedFromVirtualRot}) can also be derived from (\ref{eqDemDiscreteStressDerivedFromVirtualDspl}) using identity (\ref{eqAppendixMathTensors1crossBouterCeqBcrossC})
+\begin{equation}
+	\sum_{\externalp} \externalCoupleVector
+	=
+	-\identityTensor2\cross\volume\volumeAverage{\stressTensor}
+	=
+	\identityTensor2\cross \sum_{\externalp} \external{\positionVector}\otimes\externalForceVector
+	=
+	\sum_{\externalp} \external{\positionVector}\cross\externalForceVector
+\end{equation}
+because we assume the forces and couples to be equilibrated according to equation (\ref{eqDemDiscreteStressEqulibriumAssumption}).
+
+Assuming homogeneous $\virtual\curvatureTensor$
+\begin{equation}
+	\virtual\rotationVector = \positionVector\cdot\virtual\curvatureTensor
+\end{equation}
+yields
+\begin{equation}
+	\begin{gathered}
+		(\identityTensor2\cross\volumeAverage{\stressTensor})\cdot \int_\volume \virtual\rotationVector \dVolume
+		=
+		\int_\volume \positionVector\cdot\virtual\curvatureTensor\dVolume\cdot(\identityTensor2\cross\volumeAverage{\stressTensor})
+		=
+		\virtual\curvatureTensor : \int_\volume \positionVector \dVolume \otimes(\identityTensor2\cross\volumeAverage{\stressTensor})
+		= \\ =
+		\virtual\curvatureTensor : \volume\centroidVector \otimes(\identityTensor2\cross\volumeAverage{\stressTensor})
+	\end{gathered}
+	\label{eqDemDiscreteStressVirtualWorkIcrossStressHomoRotation}
+\end{equation}
+and
+\begin{equation}
+	\sum_{\externalp} \externalCoupleVector\cdot\external{\virtual\rotationVector}
+	=
+	\sum_{\externalp} \external{\positionVector}\cdot\virtual\curvatureTensor\cdot\externalCoupleVector
+	=
+	\sum_{\externalp} \virtual\curvatureTensor:(\external{\positionVector}\otimes\externalCoupleVector)
+\end{equation}
+and then the expression for discrete couple stress tensor
+\begin{gather}
+	\virtual\curvatureTensor:\volume\volumeAverage{\coupleStressTensor}
+	=
+	\virtual\curvatureTensor : \volume\centroidVector \otimes(\identityTensor2\cross\volumeAverage{\stressTensor})
+	+
+	\sum_{\externalp} \virtual\curvatureTensor:(\positionVector\otimes\externalCoupleVector)
+	\\
+	\xrightarrow{\forall\virtual\curvatureTensor}
+	\nonumber
+	\\
+	\volume\volumeAverage{\coupleStressTensor}
+	=
+	\volume\centroidVector \otimes(\identityTensor2\cross\volumeAverage{\stressTensor})
+	+
+	\sum_{\externalp} \external{\positionVector}\otimes\externalCoupleVector
+	.
+\end{gather}
+$\int_\volume\positionVector\dVolume=\volume\centroidVector$ is the first moment of volume according to equation (\ref{eqAppendixMathMiscFirstMomentOfVolume}).
+
+
+
+
+\subsection{Virtual work of discrete internal forces}
+\begin{figure}
+	\def\ua{$\virtual\displacementVector_\particleA$}
+	\def\ub{$\virtual\displacementVector_\particleB$}
+	\def\pa{$\positionVector_\particleA$}
+	\def\pb{$\positionVector_\particleB$}
+	\def\cc{$\contactPoint$}
+	\def\fc{$\internalForceVector$}
+	\def\rota{$\virtual\rotationVector_\particleA$}
+	\def\rotb{$\virtual\rotationVector_\particleB$}
+	\centering
+	\includegraphics[width=8cm]{raphaelpy/virtual_work_of_internal_forces}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{8cm}
+		\put(-0.55,0.87){\makebox(0,0)[tl]{\ua}}
+		\put(-0.55,0.33){\makebox(0,0)[tr]{\ub}}
+		\put(-0.8,0.8){\makebox(0,0)[tr]{\pa}}
+		\put(-0.8,0.4){\makebox(0,0)[tr]{\pb}}
+		\put(-0.8,0.6){\makebox(0,0)[l]{\cc}}
+		\put(-0.77316718427,0.54633436854){\makebox(0,0)[tl]{\fc}}
+		\put(-0.82683281573,0.65366563146){\makebox(0,0)[l]{\fc}}
+		\put(-0.17316718427,0.713129287783){\makebox(0,0)[tl]{\fc}}
+		\put(-0.500037896487,0.41366563146){\makebox(0,0)[l]{\fc}}
+		\put(-0.3,0.98){\makebox(0,0)[lb]{\rota}}
+		\put(-0.3,0.3){\makebox(0,0)[lb]{\rotb}}
+	\end{picture}
+	\caption{Illustration of virtual work of internal forces acting on rigid particles}
+	\label{figDemDiscreteStressVirtualWorkInternalIllustration}
+\end{figure}
+Internal forces (couples) act at contact points $\contact$.
+The forces (couples) act with opposite orientation on two rigid particles $\particleA$ and $\particleB$ with reference points $\positionVector_\particleA$ and $\positionVector_\particleB$.
+The internal forces are considered attached to the particles, i.e., the virtual displacement (rotation) is determined from the relative virtual displacement and rotation of particles $\particleA$ and $\particleB$, see figure \ref{figDemDiscreteStressVirtualWorkInternalIllustration}.
+
+We will only consider constant virtual fields
+\begin{align}
+	\virtual\displacementVector &= const
+	&
+	\virtual\displacementGradient &= \tensor2{0}
+	\\
+	\virtual\rotationVector &= const
+	&
+	\virtual\curvatureTensor &= \tensor2{0}
+	\label{eqDemDiscreteStressVirtualWorkVirtualFieldConstant}
+\end{align}
+or linear virtual fields such that
+\begin{align}
+	\virtual\displacementVector &= \positionVector\cdot\virtual\displacementGradient
+	&
+	\virtual\rotationVector &= \positionVector\cdot\virtual\curvatureTensor
+	\label{eqDemDiscreteStressVirtualWorkVirtualFieldLinear}
+	.
+\end{align}
+
+
+\subsubsection{Virtual displacement}
+Assuming linear virtual displacement (\ref{eqDemDiscreteStressVirtualWorkVirtualFieldLinear}), the virtual work dependent on virtual displacement of one contact reads
+\begin{equation}
+	\begin{gathered}
+		\internal{\virtual\work}_\displacement
+		=
+		\internalForceVector\cdot\virtual\displacementVector_\particleB
+		-
+		\internalForceVector\cdot\virtual\displacementVector_\particleA
+		=
+		\br{\virtual\displacementVector_\particleB - \virtual\displacementVector_\particleA}\cdot\internalForceVector
+		=
+		\br{\positionVector_\particleB\cdot\virtual\displacementGradient - \positionVector_\particleA\cdot\virtual\displacementGradient}\cdot\internalForceVector
+		= \\ =
+		\br{\positionVector_\particleB - \positionVector_\particleA}\cdot\virtual\displacementGradient\cdot\internalForceVector
+		=
+		\internal{\branchVector}\cdot\virtual\displacementGradient\cdot\internalForceVector
+		=
+		\virtual\displacementGradient:\br{\internal{\branchVector}\otimes\internalForceVector}
+	\end{gathered}
+\end{equation}
+with $\internal{\branchVector}=\positionVector_\particleB-\positionVector_\particleA$ being the branch vector of contact $\contact$.
+
+The total virtual work of internal forces dependent on virtual displacement is the sum of contributions of individual discrete points $\contact$:
+\begin{equation}
+	\virtual\work_{\displacement}
+	=
+	\sum_{contact} \internal{\virtual\work}_{\displacement}
+	=
+	\sum_{\contact} \virtual\displacementGradient:(\internal{\branchVector}\otimes\internalForceVector)
+	=
+	\virtual\displacementGradient : \sum_{\contact} \internal{\branchVector}\otimes\internalForceVector
+	.
+	\label{eqDemDiscreteStressVirtualWorkDiscreteSystemInternalDisplacement}
+\end{equation}
+
+Comparing to the virtual work of the equivalent continuum
+yields the expression for discrete stress tensor
+\begin{gather}
+	\int_\volume \stressTensor:\virtual\displacementGradient \dVolume
+	=
+	\virtual\displacementGradient:\volume\volumeAverage{\stressTensor}
+	=
+	\virtual\displacementGradient : \sum_{\contact} \internal{\branchVector}\otimes\internalForceVector
+	\\
+	\xrightarrow{\forall\virtual\displacementGradient}
+	\nonumber
+	\\
+	V\volumeAverage{\stressTensor}
+	=
+	\sum_{\contact} \internal{\branchVector}\otimes\internalForceVector
+	.
+\end{gather}
+
+
+
+\subsubsection{Virtual rotation}
+We assume equivalence of virtual work of internal forces and virtual work of equivalent continuum:
+\begin{equation}
+	\virtual\curvatureTensor:\volume\volumeAverage{\coupleStressTensor}
+	-
+	(\identityTensor2\cross\volumeAverage{\stressTensor})\cdot \int_\volume \virtual\rotationVector \dVolume
+	=
+	\virtual\work_\rotation
+	\label{eqDemDiscreteStressVirtualWorkEqMacroDiscreteRotation}
+	.
+\end{equation}
+The virtual work dependent on virtual rotation of one contact reads
+\begin{equation}
+	\begin{gathered}
+		\internal{\virtual\work}_\rotation
+		=
+		\internalCoupleVector\cdot\virtual\rotationVector_\particleB
+		-
+		\internalCoupleVector\cdot\virtual\rotationVector_\particleA
+		+
+		\internalForceVector\cdot\br{\virtual\rotationVector_\particleB\cross\br{\contactPoint-\positionVector_\particleB}}
+		-
+		\internalForceVector\cdot\br{\virtual\rotationVector_\particleA\cross\br{\contactPoint-\positionVector_\particleA}}
+		= \\ =
+		\br{\virtual\rotationVector_\particleB-\virtual\rotationVector_\particleA}\cdot\internalCoupleVector
+		+
+		\br{\virtual\rotationVector_\particleB\cross\br{\contactPoint-\positionVector_\particleB}
+		-
+		\virtual\rotationVector_\particleA\cross\br{\contactPoint-\positionVector_\particleA}} \cdot\internalForceVector
+		.
+	\end{gathered}
+	\label{eqDemDiscreteStressVirtualWorkDiscreteSystemInternalRotation}
+\end{equation}
+The total virtual work of internal forces is the sum of contributions of individual discrete points $\contact$:
+\begin{equation}
+	\virtual\work_\rotation
+	=
+	\sum_\contact \internal{\virtual\work}_\rotation
+	.
+\end{equation}
+
+
+Assuming constant virtual rotation ($\virtual\rotationVector_\particleA=\virtual\rotationVector_\particleB$) in (\ref{eqDemDiscreteStressVirtualWorkDiscreteSystemInternalRotation}) yields
+\begin{equation}
+	\begin{gathered}
+		\internal{\virtual\work}_{\rotation=const}
+		=
+		\virtual\rotationVector\cross(\contactPoint-\positionVector_\particleB - \contactPoint +\positionVector_\particleA) \cdot\internalForceVector
+		=
+		\virtual\rotationVector\cross(-\positionVector_\particleB +\positionVector_\particleA) \cdot\internalForceVector
+		= \\ =
+		\virtual\rotationVector\cross(-\internal{\branchVector}) \cdot\internalForceVector
+		=
+		\virtual\rotationVector\cdot(-\internal{\branchVector}) \cross\internalForceVector
+		.
+	\end{gathered}
+\end{equation}
+and
+substituting into (\ref{eqDemDiscreteStressVirtualWorkEqMacroDiscreteRotation})
+yields the expression
+for the antisymmetric part of stress tensor
+\begin{gather}
+	\virtual\curvatureTensor:\volume\volumeAverage{\coupleStressTensor}
+	-
+	(\identityTensor2\cross\volumeAverage{\stressTensor})\cdot \int_\volume \virtual\rotationVector \dVolume
+	=
+	\virtual\rotationVector\cdot(-\internal{\branchVector}) \cross\internalForceVector
+	\\
+	\xrightarrow{\forall\virtual\rotationVector=const}
+	\nonumber
+	\\
+	\identityTensor2\cross\volume\volumeAverage{\stressTensor}
+	=
+	\sum_{\contact} \internal{\branchVector}\cross\internalForceVector
+\end{gather}
+
+Assuming linear virtual rotation (\ref{eqDemDiscreteStressVirtualWorkVirtualFieldLinear}) yields
+\begin{equation}
+	(\positionVector_\particleB\cdot\virtual\curvatureTensor-\positionVector_\particleA\cdot\virtual\curvatureTensor)\cdot\internalCoupleVector
+	=
+	\virtual\curvatureTensor : (\positionVector_\particleB-\positionVector_\particleA)\otimes\internalCoupleVector
+	=
+	\virtual\curvatureTensor : \internal{\branchVector}\otimes\internalCoupleVector
+\end{equation}
+\begin{equation}
+	\virtual\rotationVector\cross\positionVector\cdot\forceVector
+	=
+	\positionVector\cdot\virtual\curvatureTensor\cross\positionVector\cdot\forceVector
+	=
+	\virtual\curvatureTensor:(\positionVector\otimes\positionVector\cross\forceVector)
+\end{equation}
+\begin{equation}
+	\begin{gathered}
+		(\virtual\rotationVector_\particleB\cross(\contactPoint-\positionVector_\particleB)
+		-
+		\virtual\rotationVector_\particleA\cross(\contactPoint-\positionVector_\particleA)) \cdot\internalForceVector
+		=
+		\virtual\curvatureTensor:(
+			\positionVector_\particleB\otimes(\contactPoint-\positionVector_\particleB)
+			-
+			\positionVector_\particleA\otimes(\contactPoint-\positionVector_\particleA)
+		)\cross\internalForceVector
+		= \\ =
+		\virtual\curvatureTensor:(
+			\positionVector_\particleB\otimes\contactPoint
+			-
+			\positionVector_\particleB\otimes\positionVector_\particleB
+			-
+			\positionVector_\particleA\otimes\contactPoint
+			+
+			\positionVector_\particleA\otimes\positionVector_\particleA
+		)\cross\internalForceVector
+		=
+		\virtual\curvatureTensor:\internal{\tensor2{X}}\cross\internalForceVector
+	\end{gathered}
+\end{equation}
+\begin{equation}
+	\begin{gathered}
+		\internal{\virtual\work}_{\rotation=homo}
+		=
+		\virtual\curvatureTensor : \internal{\branchVector}\otimes\internalCoupleVector
+		+
+		\virtual\curvatureTensor:\internal{\tensor2{X}}\cross\internalForceVector
+		.
+	\end{gathered}
+\end{equation}
+and
+substituting into (\ref{eqDemDiscreteStressVirtualWorkEqMacroDiscreteRotation})
+and using (\ref{eqDemDiscreteStressVirtualWorkIcrossStressHomoRotation})
+yields the expression
+for the discrete couple stress tensor
+\begin{gather}
+	\virtual\curvatureTensor:\volume\volumeAverage{\coupleStressTensor}
+	-
+	(\identityTensor2\cross\volumeAverage{\stressTensor})\cdot \int_\volume \virtual\rotationVector \dVolume
+	=
+	\virtual\work_\rotation
+	\\
+	\virtual\curvatureTensor:\volume\volumeAverage{\coupleStressTensor}
+	=
+	\virtual\curvatureTensor : \volume\centroidVector \otimes(\identityTensor2\cross\volumeAverage{\stressTensor})
+	+
+	\virtual\curvatureTensor : \sum_{\contact}\internal{\branchVector}\otimes\internalCoupleVector
+	+
+	\virtual\curvatureTensor : \sum_{\contact}\internal{\tensor2{X}}\cross\internalForceVector
+	\\
+	\xrightarrow{\forall\virtual\curvatureTensor}
+	\nonumber
+	\\
+	\volume\volumeAverage{\coupleStressTensor}
+	=
+	\volume\centroidVector \otimes(\identityTensor2\cross\volumeAverage{\stressTensor})
+	+
+	\sum_{\contact} \internal{\branchVector}\otimes\internalCoupleVector
+	+
+	\sum_{\contact} \internal{\tensor2{X}}\cross\internalForceVector
+	,
+\end{gather}
+where
+\begin{equation}
+	\volume\centroidVector=\int_\volume\positionVector\dVolume
+\end{equation}
+is the first moment of volume according to (\ref{eqAppendixMathMiscFirstMomentOfVolume}) and $\internal{\tensor2{X}}$ is
+\begin{equation}
+	\internal{\tensor2{X}}
+	=
+	\positionVector_\particleB\otimes\contactPoint
+	-
+	\positionVector_\particleB\otimes\positionVector_\particleB
+	-
+	\positionVector_\particleA\otimes\contactPoint
+	+
+	\positionVector_\particleA\otimes\positionVector_\particleA
+	.
+\end{equation}
+
+
+
+
+
+
+
+\subsection{Summary}
+Based on the equivalence of macro virtual work and virtual work of discrete external forces, the stress and couple stress are defined as
+\begin{align}
+	\volume\volumeAverage{\stressTensor} &= \sum_\externalp\positionVector\otimes\externalForceVector
+	\label{eqDemDiscreteStressFinalStressExternalForces}
+	\\
+	\volume\volumeAverage{\coupleStressTensor} &=
+	\volume\centroidVector\otimes(\identityTensor2\cross\volume\volumeAverage{\stressTensor}) + \sum_\externalp\positionVector\otimes\externalCoupleVector
+\end{align}
+The resulting (couple) stress tensor does not depend on the choice of the point of moment equilibrium.
+The resulting (couple) stress tensor does not depend on the choice of particles' reference points.
+
+Based on the equivalence of macro virtual work and virtual work of discrete internal forces, the stress and couple stress are defined as
+\begin{align}
+	\volume\volumeAverage{\stressTensor} &= \sum_\contact\branchVector\otimes\internalForceVector
+	\label{eqDemDiscreteStressFinalStressInternalForces}
+	\\
+	\volume\volumeAverage{\coupleStressTensor}
+	&=
+	\volume\centroidVector \otimes(\identityTensor2\cross\volumeAverage{\stressTensor})
+	+
+	\sum_{\contact} \internal{\branchVector}\otimes\internalCoupleVector
+	+
+	\sum_{\contact} \internal{\tensor2{X}}\cross\internalForceVector
+\end{align}
+The resulting (couple) stress tensor does not depend on the choice of the point of moment equilibrium.
+The resulting (couple) stress tensor does not depend on the choice of particles' reference points.
+The independence of the choice of reference points is required by \cite{ChangKuhn2005a}, who also proposed a derivation independent on the choice of particle's reference points.
+However, the independence is only valid in the absence of body forces and couples (i.e., self-equilibrated internal forces of each particle), which is a rare case in real DEM simulations.
+
+The resulting stress tensor may be asymmetric only in the presence of external couples (either directly applied or as the result of unbalanced internal forces).
+
+
+\cite{BardetVardoulakis2001a} and \cite{ChangKuhn2005a} agreed that based on the virtual work principle, only equivalent values of the sum of couple stress and moment of stress (not couple stress itself) can be derived.
+According to the author's knowledge, the expressions for couple stress tensor $\volumeAverage{\coupleStressTensor}$ using precomputed macro stress tensor $\volumeAverage{\stressTensor}$ and first moment of volume $\volume\centroidVector$ have not been published before.
+A more detailed analysis and literature research (if the result is really a new one) could/should be realized in the future.
+
+
+
+
+\section{Derivation based on equilibrium conditions}
+\subsection{External forces}
+Equilibrium conditions are the consequence of the virtual work principle, therefore the derivation based on equilibrium conditions results in the same formulas as the derivation based on the virtual work principle.
+
+Consider a region (e.g., one DEM particle) with volume $\volume$, centroid $\centroidVector$ and applied external discrete forces $\externalForceVector$ and couples $\externalCoupleVector$.
+
+Expressing the (couple) stress tensor using its derivatives and position vector (\ref{eqAppendixMathTensorsRank2usingDiffAndPosition}),
+using divergence theorem (\ref{eqAppendixMathTensorsDivergenceTheorem3}),
+Cauchy's stress theorem (\ref{eqAppendixMathContinuumStress2surfForce}) and (\ref{eqAppendixMathContinuumCoupleStress2surfCouple}),
+local equilibrium conditions (\ref{eqAppendixMathContinuumForceEqulibrium}) and (\ref{eqAppendixMathContinuumMomentEqulibrium})
+and
+considering surface and body loads as Dirac delta distributions (\ref{eqDemDiscreteStressLoadAsDiracDelta}),
+we can write discrete stress as a~volume average of stress tensor
+\begin{equation}
+	\begin{gathered}
+		\volume\volumeAverage{\stressTensor}
+		=
+		\int_\volume\stressTensor\dVolume
+		=
+		\int_\volume \bnabla\cdotMiddle(\positionVector\otimes\stressTensor) - \positionVector\otimes(\bnabla\cdot\stressTensor) \dVolume
+		= \\ =
+		\int_\surface \positionVector\otimes\normalVector\cdot\stressTensor \dSurface - \int_\volume \positionVector\otimes(\bnabla\cdot\stressTensor)\dVolume
+		=
+		\int_\surface\positionVector\otimes\surfForceVector\dSurface + \int_\volume\positionVector\otimes\bodyForceVector\dVolume
+		= \\ =
+		\sum_{\externalp} \positionVector\otimes\externalForceVector
+	\end{gathered}
+\end{equation}
+and discrete couple stress as a volume average of couple stress tensor
+\begin{equation}
+	\begin{gathered}
+		\volume\volumeAverage{\coupleStressTensor}
+		=
+		\int_\volume\coupleStressTensor\dVolume
+		=
+		\int_\volume \bnabla\cdotMiddle(\positionVector\otimes\coupleStressTensor) - \positionVector\otimes(\bnabla\cdot\coupleStressTensor) \dVolume
+		= \\ =
+		\int_\surface \positionVector\otimes\normalVector\cdot\coupleStressTensor \dSurface - \int_\volume \positionVector\otimes\br{\bnabla\cdot\coupleStressTensor}\dVolume
+		=
+		\int_\surface\positionVector\otimes\surfCoupleVector\dSurface + \int_\volume\positionVector\otimes\br{\bodyCoupleVector+\identityTensor2\cross\stressTensor}\dVolume
+		= \\ =
+		\int_\surface\positionVector\otimes\surfCoupleVector\dSurface + \int_\volume\positionVector\otimes\bodyCoupleVector\dVolume
+		+
+		\int_\volume\positionVector\dVolume\otimes\br{\identityTensor2\cross\volumeAverage{\stressTensor}}
+		= \\ =
+		\volume\centroidVector\otimes\br{\identityTensor2\cross\volumeAverage{\stressTensor}}
+		+
+		\sum_{\externalp}\positionVector\otimes\externalCoupleVector
+		.
+	\end{gathered}
+\end{equation}
+$\int_\volume\positionVector\dVolume=\volume\centroidVector$ is the first moment of volume according to equation (\ref{eqAppendixMathMiscFirstMomentOfVolume}).
+
+\subsection{Internal forces}
+This approach is also applicable for internal forces \cite{BardetVardoulakis2001a,CundallStrack1979a}.
+Each particle is treated separately considering internal forces (couples) with surrounding particles as external forces (couples) with respect to the particle.
+The overall (couple) stress tensor is evaluated as a volume average of the (couple) stress tensor of each particle.
+
+However, the result depends on the volume assigned to the particles.
+If the particles represent physical grains, the assigned volume is defined uniquely.
+If the particles are an artificial discretization, the assigned volume is not defined uniquely.
+
+
+\section{Examples}\label{secDemDiscreteStressExamples}
+Table \ref{tabDiscreteStressExamples1} shows evaluated stress tensor, and couple stress tensor for simple 2D situations.
+
+\begin{table}
+	\centering
+	\caption{2D illustrations of stress and couple stress tensors}
+	\def\w{2cm}
+	\def\z{\cdot}
+	\begin{tabular}{|C{2cm}|C{2cm}|C{2cm}|C{2cm}|C{2cm}|}
+		\hline
+		{} & $\stressTensor$ & $\coupleStressTensor$ \\
+		\hline
+		\hline
+
+		\includegraphics[width=\w]{raphaelpy/discrete_stress_0}
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		\\
+		\hline
+
+		\includegraphics[width=\w]{raphaelpy/discrete_stress_1}
+		&
+		$\begin{bmatrix}
+			 2 & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		\\
+		\hline
+
+		\includegraphics[width=\w]{raphaelpy/discrete_stress_2}
+		&
+		$\begin{bmatrix}
+			 1 & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		\\
+		\hline
+
+		\includegraphics[width=\w]{raphaelpy/discrete_stress_3}
+		&
+		$\begin{bmatrix}
+			\z &  2 & \z \\
+			 2 & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		\\
+		\hline
+
+	\end{tabular}
+	\hfill
+	\begin{tabular}{|C{2cm}|C{2cm}|C{2cm}|C{2cm}|C{2cm}|}
+		\hline
+		{} & $\stressTensor$ & $\coupleStressTensor$ \\
+		\hline
+		\hline
+
+		\includegraphics[width=\w]{raphaelpy/discrete_stress_4}
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		&
+		$\begin{bmatrix}
+			\z & \z &  2 \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		\\
+		\hline
+
+		\includegraphics[width=\w]{raphaelpy/discrete_stress_5}
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		&
+		$\begin{bmatrix}
+			\z & \z &  1 \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		\\
+		\hline
+
+		\includegraphics[width=\w]{raphaelpy/discrete_stress_6}
+		&
+		$\begin{bmatrix}
+			\z &  2 & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		\\
+		\hline
+
+		\includegraphics[width=\w]{raphaelpy/discrete_stress_7}
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			 1 & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		&
+		$\begin{bmatrix}
+			\z & \z & \z \\
+			\z & \z & \z \\
+			\z & \z & \z \\
+		\end{bmatrix}$
+		\\
+		\hline
+
+	\end{tabular}
+	\label{tabDiscreteStressExamples1}
+\end{table}

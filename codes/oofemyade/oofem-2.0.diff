@@ -1,0 +1,126 @@
+diff -rNw -U 0 oofem-2.0/src/sm/cohsur3d.C oofem-2.0/src/sm/cohsur3d.C
+--- oofem-2.0/src/sm/cohsur3d.C
++++ oofem-2.0/src/sm/cohsur3d.C
+@@ -88,3 +87,0 @@
+-  switch (numberOfDofMans) {
+-  case 2:
+-  	// Coordinate differences
+@@ -93,0 +91,3 @@
++	double d1 = sqrt(x01*x01+y01*y01+z01*z01);
++  switch (numberOfDofMans) {
++  case 2:
+@@ -97,39 +96,0 @@
+-
+-  	// B matrix in local coordinates (and without the term 1/length)
+-
+-  	Bloc.zero();
+-
+-  	Bloc.at(1,1) =  -1.;
+-  	Bloc.at(2,2) =  -1.;
+-  	Bloc.at(3,3) =  -1.;
+-
+-  	Bloc.at(1,5) =   z01;
+-  	Bloc.at(1,6) =  -y01;
+-  	Bloc.at(2,4) =  -z01;
+-  	Bloc.at(2,6) =   x01;
+-  	Bloc.at(3,4) =   y01;
+-  	Bloc.at(3,5) =  -x01;
+-
+-  	Bloc.at(1,7) =   1.;
+-  	Bloc.at(2,8) =   1.;
+-  	Bloc.at(3,9) =   1.;
+-
+-  	Bloc.at(1,11) =  -z02;
+-  	Bloc.at(1,12) =   y02;
+-  	Bloc.at(2,10) =   z02;
+-  	Bloc.at(2,12) =  -x02;
+-  	Bloc.at(3,10) =  -y02;
+-  	Bloc.at(3,11) =   x02;
+-
+-  	// Transformation to global coordinates
+-
+-  	answer.resize(3,12);
+-  	answer.beProductOf(lcs,Bloc);
+-
+-  	// Division by the length
+-
+-  	answer.times(1./length);
+-
+-  	return ;
+-  	break;
+-
+@@ -137,4 +97,0 @@
+-   	// Coordinate differences
+-   	x01 = nodeA->giveCoordinate(1) - center.at(1) ;
+-  	y01 = nodeA->giveCoordinate(2) - center.at(2) ;
+-  	z01 = nodeA->giveCoordinate(3) - center.at(3) ;
+@@ -143,0 +101,2 @@
++  }
++	double d2 = sqrt(x02*x02+y02*y02+z02*z02);
+@@ -146 +104,0 @@
+-
+@@ -153,6 +111,2 @@
+-  	Bloc.at(1,5) =   z01;
+-  	Bloc.at(1,6) =  -y01;
+-  	Bloc.at(2,4) =  -z01;
+-  	Bloc.at(2,6) =   x01;
+-  	Bloc.at(3,4) =   y01;
+-  	Bloc.at(3,5) =  -x01;
++  	Bloc.at(2,6) =  -d1;
++  	Bloc.at(3,5) =  +d1;
+@@ -164,12 +118,2 @@
+-  	Bloc.at(1,11) =  -z02;
+-  	Bloc.at(1,12) =   y02;
+-  	Bloc.at(2,10) =   z02;
+-  	Bloc.at(2,12) =  -x02;
+-  	Bloc.at(3,10) =  -y02;
+-  	Bloc.at(3,11) =   x02;
+-
+-  	// Transformation to global coordinates
+-
+-  	FloatMatrix answer2(3,12);
+-  	answer2.zero();
+-  	answer2.beProductOf(lcs,Bloc);
++  	Bloc.at(2,12) = -d2;
++  	Bloc.at(3,11) = +d2;
+@@ -177,0 +122 @@
++  	Bloc.times(1./length);
+@@ -179 +124,16 @@
+-  	answer2.times(1./length);
++  	// Transformation to global coordinates
++	FloatMatrix T(12,12);
++	for (int i=0; i<4; i++) {
++		for (int r=1; r<=3; r++) {
++			for (int c=1; c<=3; c++) {
++				T.at(3*i+r,3*i+c) = lcs.at(r,c);
++			}
++		}
++	}
++	answer.beProductOf(Bloc,T);
++
++  switch (numberOfDofMans) {
++  case 2:
++  	return;
++  case 3:
++  	FloatMatrix answer2 = answer;
+@@ -186,13 +146,3 @@
+-  	Tper.at(1,1) 	 = 1.;
+-  	Tper.at(2,2) 	 = 1.;
+-  	Tper.at(3,3) 	 = 1.;
+-  	Tper.at(4,4) 	 = 1.;
+-  	Tper.at(5,5) 	 = 1.;
+-  	Tper.at(6,6) 	 = 1.;
+-  	Tper.at(7,7) 	 = 1.;
+-  	Tper.at(8,8) 	 = 1.;
+-  	Tper.at(9,9) 	 = 1.;
+-  	Tper.at(10,10) = 1.;
+-  	Tper.at(11,11) = 1.;
+-  	Tper.at(12,12) = 1.;
+-
++	for (int i=1; i<=12; i++) {
++		Tper.at(i,i) = 1.;
++	}
+@@ -208 +157,0 @@
+-
+@@ -210 +158,0 @@
+-  	break;

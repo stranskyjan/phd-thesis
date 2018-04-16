@@ -1,0 +1,204 @@
+\chapter{State of the art}
+
+\section{Discrete stress}
+The evaluation of equivalent stress from discrete forces is a topic much older than DEM itself \cite{Love1927a} described in many papers \cite{Alonsoarroquin2011a,ChangKuhn2005a,Bagi1996a},
+but until these days it is a subject of debates in specialized literature \cite{BardetVardoulakis2001a,Bagi2003a,Kuhn2003a,BardetVardoulakis2003a,BardetVardoulakis2003b}.
+A brief summary of current knowledge and author's new ideas are presented in this chapter.
+
+The discrete elements in DEM possess 6 degrees of freedom, namely 3 displacements and 3 rotations.
+Classical Boltzmann continuum assumes 3 degrees of freedom (3 displacements) in each material point.
+Therefore a higher order (Cosserat for instance) model should be used for continuum approximation of DEM in its general form \cite{Alonsoarroquin2011a}.
+
+
+\section{DEM--FEM coupling}
+
+\subsection{Surface coupling}
+The so called surface coupling
+\cite{OnateRojek2004a,Fakhimi2009a,NakashimaOida2004a}
+is probably the most straightforward FEM--DEM coupling strategy.
+
+The principle is to split the whole problem into two separated domains, one modeled by FEM and the other by DEM.
+As an illustrative example, consider a steel beam modeled by FEM falling into an assembly of gravel particles modeled by DEM.
+Both domains interact with each other, but are physically separated during the entire time of the process.
+
+\subsection{Volume coupling}
+Volume coupling \cite{RousseauFranginMarinDaudville2009a,XuGracieBelytschko2002a,AzevedoLemos2006a,WellmannWriggers2012a}
+is similar to the surface coupling.
+The difference is that the two subdomains overlap each other.
+
+The possible usage of this approach could be a model of concrete beam subjected to an impact load (blast for example).
+The whole beam would be modeled by FEM and only a small volume of the
+concrete (the volume to be fragmented and crushed) would be modeled by DEM.
+To preserve continuous nature of the beam, a transition zone (containing both FEM and DEM) would be included.
+
+There are two basic strategies how to model transition between FEM and DEM domains \cite{XuGracieBelytschko2002a}.
+The first one, \quotes{direct} or \quotes{master/slave} method \cite{AzevedoLemos2006a}, considers DEM particles overlapping with FEM as direct slaves of the FEM mesh (using standard \quotes{master/slave} or \quotes{hanging nodes} approach).
+The second one, the \quotes{weak} or \quotes{Arlequin} method \cite{RousseauFranginMarinDaudville2009a,WellmannWriggers2012a}, considers a transition bridging zone, where the total response is superposed from contributions of the two models and is interpolated between both domains.
+In the thesis, only the former (master/slave) approach is described.
+
+\subsection{Multiscale coupling}
+The idea of multiscale simulations is to model the problem on the large (macro) scale using information from a lower (micro) scale \cite{RojekOnate2007a,WellmannWriggers2012a}.
+In the current context, the (first order) homogenization \cite{GeersKouznetsovaBrekelmans2010a} is presented.
+
+Geometric information (strain) from macro scale -- integration points (IPs) of FEM mesh -- is transferred to the micro scale (representative volume element - RVE - modeled by DEM).
+On the micro scale, the boundary value problem (BVP) governed by the transferred prescribed strain is solved using periodic boundary conditions \cite{StranskyJirasek2011}.
+The output of the micro-scale problem is the stress tensor (sufficient for explicit solution scheme) and possibly also the constitutive characteristics (stiffness tensor, needed by implicit solution schemes), which are transferred back to the macro-scale problem.
+
+\subsection{Contact coupling}
+The idea of contact analysis \cite{Frenning2008a} is very simple and opposite to the multiscale approach.
+The material on the large scale is considered to be of a particulate nature and is modeled by particles using DEM.
+Each such particle is deformable and further modeled by FEM.
+
+There is no strict border between the cases when the solution can be considered as a~contact FEM analysis and when it is already DEM.
+For only a few particles we would probably use the former one, but when the number of particles increases, the DEM modeling (with its efficient contact detection algorithms) would be more appropriate.
+This strategy can be actually considered as full FEM, only the contact detection is \quotes{borrowed} from the DEM program.
+
+\subsection{Sequential coupling}
+The classification complementary to the concurrent combination is the sequential approach.
+It assumes that the processes are separable in time and therefore only the former process
+influences the latter process
+but not vice versa
+Usually some kind of homogenization techique is used to determine FEM model parameters at the beginning of the latter
+process from the final state of former
+process.
+
+
+
+
+
+\section{Discrete mesoscale model for concrete}
+
+Various approaches of mesoscale concrete modeling have been published.
+All of them consider concrete as a matrix-based composite with aggregates as inclusions, possibly also with pores.
+The approaches may be classified from several points of view.
+
+The first significant difference is whether the model is formulated in two dimensions (see, e.g.,
+\cite{%
+	HafnerEckardtLutherKonke2006a,%
+	PedersenSimoneSluys2013a,%
+	SatohYamadaIshiyama2013a,%
+	WangLinGu2008a,%
+	ZhouHao2008a,%
+	GrasslJirasek2010a,%
+}) or in three dimensions (see, e.g.,
+\cite{%
+	TranDonzeMarin2011a,%
+	WriggersMoftah2006,%
+	KimAlrub2011a,%
+	CaballeroWillamCarol2008a,%
+	Cusatis2001a,%
+	LandisBolander2009a,%
+	AsahinaLandisBolander2011a%
+}).
+Although the 3D models describe the heterogeneous geometry more realistically, some ideas and approaches from 2D models may be useful and applicable also for the 3D case.
+
+According to the numerical method used, the approaches can be divided into continuum and discrete based.
+Although the main purpose of this work is to develop a discrete mesoscale model, continuum based approaches can be very inspiring, especially in the context of ITZ material models.
+
+The discrete element method can model disintegration of materials and is therefore also very popular in the context of concrete modeling, especially for scenarios like fragmentation, impact or explosion problems etc.
+How DEM is used for mesoscale concrete modeling, see, e.g.,
+\cite{%
+	CambordeMariottiDonze2000a,%
+	GrohKonietzkyWalterHerbst2011a,%
+	HentzDonzeDaudeville2004a,%
+	IbrahimbegovicDelaplace2003a,%
+	TranDonzeMarin2011a,%
+	WangLinGu2008a,%
+	GrasslJirasek2010a,%
+	Cusatis2001a,%
+	LandisBolander2009a,%
+	AsahinaLandisBolander2011a%
+}.
+
+\subsection{Mesoscale geometry}
+The concrete heterogeneous geometry plays an important role in the realistic description of concrete meso\-scale behavior.
+The authors use various ways of definition of aggregate geometry, from extremely simplified regular uniformly sized hexagonal particles through commonly used spherical/circular (see, e.g.,
+\cite{%
+	PedersenSimoneSluys2013a,%
+	WangLinGu2008a,%
+	WriggersMoftah2006,%
+	ZhouHao2008a,%
+	KimAlrub2011a,%
+	GrasslJirasek2010a,%
+	LandisBolander2009a,%
+	AsahinaLandisBolander2011a%
+}) or ellipsoidal/elliptical (see, e.g.,
+\cite{%
+	GrohKonietzkyWalterHerbst2011a,%
+	HafnerEckardtLutherKonke2006a,%
+	KimAlrub2011a%
+}) representation to more sophisticated approximation by polygons/polyhedrons
+\cite{%
+	KwanWangChan1999b,%
+	PedersenSimoneSluys2013a,%
+	KimAlrub2011a,%
+}
+or representation of aggregates by the series of harmonic functions
+\cite{%
+	Garboczi2002a,%
+	HafnerEckardtLutherKonke2006a,%
+	Rypl2010a%
+}.
+
+For method testing and validation, there also exist experiments with artificially created mesoscale geometries, where large aggregates have predefined size, position and orientation, see
+\cite{%
+	TreggerCorrGrahambradyShah2006a,%
+	BuyukozturkHearing1998%
+}.
+The aggregates are modeled as one rigid particle
+\cite{%
+	WangLinGu2008a,%
+	LandisBolander2009a,%
+	AsahinaLandisBolander2011a%
+} or as a cluster of particles/elements (e.g., spheres in DEM)
+\cite{%
+	GrasslJirasek2010a,%
+	GrohKonietzkyWalterHerbst2011a,%
+	KimAlrub2011a,%
+}.
+Such clustered particles may be rigid or deformable.
+
+
+\subsection{Material models for mortar and aggregates}
+For practical and computational reasons, both matrix and individual aggregates are modeled as homogeneous components.
+Some authors (e.g.,
+\cite{%
+	CaballeroWillamCarol2008a,%
+	Cusatis2001a,%
+	GrasslJirasek2010a,%
+})
+consider aggregates as non damageable, so cracks and damage can only propagate in the matrix.
+This assumption is reasonable for certain loading scenarios, but is not applicable in a general case, where cracks can propagate also through aggregates (e.g., for light-weight concrete or for dynamic loading).
+
+Although all three phases of concrete composite material may be modeled with different material models
+\cite{%
+	ZhouHao2008a,%
+}, many authors use for matrix, aggregates and ITZ the same material model
+\cite{%
+	GrohKonietzkyWalterHerbst2011a,%
+	KimAlrub2011a,%
+	SatohYamadaIshiyama2013a,%
+	WangLinGu2008a,%
+}.
+
+In the case of continuous (FEM) models, the material model for matrix and aggregates is usually based on damage-plasticity models.
+The discrete models usually work with a more or less complex contact law and a link failure envelope.
+See, e.g.,
+\cite{%
+	IbrahimbegovicDelaplace2003a,%
+	TranDonzeMarin2011a,%
+	WangLinGu2008a%
+}.
+
+
+\subsection{Interface transition zone}
+Apart from separated matrix and aggregates, the interface between these components needs to be properly specified for realistic modeling of inelastic processes (crack initiation and propagation for instance).
+The interface is a very special region of concrete, occupying a minimal volume, but having a significant influence on resulting concrete properties.
+
+The special role of ITZ is given by both mechanical and chemical reasons, being investigated mathematically and experimentally
+\cite{%
+	ErdemDawsonThom2012a,%
+	GiaccioZerbinoPonceBatic2008a,%
+}.
+
+From the simulation point of view, the ITZ is often described by the same type of material model as the other constituents, but is considered as the weakest part of the concrete composite, which is reflected in the material parameters choice.

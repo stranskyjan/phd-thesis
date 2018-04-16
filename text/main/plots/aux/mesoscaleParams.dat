@@ -1,0 +1,19 @@
+xtic "experiment (Tang et al. 2008)" "model (Azevedo et al. 2008)" "model (Kim \\& Al-Rub 2011)" "model (Kozicki 2007)" "model (Kwan et al. 1999)" "model (Grassl \\& Rempling 2008)" "model (Gu et al. 2013)" "model (Grassl \\& Jirasek 2010)" "model (Prado \\& van Mier 2003)" "model (Qin \\& Zhang 2011)" "model (Snozzi et al. 2012)" "model (Tang et al. 2008)" "model (Tregger et al. 2006)" "model (Yip et al. 2006)"
+
+# stiffness [GPa]
+aggregates 41.3 70.0 55.5 70.0 58.54 120.0 nan 90.0 70.0 40.0 75.0 80.0 62.1 75.0
+mortar 20.54 15.0 26.0 25.0 26.64 48.0 28.7 30.0 25.0 20.0 30.0 30.0 25.5 25.0
+interface 9.07 15.0 25.0 25.0 nan 30.0 14.4 45.0 25.0 nan nan 22.0 nan nan
+
+# strength [MPa]
+aggregates 8.2 nan nan 10.0 10.0 nan nan nan 10.0 35.0 16.0 10.0 7.0 16.0
+mortar 2.61 6.5 3.0 5.0 3.0 5.0 5.86 5.3 5.0 12.5 4.7 3.72 2.55 8.0
+interface 1.21 3.25 2.0 1.25 1.5 1.0 2.94 1.8 1.25 5.0 2.7 2.5 2.1 2.0
+
+# stiffness
+aggregates/mortar 2.01071080818 4.66666666667 2.13461538462 2.8 2.19744744745 2.5 nan 3.0 2.8 2.0 2.5 2.66666666667 2.43529411765 3.0
+mortar/interface 2.26460859978 1.0 1.04 1.0 nan 1.6 1.99305555556 0.666666666667 1.0 nan nan 1.36363636364 nan nan
+
+# strength
+aggregates/mortar 3.14176245211 nan nan 2.0 3.33333333333 nan nan nan 2.0 2.8 3.40425531915 2.68817204301 2.74509803922 2.0
+mortar/interface 2.15702479339 2.0 1.5 4.0 2.0 5.0 1.99319727891 2.94444444444 4.0 2.5 1.74074074074 1.488 1.21428571429 4.0

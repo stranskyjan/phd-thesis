@@ -1,0 +1,43 @@
+\chapter{Introduction}
+
+% concrete
+Concrete is a composite material composed of inclusions (gravel and sand aggregates) embedded in a cement (or similar binder) matrix and is the most widely used building material.
+Therefore it has been in various contexts subjected to extensive research.
+In practical civil engineering, concrete is usually idealized as a homogeneous isotropic material.
+However, certain applications require description of concrete on lower than structural scales and heterogeneity (e.g, presence of aggregates) has to be taken into account.
+
+The basic behavior and structural response of concrete structures may be described analytically (for example a beam structure in the elastic range).
+Introducing more and more enhancements and features of the models leads to analytical unsolvability and numerical methods, usually with the help of computers, have to be introduced.
+
+% coupling
+Numerical simulations are an indispensable part of the current engineering and science development.
+For different engineering areas there are different numerical methods used.
+In solid phase mechanics, the leading methods are the finite element method (FEM) and the discrete (distinct) element method (DEM).
+
+Usually, the solution is performed by a computer program, which is focused on a narrower or wider class of problems (such as solid mechanics, fluid dynamics, heat analysis, DEM etc.).
+If a combination of two classes of problems is required (coupling of mechanical and heat analysis for instance), it is often possible to find a code allowing such approach.
+However, in some cases, there exists no program that can solve the desired combination of problems.
+One possible approach to deal with such situation would be to write a new or extend an existing program implementing the requested features.
+Another possible approach would be to use existing independently developed codes, each one focused on a specific class of problems, and \quotes{glue} them together.
+
+There are countless software programs for both FEM and DEM.
+In this thesis, coupling of FEM code \OOFEM\ and DEM code \YADE\ is described and illustrated.
+
+
+\section{Objectives of the thesis}
+\begin{enumerate}
+
+\item
+To investigate basic properties of particle models, namely the relation between micro- and macroscopic elastic properties of random dense packings in terms of analytical formulas and results of numerical simulations.
+Preparation and properties of random dense packings should be investigated beforehand.
+
+\item
+To develop open source tools for combination of the discrete element method and the finite element method.
+Several classes of combination approaches together with simple examples should be addressed.
+
+\item
+To develop a mesoscale discrete element model for concrete.
+The model should take into account the effect of aggregates and the interfacial transition zone (ITZ) between aggregates and the matrix.
+The model should be validated against experimental data from available literature.
+
+\end{enumerate}

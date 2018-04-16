@@ -1,0 +1,5 @@
+description young epsCrackOnset relDuctility sigmaT frictionAngle
+default     25e9  1e-4          30           3e6    atan(0.8)
+2xSti       50e9  .5e-4         30           6e6    atan(0.8)
+2xStr       25e9  2e-4          30           3e6    atan(0.8)
+2xStiStr    50e9  1e-4          30           6e6    atan(0.8)
