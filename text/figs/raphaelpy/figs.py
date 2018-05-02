@@ -722,16 +722,16 @@ for i in xrange(n-1):
 		s2 = sphs[j]
 		if s1.isClose(s2,1.5):
 			intrs.append((s1,s2))
-for index in (1,2):
+for index in (0,1,2):
 	paper = Paper("mcpm_itz_possibilities_{}".format(index),w,h)
 	for s in sphs:
 		a = s.extra.get("aggreg")
-		fill = "#999" if a and index==2 else "#ddd"
+		fill = "#999" if a and index in (0,2) else "#ddd"
 		s.toPaper(paper,fill=fill)
 	for s1,s2 in intrs:
 		l = line(s1.center,s2.center)
 		a1,a2 = [s.extra.get("aggreg") for s in (s1,s2)]
-		if index == 1:
+		if index in (0,1):
 			continue
 		if (a1 and not a2) or (not a1 and a2):
 			l.attr(stroke_width=6.5)

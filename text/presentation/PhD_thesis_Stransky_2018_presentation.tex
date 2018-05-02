@@ -1,0 +1,950 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% predefined document class
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[%
+	%handout
+]{phdpresentation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% inputs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{common}
+\input{commands} % user defined commands
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% field setting in PDF document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hypersetup{
+	pdftitle={\thesisTitle},%
+	pdfauthor={\authorName},%
+	pdfcreator={\authorName},%
+	pdfproducer={\authorName},%
+	pdfsubject={Doctoral thesis defense presentation},%
+	pdfkeywords={\keywords}%
+}
+
+\title{\thesisTitle}
+\author{\authorName}
+\institute{\department\par\faculty\par\university}
+\date{\defenseDate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% titlepage
+\begin{frame}
+	\clearpage
+	\thispagestyle{empty}
+	\vspace*{5mm}
+	\titlepage
+\end{frame}
+
+% outline
+\outlineframe
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% D E M
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discrete element method}
+\begin{frame}
+	\frametitle{\secname\ (DEM)}
+	\begin{twocolumns}
+		\begin{onecolumn}
+			\begin{myitemize}
+				\item<1-> set of rigid particles
+				\item<1-> various particle shapes
+				\item<3-> motion, contact detection
+				\item<3-> Newton's laws of motion
+				\item<10-> contact laws
+			\end{myitemize}
+		\end{onecolumn}
+		\begin{onecolumn}
+			\only<1| handout:0>{\includegraphics[width=\textwidth]{figs/packing}}
+			\only<2| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/particle_shapes}}
+			\only<3| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/dem_illustration_0}}
+			\only<4| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/dem_illustration_1}}
+			\only<5| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/dem_illustration_2}}
+			\only<6| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/dem_illustration_3}}
+			\only<7| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/dem_illustration_4}}
+			\only<8| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/dem_illustration_5}}
+			\only<9| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/dem_illustration_6}}
+			\only<10| handout:1>{\includegraphics[width=\textwidth]{figs/packing_with_links}}
+		\end{onecolumn}
+	\end{twocolumns}
+\end{frame}
+
+\subsection{Particle model for concrete}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\begin{twocolumns}
+		\begin{onecolumn}
+			\begin{myitemize}
+				\item<1-> by Šmilauer \& Jirásek
+				\item<2-> uniform spheres
+				\item<2-> artificial discretization
+				\item<2-> random close packing
+				\item<2-> cohesive links
+				\item<3-> interaction ratio
+				\item<7-> normal and shear stress
+				\item<8-> damage and plasticity
+				\item<9-> uniaxial tests illustration
+			\end{myitemize}
+		\end{onecolumn}
+		\begin{onecolumn}
+			\only<2| handout:0>{\includegraphics[width=\textwidth]{figs/packing_with_links}}
+			\only<3| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/interaction_ratio_0}}
+			\only<4| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/interaction_ratio_1}}
+			\only<5| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/interaction_ratio_2}}
+			\only<6| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/interaction_ratio_3}}
+			\only<7| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/normal_shear_dir}}
+			\only<8| handout:1>{
+				\inputplot{cpm_law_tester_normal_simple_tension}
+				\inputplot{cpm_shear_plasticity_func}
+			}
+			\only<9| handout:0>{\inputplot{cpm_uniax_tension}}
+			\only<10| handout:0>{\inputplot{cpm_uniax_compression}}
+		\end{onecolumn}
+	\end{twocolumns}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% E L A S T I C
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Macroscopic elastic properties of DEM models}
+\begin{frame}
+	\frametitle{\secname}
+	\begin{twocolumns}
+		\begin{onecolumn}
+			micro parameters: $\linkMaterialStiffnessNormal$, $\linkMaterialStiffnessShear$ \par
+			macro parameters: $\youngModulus$, $\poissonRatio$ \par
+			\uncover<2->{
+				\begin{block}{Numerical solution}
+					\begin{myitemize}
+						\item dynamic DEM, static FEM
+						\item periodic BCs
+					\end{myitemize}
+				\end{block}
+			}
+			\uncover<3->{
+				\begin{block}{Analytical solution}
+					\begin{myitemize}
+						\item<3-> affine displacement
+						\item<5-> stiffness tensor
+						\item<6-> uniform distribution of link directions
+					\end{myitemize}
+				\end{block}
+			}
+		\end{onecolumn}
+		\begin{onecolumn}
+			\only<1| handout:0>{
+				\includegraphics[width=4cm]{figs/raphaelpy/normal_shear_dir}
+				\begin{picture}(0,0)
+					\setlength{\unitlength}{1cm}
+					\put(-2.5,1.7){\makebox(0,0){$\linkMaterialStiffnessNormal$}}
+					\put(-1.8,2.0){\makebox(0,0){$\linkMaterialStiffnessShear$}}
+				\end{picture}
+				\par
+				\vspace{3mm}
+				\includegraphics[width=4cm]{figs/packing}
+				\begin{picture}(0,0)
+					\setlength{\unitlength}{1cm}
+					\put(-.5,.7){\makebox(0,0){$\youngModulus, \poissonRatio$}}
+				\end{picture}
+			}
+			\only<2| handout:0>{
+				\includegraphics[width=4cm]{../figs/raphaelpy/peri_packing_2d_illustration_0}
+				\setlength{\unitlength}{4cm}
+				\put(-0.615384615385,0.384615384615){\makebox(0,-.01)[lt]{$\particleA$}}
+				\put(-0.230769230769,0.769230769231){\makebox(0,0)[l]{$\particleA'$}}
+				\put(-0.394230769231,0.605769230769){\makebox(0,-.02)[lt]{$\particleB$}}
+				\put(-0.778846153846,0.221153846154){\makebox(0,-.02)[t]{$\particleB'$}}
+			}
+			\only<3| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/affine_dspl_0}}
+			\only<4| handout:0>{\includegraphics[width=\textwidth]{figs/raphaelpy/affine_dspl_1}}
+			\only<5-| handout:1>{
+				$$
+					\stiffnessTensorElastic =
+					\frac{1}{\volume} \sum_\contact \branch^\contact\linkCrossSectionArea^\contact\br{\linkMaterialStiffnessNormal\normalTensor4^\contact+\linkMaterialStiffnessShear\shearTensor4^\contact}
+				$$
+				\uncover<6-| handout:1>{
+					\vspace{1cm}
+					$$
+						\youngModulus =
+						\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{3\volume}
+						\cdot
+						\frac{\linkMaterialStiffnessNormal\br{2\linkMaterialStiffnessNormal+3\linkMaterialStiffnessShear}}{4\linkMaterialStiffnessNormal+\linkMaterialStiffnessShear}
+					$$
+					$$
+						\poissonRatio = \frac{\linkMaterialStiffnessNormal-\linkMaterialStiffnessShear}{4\linkMaterialStiffnessNormal+\linkMaterialStiffnessShear}
+					$$
+				}
+			}
+		\end{onecolumn}
+	\end{twocolumns}
+\end{frame}
+
+\subsection{Results}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\only<1>{
+		interaction ratio = 1.50 \par
+		\inputplot{preprocessed_macromicro_E_I1.50}
+		\inputplot{preprocessed_macromicro_nu_I1.50}
+	}
+	\only<2| handout:0>{
+		interaction ratio = 1.05 \par
+		\inputplot{preprocessed_macromicro_E_I1.05}
+		\inputplot{preprocessed_macromicro_nu_I1.05}
+	}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% D E M  -  F E M  C O U P L I N G
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{DEM -- FEM coupling}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{Motivation}
+	\begin{twocolumns}
+		\begin{onecolumn}
+			\begin{block}{DEM}
+				discrete domains\par
+				\vspace{2mm}
+				\centering
+				\includegraphics[width=\textwidth]{figs/raphaelpy/ballast}
+			\end{block}
+		\end{onecolumn}
+		\begin{onecolumn}
+			\begin{block}{FEM}
+				continuous domains\par
+				\vspace{2mm}
+				\centering
+				\includegraphics[width=\textwidth]{figs/raphaelpy/sleeper}
+			\end{block}
+		\end{onecolumn}
+	\end{twocolumns}
+	\par
+	\visible<2->{
+		\begin{block}{Combination}
+			\begin{myitemize}
+				\item monolithic application -- redoing what already exists
+				\item {\color{ctuRed}combination of existing codes}
+			\end{myitemize}
+			\vspace{1mm}
+			\centering
+			\includegraphics[width=.5\textwidth]{figs/raphaelpy/sleeper_ballast}
+		\end{block}
+	}
+\end{frame}
+
+\newcommand{\boxwh}[3]{\vbox to #2{\vfil\hbox to #1{#3}\vfil}}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{Motivation}
+	\begin{twocolumns}
+		\begin{onecolumn}
+			\begin{block}{YADE}
+				\boxwh{\textwidth}{2cm}{\hfill\includegraphics[height=2cm]{figs/yade-logo}\hfill}
+				\begin{myitemize}
+					\item<2-> DEM analysis
+					\item<3-> free
+					\item<4-> open source
+					\item<5-> C++ core
+					\item<6-> Python user interface
+				\end{myitemize}
+			\end{block}
+		\end{onecolumn}
+		\begin{onecolumn}
+			\begin{block}{OOFEM}
+				\boxwh{\textwidth}{2cm}{\centering\includegraphics[width=\textwidth]{figs/oofem-logo}}
+				\begin{myitemize}
+					\item<2-> FEM analysis
+					\item<3-> free
+					\item<4-> open source
+					\item<5-> C++ core
+					\item<6-> Python user interface
+				\end{myitemize}
+			\end{block}
+		\end{onecolumn}
+	\end{twocolumns}
+	\only<7| handout:0>{
+		\vspace{-3cm}
+		\centering
+		\includegraphics[width=5cm]{figs/raphaelpy/hand_shaking}
+	}
+\end{frame}
+
+
+\subsection{Surface coupling}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\centering
+	\includegraphics[width=6cm]{../figs/raphaelpy/coupling_illustration_surface}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{6cm}
+		\put(-0.230769230769,0.0307692307692){\makebox(0,0){\small FEM}}
+		\put(-0.830769230769,0.0307692307692){\makebox(0,0){\small DEM}}
+		\put(-0.523076923077,0.446153846154){\makebox(0,0){\footnotesize load}}
+		\put(-0.523076923077,0.2){\makebox(0,0){\footnotesize displacement}}
+	\end{picture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\centering
+	\href{run:figs/surf1.gif}{\includegraphics[height=7cm]{coupling/surf1/spheres/surf1-0030}}
+\end{frame}
+
+ 
+\subsection{Volume coupling}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\centering
+	\includegraphics[width=8cm]{../figs/raphaelpy/coupling_illustration_volume}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\centering
+	\href{run:figs/vol1.gif}{\includegraphics[width=10cm,trim={0 .0cm 0 2cm},clip]{coupling/vol1/vol1-0087}}
+\end{frame}
+
+
+\subsection{FE$\times$DE (multiscale) coupling}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\centering
+	\includegraphics[width=10cm]{../figs/raphaelpy/coupling_illustration_multiscale}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{10cm}
+		\put(-0.85,0.1875){\makebox(-.03,0)[r]{IP}}
+		\put(-0.6,0.34375){\makebox(0,0){strain}}
+		\put(-0.6,0.03125){\makebox(0,0){stress}}
+	\end{picture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\centering
+	\href{run:figs/multi1.gif}{\includegraphics[height=7cm]{coupling/multi1/multi1-0050}}
+\end{frame}
+
+
+\subsection{Contact coupling}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\centering
+	\includegraphics[width=10cm]{raphaelpy/coupling_illustration_contact}
+	\begin{picture}(0,0)
+		\setlength{\unitlength}{10cm}
+		\put(-0.8,.03){\makebox(0,0){DEM}}
+		\put(-0.2,.03){\makebox(0,0){FEM}}
+	\end{picture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\centering
+	\href{run:figs/contact1.gif}{\includegraphics[height=7cm]{coupling/contact1/contact1-0053}}
+\end{frame}
+ 
+ 
+\subsection{Sequential coupling}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\begin{twocolumns}
+		\begin{onecolumn}
+			\begin{myitemize}
+				\item<1-> Processes separable in~time
+				\item<4-> FEM model for concrete by Grassl \& Jirásek
+				\item<5->
+					DEM ($\stressTensor_{DEM},\damageTensor_{DEM}$)
+					$\rightarrow$ 
+					\par
+					$\rightarrow$ 
+					FEM ($\stressTensor,\damage,\kappaD,\kappaP$)
+			\end{myitemize}
+		\end{onecolumn}
+		\begin{onecolumn}
+			\only<1| handout:0>{\includegraphics[height=7cm]{figs/raphaelpy/sequential_coupling_illustration_0}}
+			\only<2| handout:1>{
+				\includegraphics[height=7cm]{figs/raphaelpy/sequential_coupling_illustration_1}
+				\begin{picture}(0,0)
+					\setlength{\unitlength}{1cm}
+					\put(-.5,3.5){\makebox(0,0){DEM}}
+				\end{picture}
+			}
+			\only<3| handout:2>{
+				\includegraphics[height=7cm]{figs/raphaelpy/sequential_coupling_illustration_2}
+				\begin{picture}(0,0)
+					\setlength{\unitlength}{1cm}
+					\put(-.5,3.5){\makebox(0,0){damage}}
+					\put(-.8,5){\makebox(0,0){FEM}}
+				\end{picture}
+			}
+			\only<4| handout:0>{
+				\includegraphics[width=5cm]{../figs/raphaelpy/coupling_seq_cpm_dpm_2}
+				\begin{picture}(0,0)
+					\setlength{\unitlength}{5cm}
+					\put(-0.1,0.05){\makebox(0,0)[r]{$\strain$}}
+					\put(-0.88,0.566666666667){\makebox(0,0)[l]{$\stress$}}
+					\put(-0.515,0.416666666667){\makebox(0,0)[l]{$\damage f_t$}}
+					\put(-0.9,0.516666666667){\makebox(-.03,0)[r]{$f_t$}}
+					\put(-0.95,-0.04){\makebox(0,0)[l]{$\damage=0$}}
+					\put(-0.95,-0.10){\makebox(0,0)[l]{$\kappaD=0$}}
+					\put(-0.95,-0.16){\makebox(0,0)[l]{$\kappaP<1$}}
+					\put(-0.50,-0.04){\makebox(0,0)[l]{$\damage>0$}}
+					\put(-0.50,-0.10){\makebox(0,0)[l]{$\kappaD>0$}}
+					\put(-0.50,-0.16){\makebox(0,0)[l]{$\kappaP=\kappaD+1$}}
+				\end{picture}
+			}
+			\only<5| handout:0>{
+				\footnotesize
+				$$
+					\damageTensor = -\frac{1}{2}\trace{\damageTensor}\identityTensor2 + \frac{15}{2N}\sum_\contact\damageA^\contact\normalVector^\contact\otimes\normalVector^\contact =
+				$$
+				$$
+					= -\identityTensor2\frac{3}{2N}\sum_\contact\damageA^\contact + \frac{15}{2N}\sum_\contact\damageA^\contact\normalVector^\contact\otimes\normalVector^\contact
+				$$
+				$$
+					\damage_{FEM} = \damage(\damageTensor) = \damage(\damageTensorI_1,\damageTensorI_2,\damageTensorI_3)
+				$$
+				$$
+					\kappaD = \kappaD(\damage),
+					\kappaP = \kappaP(\damage)
+				$$
+			}
+		\end{onecolumn}
+	\end{twocolumns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	Results - uniaxial compression \par
+	\centering
+	\only<+| handout:0>{\inputplot{sequential_coupling_plain}}
+	\only<+| handout:0>{
+		\inputplot{sequential_coupling_001}
+		\inputplot{sequential_coupling_002}
+	}
+	\only<+| handout:0>{
+		\inputplot{sequential_coupling_004}
+		\inputplot{sequential_coupling_005}
+	}
+	\only<+| handout:1>{
+		\inputplot{sequential_coupling_007}
+		\inputplot{sequential_coupling_009}
+	}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% M C P M
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Mesoscale DEM model for concrete}
+\begin{frame}
+	\frametitle{\secname}
+	\begin{twocolumns}
+		\begin{onecolumn}
+			\begin{myitemize}
+				\item three phase material
+				\begin{myitemize}
+					\item mortar matrix
+					\item aggregate inclusions
+					\item ITZ
+				\end{myitemize}
+				\item<2-> one material model
+				\item<3-> 2 types of DEM particles
+				\item<3-> 3 types of links
+				\item<5-> ITZ link
+				\begin{myitemize}
+					\item weaker
+					\item less stiff
+					\item more brittle
+				\end{myitemize}
+			\end{myitemize}
+		\end{onecolumn}
+		\begin{onecolumn}
+			\only<1| handout:0>{\includegraphics[width=\textwidth]{figs/concrete}}
+			\only<2| handout:0>{
+				\inputplot{cpm_law_tester_normal_simple_tension}
+				\inputplot{cpm_shear_plasticity_func}
+			}
+			\only<3| handout:0>{\includegraphics[width=\textwidth]{../figs/raphaelpy/mcpm_itz_possibilities_1}}
+			\only<4| handout:0>{\includegraphics[width=\textwidth]{../figs/raphaelpy/mcpm_itz_possibilities_0}}
+			\only<5>{\includegraphics[width=\textwidth]{../figs/raphaelpy/mcpm_itz_possibilities_2}}
+		\end{onecolumn}
+	\end{twocolumns}
+\end{frame}
+
+\subsection{Validation}
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\begin{twocolumns}
+		\begin{onecolumn}
+			\begin{myitemize}
+				\item<1-> Experiment Beygi et al.
+				\item<1-> $\youngModulus$, $f_t$, $f_c$, $G_f$
+				\item<2-> different grading curves
+				\item<2-> same total amount of aggregates
+				\item<3-> two types of concrete
+			\end{myitemize}
+		\end{onecolumn}
+		\begin{onecolumn}
+			\only<2>{
+				\small
+				\setlength\tabcolsep{.3em}
+				\begin{tabular}{|c|c|c|c|}
+					\hline
+					max. aggreg & 9{.}5 & 12{.}5 & 19{.}0 \\
+					\hline\hline
+					powder          & 205 & 205 & 205 \\
+					\hline
+					sand            & 917 & 917 & 917 \\
+					\hline
+					4{.}75 - 9{.}5  & 750 & 300 & 300 \\
+					\hline
+					9{.}5 - 12{.}5  &  -  & 450 & 300 \\
+					\hline
+					12{.}5 - 19{.}0 &  -  &  -  & 150 \\
+					\hline
+				\end{tabular}
+			}
+			\only<3| handout:0>{
+				\setlength\tabcolsep{.3em}
+				\begin{tabular}{|c|c|c|}
+					\hline
+					 & $c$ & $w$ \\
+					\hline\hline
+					low s.  & 325{.}8 & 187{.}0 \\
+					\hline
+					high s. & 422{.}4 & 160{.}7 \\
+					\hline
+				\end{tabular}
+			}
+		\end{onecolumn}
+	\end{twocolumns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\secname}
+	\framesubtitle{\subsecname}
+	\only<1>{\inputplot{validationBeygi_l}}
+	\only<2| handout:0>{\inputplot{validationBeygi_h}}
+	\par
+	\vspace{-5mm}
+	\centering
+	\inputplot{validationBeygi_legend}
+	\vspace{-10mm}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% C O N C L U S I O N S
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions}
+\begin{frame}
+	\frametitle{\secname}
+	\only<1| handout:1>{
+		\begin{block}{Conclusions}
+			\begin{myitemize}
+				\item macroscopic elastic properties of particle models
+				\item discrete (couple) stress tensor
+				\item DEM -- FEM coupling, new open source package
+				\item sequential DEM -- FEM coupling
+				\item mesoscale discrete element model for concrete
+			\end{myitemize}
+		\end{block}
+	}
+	\only<2| handout:2>{
+		\begin{block}{Future work}
+			\begin{myitemize}
+				\item new formula for discrete couple stress tensor verification
+				\item more detailed parameter study of MCPM
+				\item more examples of sequential DEM -- FEM coupling
+				\item more examples of concurrent DEM -- FEM coupling
+			\end{myitemize}
+		\end{block}
+	}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% O P P O N E N T S
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{discussion}
+	
+\section{Jan Eliáš}
+\begin{questionframe}{1}
+	\begin{questionblock}
+		What other formulas for the evaluation of the couple stress tensor in a discrete system are used?
+		What are their differences, advantages and disadvantages compared to the newly derived formula?
+	\end{questionblock}
+	\begin{answerblock}
+		Bardet \& Vardoulakis and Chang \& Kuhn:
+		\par
+		\vspace{-3mm}
+		$$
+			\coupleStress_{ji}+\leviCivita{jkl}\Sigma_{jlk} = ...
+		$$
+		$$
+			\Sigma_{kji}+\Sigma_{jki} = ...
+		$$
+		New formula
+		\par
+		\vspace{-3mm}
+		$$
+			\volume\volumeAverage{\coupleStressTensor}
+			=
+			\volume\centroidVector\otimes\br{\identityTensor2\cross\volumeAverage{\stressTensor}}
+			+
+			\sum_{\externalp}\positionVector\otimes\externalCoupleVector
+		$$
+	\end{answerblock}
+\end{questionframe}
+
+\begin{questionframe}{2}
+	\begin{questionblock}
+		Volume or surface coupling of discrete and continuum methods usually leads to undesirable reflection and dispersion of waves on their interface.
+		Does any of the methods eliminate this problem?
+	\end{questionblock}
+	\begin{answerblock}
+		No.
+	\end{answerblock}
+\end{questionframe}
+
+\begin{questionframe}{3}
+	\begin{questionblock}
+		The mesoscale model presented in part 3 is composed of spherical particles.
+		Their size has no physical interpretation and it seems that it may be chosen almost arbitrarily.
+		Is the response of the model independent on the size of these particles?
+	\end{questionblock}
+	\begin{answerblock}
+		\begin{myitemize}
+			\item The model is NOT independent on particle size.
+			\item For each particle size, the model should be calibrated independently.
+		\end{myitemize}
+	\end{answerblock}
+\end{questionframe}
+
+\begin{questionframe}{4}
+	\only<1| handout:1>{
+		\begin{questionblock}
+			It is stated that it is possible to split the summation assuming uniform distribution of the product of contact areas and lengths in the equation 3.35.
+			However, I have the impression that the distribution may be considered arbitrary.
+			For the presented summation split, it is necessary to assume independence of the normal direction $\normalVector$ and the product of contact areas and lengths $\linkCrossSectionArea\linkLength$.
+		\end{questionblock}
+	}
+	\only<2| handout:2>{
+		\begin{answerblock}
+			$$
+				\stiffnessTensorElastic =
+				\frac{1}{\volume} \sum_\contact \branch^\contact\linkCrossSectionArea^\contact\br{\linkMaterialStiffnessNormal\normalTensor4^\contact+\linkMaterialStiffnessShear\shearTensor4^\contact}
+			$$
+			$$
+				\youngModulus =
+				\frac{\sum\branch^\contact\linkCrossSectionArea^\contact}{3\volume}
+				\cdot
+				\frac{\linkMaterialStiffnessNormal\br{2\linkMaterialStiffnessNormal+3\linkMaterialStiffnessShear}}{4\linkMaterialStiffnessNormal+\linkMaterialStiffnessShear}
+			$$
+			$$
+				\poissonRatio = \frac{\linkMaterialStiffnessNormal-\linkMaterialStiffnessShear}{4\linkMaterialStiffnessNormal+\linkMaterialStiffnessShear}
+			$$	
+			\begin{myitemize}
+				\item I considered it as a part of the assumption of uniform distribution of link directions
+				\item match of the results
+				\item Least effect for low values of interaction ratio
+			\end{myitemize}
+		\end{answerblock}
+	}
+\end{questionframe}
+
+\begin{questionframe}{5}
+	\only<1| handout:1>{
+		\begin{questionblock}
+			Figures 3.8-3.11 show the difference of derived analytical formula and the real macroscopic response for low and high values of interaction ratio.
+			Is there a simple explanation of the observed dependency on interaction ratio?
+			Why is the estimation of elastic parameters so much different for low values of interaction ratio?
+		\end{questionblock}
+	}
+	\only<2| handout:2>{
+		\begin{answerblock}
+			\inputplot{preprocessed_macromicro_E_I1.05}
+			\inputplot{preprocessed_macromicro_nu_I1.05}
+			\begin{myitemize}
+				\item systematic error in my evaluation
+				\item not fulfilled assumptions of the gray estimation
+			\end{myitemize}
+		\end{answerblock}
+	}
+	\only<3| handout:3>{
+		\begin{questionblock}
+			Is is possible to get such accurate estimation also for non-spherical particles (like ellipsoids) for the whole range of shear and normal stiffness?
+		\end{questionblock}
+		\begin{answerblock}
+			I believe yes, but have not tested it nor did any research.
+		\end{answerblock}
+	}
+\end{questionframe}
+
+
+\section{Jan Zeman}
+\begin{questionframe}{1}
+	\begin{questionblock}
+		Please, explain in more detail your statement from page 9:\par
+		\textit{A~\quotes{small} change of positions of particles can cause a sudden (\quotes{big}) change of the stiffness of the system.
+		For this reason, implicit integration schemes are in general not suitable for numerical solution and an explicit time integration scheme is usually applied to solve equations of motion}\par
+	\end{questionblock}
+	\begin{answerblock}
+		\begin{myitemize}
+			\item not very good expressions, \textit{not suitable} is too strong
+			\item \textit{sudden change of stiffness} = zero or nonzero stiffness
+			\item What I meant: explicit time integration is \quotes{less complex}
+		\end{myitemize}
+	\end{answerblock}
+\end{questionframe}
+
+\begin{questionframe}{2}
+	\begin{questionblock}
+		You assume an affine displacement of individual particles.
+		This kinematic assumption is not fulfilled for heterogeneous materials because of perturbations of displacement field due to spatially variable stiffness.
+		What is the influence of this assumption of the accuracy of obtained properties, with respect to the results presented in section 3.4.2?
+	\end{questionblock}
+	\begin{answerblock}
+		\begin{myitemize}
+			\item method is designed for homogeneous materials
+			\item for heterogeneous material, each phase could be evaluated independently and another homogenization method could be used to determine overall elastic parameters.
+		\end{myitemize}
+	\end{answerblock}
+\end{questionframe}
+
+\begin{questionframe}{3}
+	\begin{questionblock}
+		Please, explain in more detail your statement on page 43:\par
+		\textit{The resulting (couple) stress tensor does not depend on the choice of the point of moment equilibrium.}\par
+		\textit{The resulting (couple) stress tensor does not depend on the choice of particles' reference points.}\par
+	\end{questionblock}
+	\begin{answerblock}
+		These are necessary conditions for macro (couple) stress tensor according to Chang \& Kuhn.
+	\end{answerblock}
+\end{questionframe}
+
+\begin{questionframe}{4}
+	\begin{questionblock}
+		Please, explain what you have tried to show with table 4.1 on page 46.
+	\end{questionblock}
+	\begin{answerblock}
+		Simple illustration of (couple) stress tensor
+		\centering
+		\resizebox{.65\textwidth}{!}{%
+			\def\w{2cm}
+			\def\z{\cdot}
+			\begin{tabular}{|C{2cm}|C{2cm}|C{2cm}|C{2cm}|C{2cm}|}
+				\hline
+				{} & $\stressTensor$ & $\coupleStressTensor$ \\
+				\hline
+				\hline
+				%
+				\includegraphics[width=\w]{raphaelpy/discrete_stress_0}
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				\\
+				\hline
+				%
+				\includegraphics[width=\w]{raphaelpy/discrete_stress_1}
+				&
+				$\begin{bmatrix}
+					 2 & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				\\
+				\hline
+				%
+				\includegraphics[width=\w]{raphaelpy/discrete_stress_2}
+				&
+				$\begin{bmatrix}
+					 1 & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				\\
+				\hline
+				%
+				\includegraphics[width=\w]{raphaelpy/discrete_stress_3}
+				&
+				$\begin{bmatrix}
+					\z &  2 & \z \\
+					 2 & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				\\
+				\hline
+			\end{tabular}
+			\hfill
+			\begin{tabular}{|C{2cm}|C{2cm}|C{2cm}|C{2cm}|C{2cm}|}
+				\hline
+				{} & $\stressTensor$ & $\coupleStressTensor$ \\
+				\hline
+				\hline
+				%
+				\includegraphics[width=\w]{raphaelpy/discrete_stress_4}
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				&
+				$\begin{bmatrix}
+					\z & \z &  2 \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				\\
+				\hline
+				%
+				\includegraphics[width=\w]{raphaelpy/discrete_stress_5}
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				&
+				$\begin{bmatrix}
+					\z & \z &  1 \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				\\
+				\hline
+				%
+				\includegraphics[width=\w]{raphaelpy/discrete_stress_6}
+				&
+				$\begin{bmatrix}
+					\z &  2 & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				\\
+				\hline
+				%
+				\includegraphics[width=\w]{raphaelpy/discrete_stress_7}
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					 1 & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				&
+				$\begin{bmatrix}
+					\z & \z & \z \\
+					\z & \z & \z \\
+					\z & \z & \z \\
+				\end{bmatrix}$
+				\\
+				\hline
+			\end{tabular}
+			}
+	\end{answerblock}
+\end{questionframe}
+
+\begin{questionframe}{5}
+	\only<1| handout:1>{
+		\begin{questionblock}
+			Please, explain based on which considerations you got the calibration formulas in equations (6.17)-(6.19)
+		\end{questionblock}
+	}
+	\only<2| handout:2>{
+		\begin{answerblock}
+			$$
+				\damage = 2{.}09\br{0{.}85\damageTensorI_1+0{.}15\damageTensorI_3}^{4{.}7}
+			$$
+			\centering
+			\inputplot{sequential_coupling_dmg}
+		\end{answerblock}
+	}
+	\only<3| handout:3>{
+		\begin{answerblock}
+			\vspace{-5mm}
+			$$
+				\text{if}\quad \damage \le m \quad \text{then}\quad \kappaD = 0, \kappaP = \kappaP(\damage), \damage = 0
+			$$
+			$$
+				m = 5\cdot10^{-4},\quad \kappaP = 0{.}3 + 900\damage
+			$$
+			\centering
+			\par
+			\vspace{-3mm}
+			\inputplot{sequential_coupling_002}
+		\end{answerblock}
+	}
+\end{questionframe}
+
+\begin{questionframe}{6}
+	\begin{questionblock}
+		Results in figure 8.6 should be explained better.
+		For example, it is not clear what is the meaning of the vertical axis and how the results reflects the influence of the transition zone (as was declared in the objectives of the doctoral thesis).
+	\end{questionblock}
+	\begin{answerblock}
+		\begin{myitemize}
+			\item \textit{Since the absolute values of macroscopic quantities can be relatively easily estimated, only values relative to the results for the smallest aggregate size are plotted.}
+			\item More detailed parameter study could be done to assess influence of ITZ.
+		\end{myitemize}
+	\end{answerblock}
+\end{questionframe}
+
+\end{discussion}
+
+\end{document}

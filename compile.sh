@@ -6,6 +6,7 @@ main=true
 statement=true
 poster=true
 cd=true
+presentation=true
 
 script_dir=`dirname $0`
 script_dir=`realpath $script_dir`
@@ -73,6 +74,34 @@ if $cd; then
 	ln -s ../common/common.tex .
 	ln -s ../common/commands.tex .
 	bash compile.sh > /tmp/cd.out
+fi
+
+# presentation
+if $presentation; then
+	echo "PRESENTATION"
+	cd $script_dir/text/presentation
+	rm -f common.tex
+	ln -s ../common/common.tex .
+	ln -s ../common/commands.tex .
+	#
+	cd figs
+	figstodownload=/tmp/figstodownload.txt
+	echo "" > $figstodownload
+	for f in concrete.jpg contact1.gif multi1.gif oofem-logo.png packing.png packing_with_links.png surf1.gif vol1.gif yade-logo.png; do
+		echo "http://mech.fsv.cvut.cz/~stransky/phdthesis/presentation/figs/$f" >> $figstodownload
+	done
+	wget -i $figstodownload -o /tmp/figswget.out
+	cd ..
+	#
+	cd figs/raphaelpy
+	bash figs.sh > /tmp/presentationfigs.out
+	cd ../..
+	cd plots
+	rm -rf plots
+	mkdir plots
+	bash plot.sh
+	cd ..
+	bash compile.sh > /tmp/presentation.out
 fi
 
 echo

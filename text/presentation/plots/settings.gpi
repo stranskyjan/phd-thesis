@@ -1,0 +1,14 @@
+set border 3 back
+set grid
+set tics nomirror
+set pointsize .5
+set key spacing 1.25
+
+lww = 4
+set linetype 1 lc rgb "#000000" lw lww dashtype 1
+set linetype 2 lc rgb "#000000" lw lww dashtype 2
+set linetype 3 lc rgb "#000000" lw lww dashtype 5
+set linetype 4 lc rgb "#bbbbbb" lw lww dashtype 1
+
+set style arrow 2 nohead lw 3 dashtype 1
+set style arrow 3 nohead lw 3 dashtype 2

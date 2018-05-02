@@ -1,0 +1,375 @@
+#======================================================================
+foutput(n) = sprintf("plots/%s.tex",n)
+fresult(n) = sprintf("../../../results/%s.dat",n)
+faux(n) = sprintf("aux/%s.dat",n)
+
+mili(v) = (1e3*v)
+kilo(v) = (1e-3*v)
+mega(v) = (1e-6*v)
+
+W = 4.0
+H = 2.0
+
+#======================================================================
+reset
+set term cairolatex pdf input size .5*W,H
+load "settings.gpi"
+
+set xlabel "strain [$10^{-3}$]"
+set ylabel "stress [MPa]"
+
+set xr [0:.5]
+set yr [0:*]
+set output foutput("cpm_uniax_tension")
+set xtics .1
+set ytics format "\\footnotesize{%g}"
+set xtics format "\\footnotesize{%g}"
+plot \
+	fresult("cpm_uniax_default")  u (mili($1)):(mega($3)) w l ls 1 t "", \
+	fresult("cpm_uniax_2xStr")    u (mili($1)):(mega($3)) w l ls 2 t "", \
+	fresult("cpm_uniax_2xSti")    u (mili($1)):(mega($3)) w l ls 3 t "", \
+	fresult("cpm_uniax_2xStiStr") u (mili($1)):(mega($3)) w l ls 4 t "", \
+	NaN t ""
+
+set key left
+set xr [-4:0]
+set yr [*:0]
+set xtics 1
+set output foutput("cpm_uniax_compression")
+plot \
+	fresult("cpm_uniax_default")  u (mili($1)):(mega($3)) w l ls 1 t "", \
+	fresult("cpm_uniax_2xStr")    u (mili($1)):(mega($3)) w l ls 2 t "", \
+	fresult("cpm_uniax_2xSti")    u (mili($1)):(mega($3)) w l ls 3 t "", \
+	fresult("cpm_uniax_2xStiStr") u (mili($1)):(mega($3)) w l ls 4 t "", \
+	NaN t ""
+
+#======================================================================
+reset
+set term cairolatex pdf input size .5*W,H
+load "settings.gpi"
+
+set log x
+set xlabel "$\\linkMaterialStiffnessShear/\\linkMaterialStiffnessNormal$"
+b = "stiffnessMatrix"
+bbo = b."_oofem_macromicro"
+bby = b."_yade_macromicro"
+set xr [1e-3:1e4]
+young = 25e9
+sumladiv3vs = "1.22730276283 1.84128661899 2.61086893561 10.4474880903"
+irs = "1.05 1.25 1.50 2.00"
+nn = 11
+pps = 1.
+pt1 = 1
+pt2 = 4
+pt3 = 2
+
+set xtics format "$\\scriptstyle{10^{%T}}$"
+set ytics format "\\footnotesize{%g}"
+set xtics 100
+unset mxtics
+set key width -46
+do for [i=1:4] {
+	sumladiv3v = word(sumladiv3vs,i)
+	ir = word(irs,i)
+	#
+	set yr [0:*]
+	set ytics auto
+	unset mytics
+	set ylabel "$\\youngModulus_\\avg/\\linkMaterialStiffnessNormal$"
+	set output foutput(sprintf("preprocessed_macromicro_E_I%s",ir))
+	set key left top
+	plot \
+		sumladiv3v*(2+3*x)/(4+x) w l lt 4 lw 10 t "" , \
+		fresult(sprintf("preprocessed_%s_I%s_theor",bby,ir)) every ::0::nn u 1:($2/young) w p lt 1 pt pt1 ps pps t "" , \
+		fresult(sprintf("preprocessed_%s_I%s",bby,ir)) every ::0::nn u 1:($2/young) w p lt 1 pt pt2 ps pps t "" , \
+		fresult(sprintf("preprocessed_%s_I%s",bbo,ir)) every ::0::nn u 1:($2/young) w p lt 1 pt pt3 ps pps t ""
+	#
+	set yr [-1:.5]
+	set ytics .5
+	set mytics 5
+	set grid mytics
+	set key right top
+	set ylabel "$\\poissonRatio_\\avg$"
+	set output foutput(sprintf("preprocessed_macromicro_nu_I%s",ir))
+	plot \
+		(1-x)/(4+x) w l lt 4 lw 10 t "" , \
+		fresult(sprintf("preprocessed_%s_I%s_theor",bby,ir)) u 1:3 w p lt 1 pt pt1 ps pps t "" , \
+		fresult(sprintf("preprocessed_%s_I%s",bby,ir)) u 1:3 w p lt 1 pt pt2 ps pps t "" , \
+		fresult(sprintf("preprocessed_%s_I%s",bbo,ir)) u 1:3 w p lt 1 pt pt3 ps pps t ""
+}
+
+#======================================================================
+reset
+set term cairolatex pdf input size W,H
+load "settings.gpi"
+set yr [.8:1.5]
+set xr [-.5:2.5]
+set xtics ("9.5" 0, "12.5" 1, "19.0" 2) rotate by 90 right
+b = "validationBeygi"
+pb = "preprocessed_".b
+set pointsize 1
+do for [experiment in "l h"] {
+	titles = "$\\youngModulus$ $f_t$ $f_c$ $G_f$"
+	set output foutput(b."_".experiment)
+	set multiplot layout 1,4 margins screen .10, .95, 0.30, .90 spacing screen 0.08, 0.1
+	do for [i=1:4] {
+		set title word(titles,i)
+		unset key
+		plot \
+			faux(b."_experiment_".experiment)      u 5+i w lp lt 4 pt 1 lw 10 t "experiment" , \
+			fresult(pb."_(.5,.5,.1)_".experiment)  u 5+i w lp lt 2 t "simulation 1" , \
+			fresult(pb."_(.5,.5,.05)_".experiment) u 5+i w lp lt 3 t "simulation 2" , \
+			NaN t ""
+	}
+	unset multiplot
+}
+
+reset
+set term cairolatex pdf input size .5*W,.5*H
+load "settings.gpi"
+unset xlabel
+unset ylabel
+unset tics
+set yrange [100:101]
+set key out
+unset border
+set output foutput(b."_legend")
+plot \
+	faux(b."_experiment_".experiment)      u 5+i w lp lt 4 pt 1 lw 10 t "experiment" , \
+	fresult(pb."_(.5,.5,.1)_".experiment)  u 5+i w lp lt 2 t "simulation 1" , \
+	fresult(pb."_(.5,.5,.05)_".experiment) u 5+i w lp lt 3 t "simulation 2" , \
+	NaN t ""
+
+#======================================================================
+reset
+set term cairolatex pdf input size .5*W,H
+load "settings.gpi"
+
+set xr [-3.5:0]
+set yr [-45:0]
+set xlabel "strain [$10^{-3}$]"
+set ylabel "stress [MPa]"
+set xtics 1
+set ytics 10
+set key at -.3,-1.0
+set ytics format "\\footnotesize{%g}"
+set xtics format "\\footnotesize{%g}"
+
+wo = 5
+wy = 10
+lsyp = 2
+lsop = 3
+lsyc = 4
+lsoc = 1
+
+b = "sequential_coupling"
+set output foutput(b."_plain")
+plot \
+	fresult(b."_yade_plain")  u (mili($5)):(mega($6)) w l lw 5 t "CPM" , \
+	fresult(b."_oofem_plain") u (mili($1)):(mega($2)) w l lw 5 t "DPM"
+
+s0s = "-.43 -.86 -1.29 -1.71 -2.14 -2.57 -3.0 -.4 -0.85 -1.25 -1.98 -2.56"
+do for [i=0:11] {
+	bb = sprintf("_%03d",i)
+	s0 = word(s0s,i+1)
+	set output foutput(b.bb)
+	plot \
+		fresult(b."_yade_plain")  u    (mili($5)):(mega($6)) w l ls lsyp t "" , \
+		fresult(b."_oofem_plain") u    (mili($1)):(mega($2)) w l ls lsop t "" , \
+		fresult(b."_yade".bb)     u    (mili($5)):(mega($6)) w l ls lsyc lw wy t "CPM" , \
+		fresult(b."_oofem".bb)    u (s0+mili($1)):(mega($2)) w l ls lsoc lw wo t "DPM"
+}
+
+set term cairolatex pdf input size .9*W,H
+load "settings.gpi"
+bb = "_dmg"
+set yrange [-50:0]
+set y2range [-.25:1]
+set y2tics .25 nomirror
+set ytics format "\\footnotesize{%g}"
+set y2tics format "\\footnotesize{%g}"
+set xtics format "\\footnotesize{%g}"
+set y2label "damage [-]"
+set border 11
+set output foutput(b.bb)
+set key outside right
+max1(a) = a > 1 ? 1 : a
+dmgtmp(d1,d2,d3) = .85*d1+.15*d3
+dmg(d1,d2,d3) = max1((2.09*dmgtmp(d1,d2,d3))**4.7)
+plot \
+	fresult(b."_yade_plain") u (mili($5)):(mega($6)) w l ls 1 t "CPM" axes x1y1, \
+	fresult(b."_yade_plain") u (mili($5)):1 w l ls 2 t "$\\damageTensorI_1$" axes x1y2, \
+	fresult(b."_yade_plain") u (mili($5)):2 w l ls 2 t "$\\damageTensorI_2$" axes x1y2, \
+	fresult(b."_yade_plain") u (mili($5)):3 w l ls 3 t "$\\damageTensorI_3$" axes x1y2, \
+	fresult(b."_yade_plain") u (mili($5)):(dmg($1,$2,$3)) w l ls 4 lw 10 t "eq." axes x1y2, \
+	0 w l t ""
+
+#======================================================================
+reset
+set term cairolatex pdf input size .5*W,.6*H
+load "settings.gpi"
+b = "cpm_law_tester_normal_"
+unset ytics
+unset grid
+e = 1
+strain0 = 0.1
+strainF = 0.15
+strain2 = strain0 + strainF
+ft = e*strain0
+ddx = 0.006
+
+ddy = 0.009
+bb = b."cyclic"
+unset tics
+set xzeroaxis lt 1 lw 1
+set yzeroaxis lt 1 lw 1
+set output foutput(bb)
+set border 0
+set label 1 "strain" at .23,-.013
+set label 2 "stress" at 0.01,0.1 left
+xx0 = .050
+xx1 = xx0+.05
+yy0 = .023
+yy1 = yy0+.025
+set arrow 1 from xx0,yy0 to xx1,yy0 arrowstyle 2
+set arrow 2 from xx1,yy0 to xx1,yy1 arrowstyle 2
+set label 3 "1" at xx0+.3*(xx1-xx0),yy0-ddy
+set label 4 "$(1-\\damage)\\linkMaterialStiffnessNormal$" at xx1+ddx,.5*(yy0+yy1) left
+n = 27
+plot \
+	fresult(bb) every ::0::(n+1) u (mili($3)):(mega($4)) w l lt 4 lw 10 t "" , \
+	fresult(bb) every ::n        u (mili($3)):(mega($4)) w l lt 3 t ""
+unset label 1
+unset label 2
+unset label 3
+unset label 4
+unset arrow 1
+unset arrow 2
+
+ddy = 0.011
+set xlabel "$\\strain_\\normalComponent$"
+set ylabel "$\\stress_\\normalComponent$"
+set border 3
+bb = b."simple_tension"
+set output foutput(bb)
+set xtics ("$\\strainO$" .1, "$\\strainO+\\strainF$" .25) nomirror
+set arrow from strain0,0  to strain0,ft arrowstyle 3
+set arrow from strain0,ft to strain2,0  arrowstyle 3
+xx0 = .02
+xx1 = xx0+.04
+yy0 = .02
+yy1 = yy0+.04
+set arrow from xx0,yy0 to xx1,yy0 arrowstyle 2
+set arrow from xx1,yy0 to xx1,yy1 arrowstyle 2
+set label "1" at .5*(xx0+xx1),yy0-ddy center
+set label "$\\linkMaterialStiffnessNormal$" at xx1+ddx,.5*(yy0+yy1) left
+plot fresult(bb) u (mili($3)):(mega($4)) w l t ""
+
+#======================================================================
+reset
+set term cairolatex pdf input size .5*W,.7*H
+load "settings.gpi"
+unset tics
+unset grid
+set border 0
+set xzeroaxis lt 1 lw 1
+set yzeroaxis lt 1 lw 1
+yyr = 3
+xx0 = -2.25
+xx1 = 1.5
+ddx = .1
+ddy = .3
+set xrange [xx0:xx1]
+set yrange [-yyr:yyr]
+set output foutput("cpm_shear_plasticity_func")
+set label 1 "$\\linkStressNormal$" at xx1+ddx-2*ddx,2*ddy
+set label 2 "$\\pm\\norm{\\linkStressShearVector}$" at ddx,yyr left
+c = 1
+vv = 3
+set arrow from c,0 to c-vv,+vv arrowstyle 2 lw 5
+set arrow from c,0 to c-vv,-vv arrowstyle 2 lw 5
+set label "$\\cohesion$" at ddx,1+ddy left
+xx0 = -.8
+xx1 = xx0-1
+yy0 = 1.8
+yy1 = yy0+1
+set arrow from xx0,yy0 to xx1,yy0 arrowstyle 2
+set arrow from xx1,yy0 to xx1,yy1 arrowstyle 2
+set label "1" at .5*(xx0+xx1),yy0-2*ddy
+set label "$\\tan\\frictionAngle$" at xx1-ddx,.5*(yy0+yy1) right
+xx0 = -.6
+yy0 = 1.6
+yy1 = 2.6
+set arrow from xx0,yy0 to xx0,yy1 lt 4 lw 6
+set label "$\\linkStrainShearVectorPlasticRate$" at xx0,yy1+.3
+plot NaN t ""
+
+reset
+set term cairolatex pdf input size .5*W,.7*H
+load "settings.gpi"
+unset tics
+unset grid
+set border 0
+set xzeroaxis lt 1 lw 1
+set yzeroaxis lt 1 lw 1
+set size square
+yyr = 1.5
+xxr = yyr
+ddx = .1
+ddy = .18
+r = 1
+set obj 10 circle at 0,0 radius r fs empty border lc "black" lw 5
+set xrange [-xxr:xxr]
+set yrange [-yyr:yyr]
+set output foutput("cpm_shear_plasticity_func2")
+set label 1 "$\\linkStressShear[1]$" at xxr+ddx-2*ddx,ddy
+set label 2 "$\\linkStressShear[2]$" at ddx,yyr left
+xx0 = -r/sqrt(2)
+yy0 = r/sqrt(2)
+dd = .5
+xx1 = xx0-dd
+yy1 = yy0+dd
+set arrow from xx0,yy0 to xx1,yy1 lt 4 lw 6
+set label "$\\linkStrainShearVectorPlasticRate$" at xx1,yy1+ddy
+plot NaN t ""
+
+
+reset
+set term cairolatex pdf input size .5*W,.7*H
+load "settings.gpi"
+unset tics
+set xrange [0:3]
+set yrange [0:2.5]
+set xlabel "$\\norm{\\linkStrainShearVector}$"
+set ylabel "$\\norm{\\linkStressShearVector}$"
+set output foutput("cpm_shear_stress_strain")
+set arrow from 1,2 to 0,2 arrowstyle 3
+set label "$\\cohesion-\\linkStressNormal\\tan\\frictionAngle$" at .1,2.2 left
+xx0 = .3
+xx1 = xx0+.5
+yy0 = .6
+yy1 = yy0+1
+ddx = .05
+ddy = .2
+set arrow from xx0,yy0 to xx1,yy0 arrowstyle 2
+set arrow from xx1,yy0 to xx1,yy1 arrowstyle 2
+set label "1" at .5*(xx0+xx1),yy0-ddy
+set label "$\\linkMaterialStiffnessShear$" at xx1+ddx,.5*(yy0+yy1) left
+set arrow from xx0+1,yy0 to xx1+1,yy0 arrowstyle 2
+set arrow from xx1+1,yy0 to xx1+1,yy1 arrowstyle 2
+set label "1" at .5*(xx0+xx1)+1,yy0-ddy
+set label "$\\linkMaterialStiffnessShear$" at 1+xx1+ddx,.5*(yy0+yy1) left
+plot \
+	"-" w l lt 4 lw 10 t "" , \
+	"-" w l lt 3 t ""
+		0 0
+		1 2
+		2 2
+		1 0
+EOF
+		1 0
+		2 2
+		3 2
+EOF
+
+
