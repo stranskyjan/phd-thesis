@@ -94,11 +94,9 @@
 \newcommand{\mychapterStar}[1]{%
 	\chapterOrig*{#1}%
 }
-\makeatletter
 \renewcommand{\chapter}{%
 	\@ifstar{\mychapterStar}{\@dblarg\mychapter}%
 }
-\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % titleps
@@ -156,9 +154,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\makeatletter
 \newcommand{\mydotfill}[1]{\leavevmode \cleaders \hb@xt@ #1{\hss .\hss }\hfill \kern \z@}
-\makeatother
 
 \newcommand{\cleardoublepageempty}{%
 	\newpage%
@@ -171,9 +167,7 @@
 
 \pdfsuppresswarningpagegroup=1
 
-\makeatletter
 \renewcommand{\fps@figure}{!htbp}
 \renewcommand{\fps@table}{!htbp}
-\makeatother
 
 \setcounter{MaxMatrixCols}{20}

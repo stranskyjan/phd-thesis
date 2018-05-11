@@ -107,10 +107,7 @@
 \RequirePackage[helvet]{sfmath}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\makeatletter
 \newcommand{\mydotfill}[1]{\leavevmode \cleaders \hb@xt@ #1{\hss .\hss }\hfill \kern \z@}
-\makeatother
-
 
 \RequirePackage[%
 	labelsep=colon,%

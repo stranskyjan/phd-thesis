@@ -25,8 +25,6 @@
 \RequirePackage{graphicx}
 \RequirePackage{xstring}
 
-\makeatletter
-
 \mode<presentation>
 \mode<all>
 
@@ -188,5 +186,3 @@
 }{%
 	\end{column}%
 }
-
-\makeatother
