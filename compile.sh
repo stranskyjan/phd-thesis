@@ -83,15 +83,17 @@ if $presentation; then
 	rm -f common.tex
 	ln -s ../common/common.tex .
 	ln -s ../common/commands.tex .
-	#
-	cd figs
-	figstodownload=/tmp/figstodownload.txt
-	echo "" > $figstodownload
-	for f in concrete.jpg contact1.gif multi1.gif oofem-logo.png packing.png packing_with_links.png surf1.gif vol1.gif yade-logo.png; do
-		echo "http://mech.fsv.cvut.cz/~stransky/phdthesis/presentation/figs/$f" >> $figstodownload
-	done
-	wget -i $figstodownload -o /tmp/figswget.out
-	cd ..
+	# optinially if you want to download .gif animated files
+	if false; then
+		cd figs
+		figstodownload=/tmp/figstodownload.txt
+		echo "" > $figstodownload
+		for f in contact1.gif multi1.gif surf1.gif vol1.gif; do
+			echo "http://mech.fsv.cvut.cz/~stransky/phdthesis/presentation/figs/$f" >> $figstodownload
+		done
+		wget -i $figstodownload -o /tmp/figswget.out
+		cd ..
+	fi
 	#
 	cd figs/raphaelpy
 	bash figs.sh > /tmp/presentationfigs.out
