@@ -22,3 +22,6 @@ To compile all the content, run [compile.sh script](compile.sh).
 
 #### TODO
 - cleanup and comments in scripts
+
+### LaTeX template
+If you would like to create a similar-looking thesis, I recommend to use [this template](https://github.com/stranskyjan/phd-thesis-template), which is based on this thesis, but the class files are improved and cleaned up.
