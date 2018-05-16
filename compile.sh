@@ -30,8 +30,6 @@ if $main; then
 	echo "MAIN"
 	cd $script_dir/text/main
 	rm -f common.tex
-	ln -s ../common/common.tex .
-	ln -s ../common/commands.tex .
 	cd plots
 	bash plot.sh
 	cd ..
@@ -43,8 +41,6 @@ if $statement; then
 	echo "STATEMENT"
 	cd $script_dir/text/statement
 	rm -f common.tex
-	ln -s ../common/common.tex .
-	ln -s ../common/commands.tex .
 	cd plots
 	bash plot.sh
 	cd ..
@@ -56,8 +52,6 @@ if $poster; then
 	echo "POSTER"
 	cd $script_dir/text/poster
 	rm -f common.tex
-	ln -s ../common/common.tex .
-	ln -s ../common/commands.tex .
 	cd plots
 	rm -rf plots
 	mkdir plots
@@ -71,8 +65,6 @@ if $cd; then
 	echo "CD"
 	cd $script_dir/text/cd
 	rm -f common.tex
-	ln -s ../common/common.tex .
-	ln -s ../common/commands.tex .
 	bash compile.sh > /tmp/cd.out
 fi
 
@@ -81,8 +73,6 @@ if $presentation; then
 	echo "PRESENTATION"
 	cd $script_dir/text/presentation
 	rm -f common.tex
-	ln -s ../common/common.tex .
-	ln -s ../common/commands.tex .
 	# optinially if you want to download .gif animated files
 	if false; then
 		cd figs
