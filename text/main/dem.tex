@@ -278,7 +278,7 @@ and a plane perpendicular to this direction.
 The local coordinate system is therefore not uniquely defined.
 For this reason, the shear components are evaluated in the global coordinate system.
 In YADE implementation, the shear displacement is updated incrementally in each integration step.
-The increment consists of projecting the previous shear displacement such that it remains perpendicular to the current direction vector. Then the actual shear displacement increment is computed with respect to current $\normalVector$ and linear and angular velocities of interacting spheres
+The increment consists in projecting the previous shear displacement such that it remains perpendicular to the current direction vector. Then the actual shear displacement increment is computed with respect to current $\normalVector$ and linear and angular velocities of interacting spheres
 \begin{equation}
 	\velocityVector_{\particleA\particleB} =
 	(\velocityVector_\particleB+\halfBranch_\particleB\normalVector\cross\angularVelocityVector_\particleB)
@@ -400,7 +400,7 @@ defines normal stress $\linkStressNormal$ in terms of normal strain $\linkStrain
 	.
 \end{align}
 $\linkMaterialStiffnessNormal$ is the normal modulus and defines the elastic slope in the normal direction.
-$\damage\in[0,1]$ is the damage variable and influences stiffness for unloading and reloading in the tensile regime.
+$\damage\in[0,1]$ is the damage variable which influences stiffness for unloading and reloading in the tensile regime.
 The Heaviside function $H(\linkStrainNormal)$ deactivates damage influence in compression, which physically corresponds to
 crack closure.
 $\damage$ is computed based on the damage evolution function $\damageEvolutionFunction$ defined in terms of historically maximum normal strain $\kappa$ and material parameters $\strainO$ and $\strainF$:

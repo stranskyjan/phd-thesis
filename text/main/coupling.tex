@@ -30,7 +30,7 @@ but not vice versa
 In chapter \ref{chapCouplingSequential}, a DEM to FEM sequential mapping of damaged concrete material is presented.
 Usually some kind of homogenization techique is used to determine FEM model parameters at the beginning of the latter
 (e.g., further bridge loading)
-process from the final state of former
+process from the final state of the former
 (e.g., an impact on the column)
 process.
 
@@ -153,14 +153,14 @@ Then, in the case of explicit dynamic simulation, in each time step:
 	\item forces acting on DEM overlapping particles are applied on the corresponding FEM hanging nodes as nodal loads;
 	\item position of overlapping DEM particles are updated according to displacements of the corresponding FEM hanging nodes.
 \end{itemize}
+% Jan Elias: wave propagation (!)
 
 \subsection{Example}
 In this example, a simply supported 2D beam subjected to a missile impact was simulated.
-The sides of the beam body were simulated by FEM as a plane stress problem using quadrilateral elements linear elastic material law.
+The sides of the beam body were simulated by FEM as a plane stress problem using quadrilateral elements and linear elastic material law.
 The central part was modeled by DEM using a regular packing and CPM material model (described in section \ref{secDemCpm}).
 The material parameters and initial conditions are artificially set to get \quotes{nice} results.
 The visual results are shown in figure \ref{figCouplingConcurrentVolumeExample1}, the animation can be found at \textfile{text/figs/coupling/vol1}.
-
 
 
 
@@ -240,7 +240,7 @@ Each such particle is deformable and further modeled by FEM.
 
 There is no strict border between the cases when the solution can be considered as a~contact FEM analysis and when it is already DEM.
 For only a few particles we would probably use the former one, but when the number of particles increases, the DEM modeling (with its efficient contact detection algorithms) would be more appropriate.
-This strategy can be actually considered as full FEM, only the contact detection is \quotes{borrowed} from the DEM program.
+This strategy can be actually considered as full FEM, only the contact detection and contact constitutive law is \quotes{borrowed} from the DEM program.
 
 In the current \OOFEM/\YADE\ implementation, the FEM \quotes{particles} are copied into DEM part as polyhedrons.
 Then, in the case of explicit dynamic simulation, in each time step:
@@ -265,6 +265,7 @@ The visual results are shown in figure \ref{figCouplingConcurrentContactExample1
 
 
 \cleardoublepage
+% to have color images on one sheet of paper, for printing
 
 \begin{figure}[p]
 	\centering
@@ -342,7 +343,7 @@ The CPM, cohesive particle model for concrete \cite{Smilauer2010a}, is chosen fo
 CPM was developed for numerical modeling of concrete under dynamic loading with possibility of massive fragmentation (e.g., crushing) and can be used for simulations of
 the impact influence.
 
-The DPM, damage-plastic model for concrete failure \cite{GrasslJirasek2010a}, is chosen for the FEM part.
+The DPM, damage-plastic model for concrete failure \cite{GrasslJirasek2006a}, is chosen for the FEM part.
 DPM was developed for numerical modeling of concrete under (quasi)static conditions and can be used for
 further bridge loading
 simulations.
@@ -407,7 +408,7 @@ $\strainTensorPlastic$ plastic strain
 and $\strainTensor-\strainTensorPlastic = \strainTensorElastic$ elastic strain.
 
 
-The plastic part of the constitutive law is governed by the yield function $f_p$ (which depends on all three invariants of the effective stress tensor $\stressTensorEffective$ and the hardening variable $\kappaP$) and a non-associated flow rule derived from the plastic potential $g_p$:
+The plastic part of the constitutive law is governed by the yield function $f_p$ (which depends on all three invariants of the effective stress tensor $\stressTensorEffective$ and the hardening variable $\kappaP$) and a non-associated flow rule derived from the plastic potential $g_p$
 \begin{align}
 	f_p(\stressTensorEffective,\kappaP) &\le 0
 	,
@@ -436,7 +437,7 @@ The plastic part of the constitutive law is governed by the yield function $f_p$
 	\label{figDpmStressStrain}
 \end{figure}
 
-The damage part is expressed by the damage evolution function $g$ and the relationships between internal variables $\kappaD$ and $\kappaP$:
+The damage part is expressed by the damage evolution function $g$ and the relationships between internal variables $\kappaD$ and $\kappaP$
 \begin{equation}
 	\text{damage}\left\{
 	\begin{array}{cccl}
@@ -483,6 +484,7 @@ This difference between DPM and CPM is discussed more in detail in section \ref{
 	\label{figCpmStressStrain}
 \end{figure}
 
+% Jan Elias: what about shear?
 
 
 
@@ -811,3 +813,5 @@ The biggest error is obtained, if the mapping occurs around the peak (or after u
 	\caption{Results of mapping at unloaded state}
 	\label{figCouplingSequantialResultsMappingUnloaded}
 \end{figure}
+
+% Jan Elias: only uniaxial compression is promising, but expected more results here

@@ -6,7 +6,7 @@ Each particle possesses six degrees of freedom, three translations and three rot
 Initially, particles whose center distance $\linkLength$ is less than $2\radius\interactionRatio$ (where $\interactionRatio$ is called interaction ratio) are connected by cohesive links.
 Each link is characterized by its
 length $\linkLength$ (distance between centers of connected particles),
-unit normal vector $\normal$
+unit normal vector $\normalVector$
 and
 fictitious cross section area
 \begin{equation}
@@ -151,8 +151,9 @@ Given a vector $\tensor1{v}$ and a unit vector $\normalVector$, $\tensor1{v}$ ca
 	\label{eqMacroPropertiesElasticTheorVectorSplitNormalShear}
 \end{equation}
 
+% Jan Elias: What about rotations? Are they assumed zero?
 The stiffness tensor $\stiffnessTensorElastic$ is derived bases on the stress tensor $\stressTensor$ induced by the prescribed strain tensor $\strainTensor$.
-Displacement of particles are assumed to be linear governed by strain tensor
+Displacement of particles is assumed to be linear governed by strain tensor
 \begin{equation}
 	\displacementVector_\particle = \positionVector_\particle\cdot\strainTensor
 	.
@@ -278,7 +279,7 @@ where
 \end{equation}
 are projection and auxiliary tensors.
 
-Constitutive law assumes independent normal and shear direction and that resulting normal and shear forces are parallel to normal and shear relative displacements:
+Constitutive law assumes independent normal and shear direction and thus resulting normal and shear forces are parallel to normal and shear relative displacements:
 \begin{align}
 	\forceVector^\contact &= \normalVector^\contact\force^\contact_\normalComponent + \forceVector^\contact_\shearComponent
 	\\
@@ -375,11 +376,11 @@ yields the expression of stiffness tensor
 
 According to \cite{KuhlDAddettaLeukartRamm2001a}, sum of terms dependent on direction $\normalVector^\contact$ can be approximated with an integral over solid angle
 \begin{equation}
-	\sum_\contact^\numberOfContacts f\br{\normalVector^\contact} = \frac{\numberOfContacts}{4\pi}\int_\solidAngle f(\normalVector) \dSolidAngle
+	\sum_\contact^{\numberOfContacts} f\br{\normalVector^\contact} = \frac{\numberOfContacts}{4\pi}\int_\solidAngle f(\normalVector) \dSolidAngle
 	.
 	\label{eqMacroPropertiesElasticTheorSumToIntegral}
 \end{equation}
-The integration domain here is the surface of the unit sphere.
+The integration domain here is the surface of the unit sphere and $\numberOfContacts$ is number of contacts.
 
 
 Using identities (\ref{eqAppendixMathUnitSphereIntegralNinjnknl}) and (\ref{eqAppendixMathUnitSphereIntegralIijabnancIcakl})
@@ -418,7 +419,7 @@ Using identities (\ref{eqAppendixMathUnitSphereIntegralNinjnknl}) and (\ref{eqAp
 \end{equation}
 applying approximation (\ref{eqMacroPropertiesElasticTheorSumToIntegral})
 and
-assuming the uniform distribution of branch lengths and cross section areas
+assuming the uniform distribution of branch lengths and cross section areas gives
 \begin{equation}
 	\begin{gathered}
 		\sum_\contact \branch^\contact\linkCrossSectionArea^\contact f\br{\normalVector^\contact}
@@ -540,7 +541,7 @@ A nodal displacement vector of a link (finite element) is constructed by merging
 \end{equation}
 The values of $\linkNodalDsplVector$ uniquely defines the contact displacement, i.e, the fictitious mutual displacement at the center of the link, expressed in the local coordinate system of the link
 \begin{equation}
-	\displacementVector_\contact \begin{Bmatrix}
+	\displacementVector_\contact = \begin{Bmatrix}
 		\displacement_\normalComponent \\
 		\displacementVector_\shearComponent
 	\end{Bmatrix}
@@ -757,7 +758,7 @@ Consider a macroscopic deformation
 	\right\}\T
 	.
 \end{equation}
-Periodic boundary conditions are imposed by the set of constraint equations that contain the components of $\macroscopicDeformation$:
+Periodic boundary conditions are imposed by the set of constraint equations that contain the components of $\macroscopicDeformationVector$:
 \begin{equation}
 	\begin{aligned}
 		\displacement_{\particleB'1} &= \displacement_{\particleB1} + \macroscopicDeformation_{11}\periodicShift_1\cubeDimension + \frac{1}{2}\macroscopicDeformation_{12}\periodicShift_2\cubeDimension + \frac{1}{2}\macroscopicDeformation_{31}\periodicShift_3\cubeDimension
@@ -938,11 +939,11 @@ The isotropy has been evaluated based on the following quantities:
 			.
 			\label{eqMacroPropertiesElasticResultsRelativeAnizotropyYoung}
 		\end{equation}
-		$\youngModulus_i$ denotes $i$-th computed modulus and $\youngModulus_\avg$ their average value.
+		$\youngModulus_i$ denotes $i$th computed modulus and $\youngModulus_\avg$ their average value.
 	\item
 		Relative anisotropy of Poisson's ratio
 		\begin{equation}
-			\frac{\Delta\poissonRatio}{\poissonRatio}=\frac{\max_{ij}\abs{\poissonRatio_{ij}-\poissonRatio_\avg}}{\shearModulus_\avg}
+			\frac{\Delta\poissonRatio}{\poissonRatio}=\frac{\max_{ij}\abs{\poissonRatio_{ij}-\poissonRatio_\avg}}{\poissonRatio_\avg}
 			\label{eqMacroPropertiesElasticResultsRelativeAnizotropyPoisson}
 		\end{equation}
 	\item
@@ -971,6 +972,7 @@ The findings can be summarized as:
 		The mean material parameters $\youngModulus$ and $\poissonRatio$ are almost independent of the number of particles,
 		even for $\numberOfParticles$ less than 100.
 		For more than 200 particles per periodic cell, the values of mean material parameters do not change for any type of simulation (i.e., for any ratio $\linkStiffnessShear/\linkStiffnessNormal$ and any interaction ratio $\interactionRatio$).
+		% Jan Elias: For N=1000, it is not always non-changing
 		See figure \ref{figMacroPropertiesElasticResultsStabilityAvg}.
 	\item
 		The relative anisotropy of Young's modulus decreases with increasing number of particles.
@@ -981,6 +983,7 @@ The findings can be summarized as:
 		for an increasing number of particles, its relative anisotropy decreases.
 		In contrast to the case of Young's modulus, the slowest convergence (or even no convergence at all) has been observed for ratio
 		$\linkStiffnessShear/\linkStiffnessNormal$ close to 1.
+		% Jan Elias: the case of non-convergence is not shown
 		This is caused by the fact that for $\linkStiffnessShear/\linkStiffnessNormal=1$,
 		the Poisson's ratio $\poissonRatio$ has a theoretical value 0 and the relative error is therefore higher.
 		See figure \ref{figMacroPropertiesElasticResultsRelativeAnizotropyPoisson}.

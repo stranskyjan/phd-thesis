@@ -59,6 +59,7 @@ The most divergent results are obtained for the stages of loading where the DEM 
 % mcpm
 In practical civil engineering, concrete is usually idealized as a homogeneous isotropic material.
 However, certain applications require description of concrete on a lower scale and heterogeneity has to be taken into account.
+% Jan Elias: which applications?
 The development and results of a new mesoscale discrete element model for concrete is described.
 The model takes into account the heterogeneous mesoscale structure of concrete (i.e., aggregates and interfacial transition zone between aggregates and matrix).
 The validation against experimental data from literature shows the ability of the model to realistically capture trends of various material properties (elastic modulus, tensile and compressive strength, fracture energy) with respect to the actual mesoscale structure of the material.
@@ -67,6 +68,7 @@ The validation against experimental data from literature shows the ability of th
 
 
 \newcommand{\abstractCS}{
+\begin{otherlanguage}{czech}
 
 Dizertační práce se zabývá různými aspekty metody diskrétních prvků (DEM) a její aplikací pro modelování porušování betonu
 a také kombinací DEM s metodou konečných prvků (FEM).
@@ -76,26 +78,26 @@ Základní vlastnosti náhodných hustých částicových shluků (jelikož tyto
 Pružné vlastnosti takovýchto shluků jsou zkoumány analyticky i numericky.
 Numerické výrazy jsou odvozeny na základě mikroploškové teorie.
 Numerické výsledky jsou získány pomocí DEM a FEM simulací.
-Velmi dobré shody mezi analytickými a numerickými výcledky je dosaženo pro interakční poměr větší než 1{.}25.
-Analyticky odvozený plný tenzor pružné tuhosti se velmi dobře shoduje s numerickými výsledky i pro nižší hodnoty interakčního poměru, avšak hodnoty Youngova modulu pružnosti a Poissonova součinitele odvozené za předpokladu rovnoměrného rozdělení směrů vazeb vykazuje jistou odchylku od numerických výsledků.
+Velmi dobré shody mezi analytickými a numerickými výsledky je dosaženo pro interakční poměr větší než 1{.}25.
+Analyticky odvozený plný tenzor pružné tuhosti se velmi dobře shoduje s numerickými výsledky i pro nižší hodnoty interakčního poměru, avšak hodnoty Youngova modulu pružnosti a Poissonova součinitele odvozené za předpokladu rovnoměrného rozdělení směrů vazeb vykazují jistou odchylku od numerických výsledků.
 
 % discrete stress
 Nespojitost je základní vlastností DEM.
-V některých situacích je však žádoucí převěst nespojité veličiny (např. síly) na odpovídajíci spojitou veličinu (např. tenzor napětí).
+V některých situacích je však žádoucí převést nespojité veličiny (např. síly) na odpovídajíci spojitou veličinu (např. tenzor napětí).
 Je představeno vyhodnocení tenzoru napětí a couple stress tenzoru z nespojitých sil.
 Metoda je založena na principu virtuálních prací.
-Jsou představeny nové výrazy pro couple stress tenzor, jejíchž výsledek je jedinečný a nezávislý na volbě pořátku souřadnicového systému.
+Jsou představeny nové výrazy pro couple stress tenzor, jejichž výsledek je jedinečný a nezávislý na volbě počátku souřadnicového systému.
 
 % concurrent coupling
-DEM i FEM mají své oblasti použití, někdy mohou ale spolu mohou být vhodně zkombinovány.
+DEM i FEM mají své oblasti použití, někdy ale spolu mohou být vhodně zkombinovány.
 V souběžných kombinačních přístupech běží DEM i FEM simulace současně.
 Je představena kombinace FEM programu \OOFEM\ a DEM programu \YADE.
-Je popsáno několik různých přístupů (jmenovitě povrchové, objemové, víceúrovňové a kontektní), každý z nich ilustrovaný na jednoduchém případě.
+Je popsáno několik různých přístupů (jmenovitě povrchové, objemové, víceúrovňové a kontaktní), každý z nich ilustrovaný na jednoduchém případě.
 
 % sequential coupling
 Sériová DEM--FEM kombinace (kdy DEM simulace probíhá první a její výsledek je převeden jako počáteční stav FEM simulace) poškozujícího se betonového materiálu je představena na příkladu jednoosého tlaku.
-Metoda prokázala schopnost poměrně dobře vystihnout přechod z DEM do FEM pro různé módy zatížení -- mapování v různých stádiích (průžná oblast, vrchol pevnosti, změkkčení atd.).
-Výsledky se nejvíse liší v těch oblastech zatížení, kde se samotné DEM a FEM materiálové modely liší nejvíce.
+Metoda prokázala schopnost poměrně dobře vystihnout přechod z DEM do FEM pro různé módy zatížení -- mapování v různých stádiích (pružná oblast, vrchol pevnosti, změkčení atd.).
+Výsledky se nejvíce liší v těch oblastech zatížení, kde se samotné DEM a FEM materiálové modely liší nejvíce.
 
 % mcpm
 Ve stavební praxi je beton obvykle idealizován jako homogenní izotropní materiál.
@@ -103,4 +105,5 @@ Některé aplikace však vyžadují popis betonu na nižší úrovni a musí se 
 Je představen vývoj a výsledky nového mezoúrovňového modelu pro beton.
 Model uvažuje nestejnorodou mezoúroveň betonu (t.j. zrna kameniva a zónu rozhraní mezi kamenivem a matricí).
 Validace vzhledem k experimentálním výsledkům přebraným z literatury prokázala schopnost modelu realisticky vystihnout trendy různých materiálových vlastností (modulu pružnosti, tahové a tlakové pevnosti, lomové energie) vzhledem k mezo\-úrovňové struktuře materiálu.
+\end{otherlanguage}
 }
